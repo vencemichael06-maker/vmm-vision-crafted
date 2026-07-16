@@ -45,7 +45,7 @@ function ContactPage() {
         <div className="mx-auto grid w-full max-w-[1760px] grid-cols-1 gap-10 px-5 md:grid-cols-12 md:px-16 lg:px-24">
           <div className="md:col-span-5">
             <p className="text-[13px] font-bold tracking-[0.28em] text-vmm-red">GET IN TOUCH</p>
-            <h1 className="ct-title mt-4 font-display text-6xl leading-[0.9] md:text-7xl lg:text-[6.5rem]">
+            <h1 className="ct-title mt-4 font-display text-6xl leading-[0.9] md:text-6xl lg:text-7xl xl:text-8xl">
               <span className="block">LET'S BUILD</span>
               <span className="block">SOMETHING</span>
               <span className="block">GREAT<span className="text-vmm-red">.</span></span>
