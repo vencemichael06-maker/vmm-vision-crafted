@@ -4,7 +4,7 @@ import { Nav } from "@/components/vmm/Nav";
 import { Orbs } from "@/components/vmm/Orbs";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
 import { useGsap } from "@/lib/vmm/useGsap";
-import { getProject, projects } from "@/lib/vmm/projects";
+import { getProject, projects, type Project } from "@/lib/vmm/projects";
 
 export const Route = createFileRoute("/work/$slug")({
   loader: ({ params }) => {
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/work/$slug")({
 });
 
 function ProjectDetail() {
-  const { project } = Route.useLoaderData();
+  const { project } = Route.useLoaderData() as { project: Project };
 
   useGsap(({ gsap }) => {
     gsap.from(".pd-title span", { y: 60, opacity: 0, duration: 0.9, stagger: 0.08, ease: "power3.out" });
