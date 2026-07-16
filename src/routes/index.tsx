@@ -15,8 +15,8 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer" },
       { name: "description", content: "I design and build digital experiences that are clean, modern and impactful." },
-      { property: "og:title", content: "VMM — Vence Michael Montero" },
-      { property: "og:description", content: "UI/UX Designer & Web Developer based in the Philippines." },
+      { property: "og:title", content: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer" },
+      { property: "og:description", content: "I design and build digital experiences that are clean, modern and impactful." },
     ],
   }),
   component: HomePage,
