@@ -206,7 +206,7 @@ function MobileHero() {
   return (
     <div className="relative block min-h-[100svh] md:hidden">
       {/* Structural two-panel background */}
-      <div className="grid min-h-[100svh] grid-rows-[1fr_44svh]">
+      <div className="grid min-h-[100svh] grid-rows-[56svh_44svh]">
 
         {/* WHITE UPPER PANEL */}
         <div
