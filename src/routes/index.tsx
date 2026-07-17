@@ -204,9 +204,10 @@ function HomePage() {
 
 function MobileHero() {
   return (
-    <div className="relative block md:hidden">
+    <div className="relative block min-h-[100svh] md:hidden">
       {/* Structural two-panel background */}
-      <div className="grid grid-rows-[minmax(0,1fr)_minmax(320px,60vh)]">
+      <div className="grid min-h-[100svh] grid-rows-[1fr_44svh]">
+
         {/* WHITE UPPER PANEL */}
         <div
           className="relative bg-vmm-canvas px-5"
