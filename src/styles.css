@@ -113,7 +113,7 @@
   75%      { opacity: .25; transform: translate3d(-2px, 0, 0); }
   95%      { opacity: 0;   transform: translate3d(0,0,0); }
 }
-.vmm-glitch { position: relative; }
+.vmm-glitch { }
 .vmm-glitch .vmm-glitch-base { animation: vmm-glitch-clip 900ms steps(6, end) both; }
 .vmm-glitch .vmm-glitch-r,
 .vmm-glitch .vmm-glitch-c {
