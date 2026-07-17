@@ -184,21 +184,21 @@ function HomePage() {
           </div>
         </div>
 
-        {/* Mobile 001 numeral at the red-panel seam */}
+        {/* Mobile 001 numeral inside the red panel */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-4 top-[42%] z-20 block font-display text-[22vw] leading-[0.8] text-vmm-ink md:hidden"
+          className="pointer-events-none absolute left-4 top-[50%] z-20 block font-display text-[20vw] leading-[0.8] text-vmm-ink md:hidden"
         >
           001
         </div>
 
         {/* Mobile UI/UX label + scroll indicator inside red panel */}
-        <div className="pointer-events-none absolute left-5 top-[58%] z-20 block text-[11px] font-bold leading-tight tracking-[0.22em] text-vmm-ink md:hidden">
+        <div className="pointer-events-none absolute left-5 top-[66%] z-20 block text-[11px] font-bold leading-tight tracking-[0.22em] text-vmm-ink md:hidden">
           UI/UX DESIGNER
           <br />
           &amp; WEB DEVELOPER
         </div>
-        <div className="pointer-events-none absolute bottom-8 left-5 z-20 flex flex-col items-center gap-3 md:hidden">
+        <div className="pointer-events-none absolute bottom-6 left-5 z-20 flex flex-col items-center gap-2 md:hidden">
           <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white">
             <MousePointer2 className="h-4 w-4" />
           </div>
@@ -208,6 +208,7 @@ function HomePage() {
             DOWN
           </div>
         </div>
+
 
         <PageNumber n="001" />
         <div className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-4 md:flex">
