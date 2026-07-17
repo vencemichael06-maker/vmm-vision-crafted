@@ -93,18 +93,6 @@ function HomePage() {
           aria-hidden
           className="vmm-hero-red-panel absolute right-0 top-[52%] hidden h-[42%] w-[58%] bg-vmm-red md:block"
         />
-        {/* Mobile red band — starts mid-viewport, runs to bottom */}
-        <div
-          aria-hidden
-          className="vmm-hero-red-panel absolute inset-x-0 top-[46%] bottom-0 block bg-vmm-red md:hidden"
-        />
-
-        {/* Mobile right vertical rail */}
-        <div className="pointer-events-none absolute right-2 top-[8%] z-20 block md:hidden">
-          <div className="vmm-vertical text-vmm-ink">
-            AVAILABLE FOR FREELANCE &nbsp;•&nbsp; BASED IN <span className="font-black">PHILIPPINES</span>
-          </div>
-        </div>
 
         {/* ===== DESKTOP / TABLET LAYOUT ===== */}
         <div className="relative mx-auto hidden w-full max-w-[1760px] grid-cols-1 gap-8 px-5 pb-24 md:grid md:grid-cols-12 md:px-16 md:pb-32 lg:px-24">
@@ -144,70 +132,9 @@ function HomePage() {
           </div>
         </div>
 
-        {/* ===== MOBILE LAYOUT ===== */}
-        <div className="relative z-10 block px-5 md:hidden">
-          <p className="vmm-hero-eyebrow text-[12px] font-bold tracking-[0.28em] text-vmm-red">HELLO, I'M</p>
-          <h1 className="vmm-hero-title mt-3 font-display text-[13vw] leading-[0.9]">
-            <span className="block">VENCE</span>
-            <span className="block">MICHAEL</span>
-            <span className="block">
-              MONTERO<span className="text-vmm-red">.</span>
-            </span>
-          </h1>
-          <p className="vmm-hero-lede mt-5 max-w-[18rem] text-[15px] leading-relaxed text-vmm-ink/80">
-            I design and build digital experiences that are clean, modern, and impactful.
-          </p>
-          <Link
-            to="/work"
-            className="vmm-hero-cta mt-6 inline-flex items-center justify-between gap-6 rounded-md bg-vmm-ink px-6 py-4 text-[12px] font-bold tracking-[0.22em] text-white"
-          >
-            VIEW MY WORK <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+        {/* ===== MOBILE LAYOUT (below md) ===== */}
+        <MobileHero />
 
-        {/* Mobile person — bottom-anchored, overlaps into white area */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] block h-[70%] md:hidden">
-          <div className="relative mx-auto h-full w-full max-w-[560px]">
-            <img
-              src={heroPerson.url}
-              alt="Portrait of Vence Michael Montero"
-              className="vmm-hero-person absolute inset-x-0 bottom-0 mx-auto h-full w-auto max-w-none select-none object-contain object-bottom"
-              style={{ left: "22%", right: 0 }}
-            />
-            <img
-              src={heroRed.url}
-              alt=""
-              aria-hidden
-              className="vmm-hero-red-overlay absolute inset-x-0 bottom-0 mx-auto h-full w-auto max-w-none select-none object-contain object-bottom"
-              style={{ left: "22%", right: 0 }}
-            />
-          </div>
-        </div>
-
-        {/* Mobile 001 numeral inside the red panel */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-4 top-[50%] z-20 block font-display text-[20vw] leading-[0.8] text-vmm-ink md:hidden"
-        >
-          001
-        </div>
-
-        {/* Mobile UI/UX label + scroll indicator inside red panel */}
-        <div className="pointer-events-none absolute left-5 top-[66%] z-20 block text-[11px] font-bold leading-tight tracking-[0.22em] text-vmm-ink md:hidden">
-          UI/UX DESIGNER
-          <br />
-          &amp; WEB DEVELOPER
-        </div>
-        <div className="pointer-events-none absolute bottom-6 left-5 z-20 flex flex-col items-center gap-2 md:hidden">
-          <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white">
-            <MousePointer2 className="h-4 w-4" />
-          </div>
-          <div className="text-[11px] font-bold leading-tight tracking-[0.22em] text-vmm-ink">
-            SCROLL
-            <br />
-            DOWN
-          </div>
-        </div>
 
 
         <PageNumber n="001" />
