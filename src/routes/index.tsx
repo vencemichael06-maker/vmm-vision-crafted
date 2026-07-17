@@ -76,7 +76,7 @@ function HomePage() {
       <Nav />
 
       {/* HERO */}
-      <section ref={heroRef} className="relative min-h-[100svh] w-full overflow-hidden pt-28 md:pt-32">
+      <section ref={heroRef} className="relative w-full overflow-x-clip md:min-h-[100svh] md:overflow-hidden md:pt-32">
         <Orbs
           items={[
             { size: "m", top: "12%", left: "22%", opacity: 0.7 },
