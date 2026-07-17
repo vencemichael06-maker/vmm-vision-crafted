@@ -201,3 +201,164 @@ function HomePage() {
     </div>
   );
 }
+
+function MobileHero() {
+  return (
+    <div className="relative block md:hidden">
+      {/* Structural two-panel background */}
+      <div className="grid grid-rows-[minmax(0,1fr)_minmax(320px,60vh)]">
+        {/* WHITE UPPER PANEL */}
+        <div
+          className="relative bg-vmm-canvas px-5"
+          style={{ paddingTop: "calc(env(safe-area-inset-top) + 96px)" }}
+        >
+          <p className="vmm-hero-eyebrow text-[11px] font-bold uppercase tracking-[0.32em] text-vmm-red">
+            HELLO, I&apos;M
+          </p>
+          <h1
+            className="vmm-hero-title mt-3 font-display uppercase text-vmm-ink"
+            style={{ fontSize: "clamp(52px, 15vw, 74px)", lineHeight: 0.9, letterSpacing: "-0.02em" }}
+          >
+            <span className="block">VENCE</span>
+            <span className="block">MICHAEL</span>
+            <span className="block">
+              MONTERO<span className="text-vmm-red">.</span>
+            </span>
+          </h1>
+          <p
+            className="vmm-hero-lede mt-5 text-vmm-ink/80"
+            style={{ fontSize: "clamp(14px, 3.9vw, 16px)", lineHeight: 1.55, maxWidth: "62%" }}
+          >
+            I design and build digital experiences that are clean, modern, and impactful.
+          </p>
+          <Link
+            to="/work"
+            aria-label="View my work"
+            className="vmm-hero-cta mt-6 inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white"
+          >
+            VIEW MY WORK <ArrowRight className="h-4 w-4" />
+          </Link>
+          <div className="h-10" />
+        </div>
+
+        {/* RED LOWER PANEL */}
+        <div className="relative bg-[color:var(--vmm-red)] px-5 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-8">
+          {/* 001 numeral */}
+          <div
+            aria-hidden
+            className="font-display leading-none text-vmm-ink"
+            style={{ fontSize: "clamp(72px, 22vw, 108px)" }}
+          >
+            001
+          </div>
+          {/* thin rule */}
+          <div className="mt-3 h-px w-8 bg-vmm-ink/60" />
+          <div className="mt-3 text-[11px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+            UI/UX DESIGNER
+            <br />
+            &amp; WEB DEVELOPER
+          </div>
+          {/* Scroll indicator */}
+          <div className="mt-10 flex flex-col items-start gap-2">
+            <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white">
+              <MousePointer2 className="h-4 w-4" />
+            </div>
+            <div className="text-[11px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+              SCROLL
+              <br />
+              DOWN
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Vertical location rail — right side, spans white panel */}
+      <div
+        className="pointer-events-none absolute right-2 z-[1] text-vmm-ink"
+        style={{ top: "calc(env(safe-area-inset-top) + 120px)" }}
+      >
+        <div
+          className="font-bold uppercase"
+          style={{
+            writingMode: "vertical-rl",
+            transform: "rotate(180deg)",
+            letterSpacing: "0.28em",
+            fontSize: "10px",
+          }}
+        >
+          BASED IN <span className="font-black">PHILIPPINES</span> &nbsp;•&nbsp; AVAILABLE FOR FREELANCE
+        </div>
+      </div>
+
+      {/* PERSON MEDIA LAYER — bridges white/red seam, right-anchored */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[2] overflow-hidden"
+        aria-hidden="false"
+      >
+        <div
+          className="vmm-glitch absolute"
+          style={{
+            right: "-6%",
+            bottom: 0,
+            width: "min(74vw, 420px)",
+            aspectRatio: "3 / 4",
+          }}
+        >
+          <img
+            src={heroPerson.url}
+            alt="Portrait of Vence Michael Montero"
+            className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom"
+            draggable={false}
+          />
+          <img
+            src={heroPerson.url}
+            aria-hidden
+            className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom"
+            style={{ filter: "url(#vmm-red-tint)" }}
+            draggable={false}
+          />
+          <img
+            src={heroPerson.url}
+            aria-hidden
+            className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom"
+            style={{ filter: "url(#vmm-cyan-tint)" }}
+            draggable={false}
+          />
+          {/* Red jacket overlay for continuity with desktop */}
+          <img
+            src={heroRed.url}
+            aria-hidden
+            alt=""
+            className="absolute inset-0 h-full w-full select-none object-contain object-bottom opacity-95"
+            draggable={false}
+          />
+        </div>
+      </div>
+
+      {/* SVG tint filters for chromatic separation */}
+      <svg width="0" height="0" className="absolute" aria-hidden>
+        <defs>
+          <filter id="vmm-red-tint">
+            <feColorMatrix
+              type="matrix"
+              values="1 0 0 0 0.95
+                      0 0 0 0 0.16
+                      0 0 0 0 0.14
+                      0 0 0 1 0"
+            />
+          </filter>
+          <filter id="vmm-cyan-tint">
+            <feColorMatrix
+              type="matrix"
+              values="0 0 0 0 0.13
+                      0 0 0 0 0.91
+                      0 0 0 0 1
+                      0 0 0 1 0"
+            />
+          </filter>
+        </defs>
+      </svg>
+    </div>
+  );
+}
+
