@@ -204,22 +204,68 @@ function HomePage() {
 
 function MobileHero() {
   return (
-    <div className="relative block min-h-[100svh] md:hidden">
-      {/* Structural two-panel background */}
-      <div className="grid min-h-[100svh] grid-rows-[56svh_44svh]">
+    <div className="relative block min-h-[100svh] overflow-hidden md:hidden">
+      {/* LAYER 0 — Background split */}
+      <div aria-hidden className="absolute inset-0 z-0">
+        <div className="absolute inset-x-0 top-0 h-[56svh] bg-vmm-canvas" />
+        <div className="absolute inset-x-0 bottom-0 h-[44svh] bg-[color:var(--vmm-red)]" />
+      </div>
 
-        {/* WHITE UPPER PANEL */}
+      {/* LAYER 1 — Person media (bridges seam, right-anchored) */}
+      <div className="pointer-events-none absolute inset-0 z-10">
         <div
-          className="relative z-[3] bg-vmm-canvas px-5"
+          className="vmm-glitch absolute"
+          style={{
+            right: 0,
+            bottom: 0,
+            height: "68svh",
+            width: "62vw",
+            maxWidth: 320,
+          }}
+        >
+          <img
+            src={heroPerson.url}
+            alt="Portrait of Vence Michael Montero"
+            className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom"
+            draggable={false}
+          />
+          <img
+            src={heroPerson.url}
+            aria-hidden
+            className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom"
+            style={{ filter: "url(#vmm-red-tint)" }}
+            draggable={false}
+          />
+          <img
+            src={heroPerson.url}
+            aria-hidden
+            className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom"
+            style={{ filter: "url(#vmm-cyan-tint)" }}
+            draggable={false}
+          />
+          <img
+            src={heroRed.url}
+            aria-hidden
+            alt=""
+            className="absolute inset-0 h-full w-full select-none object-contain object-bottom opacity-95"
+            draggable={false}
+          />
+        </div>
+      </div>
+
+      {/* LAYER 2 — Editorial text content */}
+      <div className="relative z-20 grid min-h-[100svh] grid-rows-[56svh_44svh]">
+        {/* WHITE panel content */}
+        <div
+          className="px-5"
           style={{ paddingTop: "calc(env(safe-area-inset-top) + 92px)" }}
         >
-
-          <p className="vmm-hero-eyebrow text-[11px] font-bold uppercase tracking-[0.32em] text-vmm-red">
+          <p className="text-[11px] font-bold uppercase tracking-[0.32em] text-vmm-red">
             HELLO, I&apos;M
           </p>
           <h1
-            className="vmm-hero-title mt-3 font-display uppercase text-vmm-ink"
-            style={{ fontSize: "clamp(52px, 15vw, 74px)", lineHeight: 0.9, letterSpacing: "-0.02em" }}
+            className="mt-3 font-display uppercase text-vmm-ink"
+            style={{ fontSize: "clamp(48px, 14vw, 68px)", lineHeight: 0.9, letterSpacing: "-0.02em" }}
           >
             <span className="block">VENCE</span>
             <span className="block">MICHAEL</span>
@@ -228,25 +274,22 @@ function MobileHero() {
             </span>
           </h1>
           <p
-            className="vmm-hero-lede mt-5 text-vmm-ink/80"
-            style={{ fontSize: "clamp(14px, 3.9vw, 16px)", lineHeight: 1.55, maxWidth: "62%" }}
+            className="mt-5 text-vmm-ink/80"
+            style={{ fontSize: "clamp(13px, 3.7vw, 15px)", lineHeight: 1.55, maxWidth: "58%" }}
           >
             I design and build digital experiences that are clean, modern, and impactful.
           </p>
           <Link
             to="/work"
             aria-label="View my work"
-            className="vmm-hero-cta mt-6 inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white"
+            className="relative z-20 mt-6 inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white"
           >
             VIEW MY WORK <ArrowRight className="h-4 w-4" />
           </Link>
-          <div className="h-10" />
         </div>
 
-        {/* RED LOWER PANEL */}
-        <div className="relative z-[3] bg-[color:var(--vmm-red)] px-5 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-8">
-
-          {/* 001 numeral */}
+        {/* RED panel content */}
+        <div className="relative px-5 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-8">
           <div
             aria-hidden
             className="font-display leading-none text-vmm-ink"
@@ -254,14 +297,12 @@ function MobileHero() {
           >
             001
           </div>
-          {/* thin rule */}
           <div className="mt-3 h-px w-8 bg-vmm-ink/60" />
           <div className="mt-3 text-[11px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
             UI/UX DESIGNER
             <br />
             &amp; WEB DEVELOPER
           </div>
-          {/* Scroll indicator */}
           <div className="mt-10 flex flex-col items-start gap-2">
             <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white">
               <MousePointer2 className="h-4 w-4" />
@@ -275,9 +316,9 @@ function MobileHero() {
         </div>
       </div>
 
-      {/* Vertical location rail — right side, spans white panel */}
+      {/* LAYER 3 — Vertical location rail */}
       <div
-        className="pointer-events-none absolute right-2 z-[1] text-vmm-ink"
+        className="pointer-events-none absolute right-2 z-30 text-vmm-ink"
         style={{ top: "calc(env(safe-area-inset-top) + 120px)" }}
       >
         <div
@@ -292,49 +333,6 @@ function MobileHero() {
           BASED IN <span className="font-black">PHILIPPINES</span> &nbsp;•&nbsp; AVAILABLE FOR FREELANCE
         </div>
       </div>
-
-      {/* PERSON MEDIA LAYER — bridges white/red seam, right-anchored */}
-      <div className="pointer-events-none absolute inset-0 z-[2] overflow-hidden">
-        <div
-          className="vmm-glitch absolute"
-          style={{
-            right: "-10%",
-            bottom: 0,
-            height: "58svh",
-            width: "auto",
-          }}
-        >
-
-          <img
-            src={heroPerson.url}
-            alt="Portrait of Vence Michael Montero"
-            className="vmm-glitch-base block h-full w-auto select-none"
-            draggable={false}
-          />
-          <img
-            src={heroPerson.url}
-            aria-hidden
-            className="vmm-glitch-r block h-full w-auto select-none"
-            style={{ filter: "url(#vmm-red-tint)", position: "absolute", inset: 0 }}
-            draggable={false}
-          />
-          <img
-            src={heroPerson.url}
-            aria-hidden
-            className="vmm-glitch-c block h-full w-auto select-none"
-            style={{ filter: "url(#vmm-cyan-tint)", position: "absolute", inset: 0 }}
-            draggable={false}
-          />
-          <img
-            src={heroRed.url}
-            aria-hidden
-            alt=""
-            className="absolute inset-0 block h-full w-auto select-none opacity-95"
-            draggable={false}
-          />
-        </div>
-      </div>
-
 
       {/* SVG tint filters for chromatic separation */}
       <svg width="0" height="0" className="absolute" aria-hidden>
@@ -362,4 +360,5 @@ function MobileHero() {
     </div>
   );
 }
+
 
