@@ -301,12 +301,13 @@ function MobileHero() {
         <div
           className="vmm-glitch absolute"
           style={{
-            right: "-6%",
+            right: "-8%",
             bottom: 0,
-            width: "min(74vw, 420px)",
+            width: "min(58vw, 260px)",
             aspectRatio: "3 / 4",
           }}
         >
+
           <img
             src={heroPerson.url}
             alt="Portrait of Vence Michael Montero"
