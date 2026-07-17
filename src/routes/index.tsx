@@ -294,50 +294,46 @@ function MobileHero() {
       </div>
 
       {/* PERSON MEDIA LAYER — bridges white/red seam, right-anchored */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[2] overflow-hidden"
-        aria-hidden="false"
-      >
+      <div className="pointer-events-none absolute inset-0 z-[2] overflow-hidden">
         <div
           className="vmm-glitch absolute"
           style={{
-            right: "-8%",
+            right: "-6%",
             bottom: 0,
-            width: "min(58vw, 260px)",
-            aspectRatio: "3 / 4",
+            height: "72svh",
+            width: "auto",
           }}
         >
-
           <img
             src={heroPerson.url}
             alt="Portrait of Vence Michael Montero"
-            className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom"
+            className="vmm-glitch-base block h-full w-auto select-none"
             draggable={false}
           />
           <img
             src={heroPerson.url}
             aria-hidden
-            className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom"
-            style={{ filter: "url(#vmm-red-tint)" }}
+            className="vmm-glitch-r block h-full w-auto select-none"
+            style={{ filter: "url(#vmm-red-tint)", position: "absolute", inset: 0 }}
             draggable={false}
           />
           <img
             src={heroPerson.url}
             aria-hidden
-            className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom"
-            style={{ filter: "url(#vmm-cyan-tint)" }}
+            className="vmm-glitch-c block h-full w-auto select-none"
+            style={{ filter: "url(#vmm-cyan-tint)", position: "absolute", inset: 0 }}
             draggable={false}
           />
-          {/* Red jacket overlay for continuity with desktop */}
           <img
             src={heroRed.url}
             aria-hidden
             alt=""
-            className="absolute inset-0 h-full w-full select-none object-contain object-bottom opacity-95"
+            className="absolute inset-0 block h-full w-auto select-none opacity-95"
             draggable={false}
           />
         </div>
       </div>
+
 
       {/* SVG tint filters for chromatic separation */}
       <svg width="0" height="0" className="absolute" aria-hidden>
