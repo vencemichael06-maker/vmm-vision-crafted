@@ -210,9 +210,10 @@ function MobileHero() {
 
         {/* WHITE UPPER PANEL */}
         <div
-          className="relative bg-vmm-canvas px-5"
-          style={{ paddingTop: "calc(env(safe-area-inset-top) + 96px)" }}
+          className="relative z-[3] bg-vmm-canvas px-5"
+          style={{ paddingTop: "calc(env(safe-area-inset-top) + 92px)" }}
         >
+
           <p className="vmm-hero-eyebrow text-[11px] font-bold uppercase tracking-[0.32em] text-vmm-red">
             HELLO, I&apos;M
           </p>
