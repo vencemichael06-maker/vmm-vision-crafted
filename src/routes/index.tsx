@@ -244,7 +244,8 @@ function MobileHero() {
         </div>
 
         {/* RED LOWER PANEL */}
-        <div className="relative bg-[color:var(--vmm-red)] px-5 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-8">
+        <div className="relative z-[3] bg-[color:var(--vmm-red)] px-5 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-8">
+
           {/* 001 numeral */}
           <div
             aria-hidden
