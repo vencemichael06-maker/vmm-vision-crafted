@@ -1,24 +1,37 @@
 import { useMemo, useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import ivo from "@/assets/vmm/real_ivo_vehicle.webp.asset.json";
-import wise from "@/assets/vmm/real_wise_featured.webp.asset.json";
-import ig from "@/assets/vmm/real_ig_sabroso.webp.asset.json";
-import caballero from "@/assets/vmm/real_caballero.webp.asset.json";
-import igConcept from "@/assets/vmm/card_ig_sabroso.png.asset.json";
 
 type Cat = "WEBSITE" | "MOBILE APP" | "WEB APP" | "BRANDING";
 type Row = { n: string; slug: string; category: Cat; title: string; subtitle: string; cover: string; tone: "dark" | "light" };
 
 const rows: Row[] = [
-  { n: "01", slug: "ivo-cars", category: "WEBSITE", title: "IVO Cars — Smart EV Rental Website", subtitle: "A modern and responsive website for an electric vehicle rental service.", cover: ivo.url, tone: "dark" },
-  { n: "02", slug: "wiseassistant", category: "MOBILE APP", title: "WiseAssistant — Offline Personal & Business Assistant", subtitle: "An offline-first assistant that helps you manage tasks, notes and reminders intelligently.", cover: wise.url, tone: "light" },
-  { n: "03", slug: "caballero-bikes", category: "WEBSITE", title: "Caballero Bikes — Motorcycle Marketplace Website", subtitle: "A bold marketplace for premium motorcycles with rich editorial photography.", cover: caballero.url, tone: "dark" },
-  { n: "04", slug: "ig-sabroso", category: "WEBSITE", title: "IG Sabroso — Construction Company Website", subtitle: "A professional website showcasing services, projects and company expertise.", cover: ig.url, tone: "light" },
-  { n: "05", slug: "ig-sabroso-concept", category: "BRANDING", title: "IG Sabroso — Design Concept Guide", subtitle: "A print-forward brand and design concept guide for the IG Sabroso identity system.", cover: igConcept.url, tone: "dark" },
+  {
+    n: "01", slug: "ivo-cars", category: "WEBSITE",
+    title: "IVO Cars — Smart EV Rental Website",
+    subtitle: "A modern and responsive website for an electric vehicle rental service.",
+    cover: "/assets/vmm/projects/ivo-cars.webp", tone: "dark",
+  },
+  {
+    n: "02", slug: "wiseassistant", category: "MOBILE APP",
+    title: "WiseAssistant — Offline Personal & Business Assistant",
+    subtitle: "An offline-first assistant that helps you manage tasks, notes, and reminders intelligently.",
+    cover: "/assets/vmm/projects/wiseassistant.webp", tone: "dark",
+  },
+  {
+    n: "03", slug: "ig-sabroso", category: "WEBSITE",
+    title: "IG Sabroso — Construction Company Website",
+    subtitle: "A professional website showcasing services, projects, and company expertise.",
+    cover: "/assets/vmm/projects/ig-sabroso.webp", tone: "dark",
+  },
+  {
+    n: "04", slug: "caballero-digital-solutions", category: "WEBSITE",
+    title: "Caballero Digital Solutions — Agency Website",
+    subtitle: "A sleek and bold website for a digital agency focused on growth and technology.",
+    cover: "/assets/vmm/projects/caballero-digital-solutions.webp", tone: "dark",
+  },
 ];
 
 const filters = ["ALL", "WEBSITES", "WEB APPS", "BRANDING", "MOBILE APPS", "MORE"] as const;
@@ -38,8 +51,10 @@ export function WorkSection() {
 
   useGsap(({ gsap }) => {
     gsap.utils.toArray<HTMLElement>(".work-row").forEach((el) => {
-      gsap.from(el, { y: 40, opacity: 0, duration: 0.8, ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 90%" } });
+      gsap.from(el, {
+        y: 40, opacity: 0, duration: 0.8, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 90%" },
+      });
     });
   }, [visible.length]);
 
@@ -92,8 +107,8 @@ export function WorkSection() {
 
 function ProjectRow({ row }: { row: Row }) {
   return (
-    <Link
-      to="/work/$slug" params={{ slug: row.slug }}
+    <article
+      aria-label={row.title}
       className="group grid grid-cols-1 overflow-hidden rounded-2xl border border-vmm-line bg-white transition-shadow hover:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.25)] md:grid-cols-[minmax(0,44%)_1fr_auto]"
     >
       <div className={`relative aspect-[16/10] w-full overflow-hidden md:aspect-auto md:h-[210px] ${row.tone === "dark" ? "bg-vmm-ink" : "bg-vmm-canvas"}`}>
@@ -104,15 +119,15 @@ function ProjectRow({ row }: { row: Row }) {
         <span className="text-[11px] font-bold tracking-[0.24em] text-vmm-red">{row.category}</span>
         <h3 className="font-display text-2xl leading-tight md:text-[26px]">{row.title}</h3>
         <p className="text-sm leading-relaxed text-vmm-ink/70">{row.subtitle}</p>
-        <span className="mt-2 inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.24em] text-vmm-ink group-hover:text-vmm-red">
+        <span className="mt-2 inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.24em] text-vmm-ink">
           VIEW PROJECT <ArrowUpRight className="h-3.5 w-3.5" />
         </span>
       </div>
       <div className="hidden items-stretch md:flex">
-        <span className="my-6 mr-6 grid w-16 place-items-center rounded-xl bg-vmm-red text-white transition-transform group-hover:-translate-y-1">
+        <span className="my-6 mr-6 grid w-16 place-items-center rounded-xl bg-vmm-red text-white">
           <ArrowUpRight className="h-6 w-6" />
         </span>
       </div>
-    </Link>
+    </article>
   );
 }
