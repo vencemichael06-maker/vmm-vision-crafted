@@ -3,7 +3,7 @@ import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import handWebm from "@/assets/vmm/hand_reveal_transparent.webm.asset.json";
+import handWebm from "@/assets/vmm/hand_reveal_transparent_v2.webm.asset.json";
 import handMp4 from "@/assets/vmm/hand_reveal_paper.mp4.asset.json";
 import handClosed from "@/assets/vmm/hand_closed.png.asset.json";
 import handOpen from "@/assets/vmm/hand_open.png.asset.json";
