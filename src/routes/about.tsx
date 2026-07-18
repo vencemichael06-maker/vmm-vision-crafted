@@ -7,7 +7,6 @@ import { LeftRail, PageNumber } from "@/components/vmm/SideRail";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
 import { useGsap } from "@/lib/vmm/useGsap";
 import handVideo from "@/assets/vmm/hand_logo_reveal.mp4.asset.json";
-import handLast from "@/assets/vmm/hand_logo_reveal_last.png.asset.json";
 import handFirst from "@/assets/vmm/hand_logo_reveal_first.jpg.asset.json";
 
 export const Route = createFileRoute("/about")({
