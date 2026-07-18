@@ -7,7 +7,7 @@ import { LeftRail, PageNumber } from "@/components/vmm/SideRail";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
 import { useGsap } from "@/lib/vmm/useGsap";
 import handVideo from "@/assets/vmm/hand_logo_reveal.mp4.asset.json";
-import handLast from "@/assets/vmm/hand_logo_reveal_last.png.asset.json";
+import handFirst from "@/assets/vmm/hand_logo_reveal_first.jpg.asset.json";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -36,6 +36,7 @@ function AboutPage() {
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
+    v.muted = true;
     v.pause();
     try {
       v.currentTime = 0;
@@ -51,43 +52,44 @@ function AboutPage() {
       y: 20, opacity: 0, duration: 0.6, stagger: 0.06, ease: "power2.out", delay: 0.2,
     });
 
-    // Scroll-scrubbed hand + logo reveal (choreographed from motion asset)
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Scroll-scrubbed hand + logo reveal (rAF-smoothed currentTime updates)
     const v = videoRef.current;
     const stage = heroRef.current?.querySelector<HTMLDivElement>(".hand-stage");
-    if (v && stage) {
-      const play = () => {
-        const dur = v.duration || 1.8;
-        gsap.to(
-          {},
-          {
-            duration: dur,
-            ease: "none",
-            scrollTrigger: {
-              trigger: stage,
-              start: "top 78%",
-              end: "bottom 30%",
-              scrub: 0.6,
-              onUpdate: (self) => {
-                const t = Math.max(0, Math.min(dur - 0.05, self.progress * dur));
-                if (Math.abs(v.currentTime - t) > 0.02) {
-                  try { v.currentTime = t; } catch { /* noop */ }
-                }
-              },
-            },
-          }
-        );
+    if (v && stage && !prefersReduced) {
+      let targetTime = 0;
+      let rafId: number | null = null;
+      const tick = () => {
+        rafId = null;
+        const cur = v.currentTime;
+        const diff = targetTime - cur;
+        if (Math.abs(diff) < 0.01) return;
+        // Ease toward target for silky reversible scrub
+        try { v.currentTime = cur + diff * 0.35; } catch { /* noop */ }
+        rafId = requestAnimationFrame(tick);
       };
-      if (v.readyState >= 1 && !Number.isNaN(v.duration)) play();
-      else v.addEventListener("loadedmetadata", play, { once: true });
 
-      // Subtle 2.5D parallax on hover
-      const onMove = (e: MouseEvent) => {
-        const r = stage.getBoundingClientRect();
-        const x = ((e.clientX - r.left) / r.width - 0.5) * 12;
-        const y = ((e.clientY - r.top) / r.height - 0.5) * 12;
-        gsap.to(stage, { x, y, duration: 0.9, ease: "power2.out" });
+      const attach = () => {
+        const dur = v.duration || 2.07;
+        ScrollTrigger.create({
+          trigger: stage,
+          start: "top 82%",
+          end: "bottom 25%",
+          scrub: false,
+          onUpdate: (self) => {
+            const p = Math.max(0, Math.min(1, self.progress));
+            targetTime = Math.min(dur - 0.03, p * dur);
+            if (rafId == null) rafId = requestAnimationFrame(tick);
+          },
+        });
       };
-      heroRef.current?.addEventListener("mousemove", onMove);
+      if (v.readyState >= 1 && !Number.isNaN(v.duration)) attach();
+      else v.addEventListener("loadedmetadata", attach, { once: true });
+    } else if (v && prefersReduced) {
+      try { v.currentTime = 0; } catch { /* noop */ }
     }
 
     // Skill bar fills
@@ -186,18 +188,20 @@ function AboutPage() {
           {/* CENTER — HAND MOTION STAGE */}
           <div className="relative md:col-span-4">
             <div
-              className="hand-stage relative mx-auto aspect-[3/4] w-full max-w-[560px]"
-              style={{ perspective: 1000, transformStyle: "preserve-3d" }}
+              className="hand-stage relative mx-auto aspect-[1086/1448] w-full max-w-[560px]"
             >
               <video
                 ref={videoRef}
                 src={handVideo.url}
-                poster={handLast.url}
+                poster={handFirst.url}
                 muted
                 playsInline
                 preload="auto"
+                controls={false}
+                disablePictureInPicture
                 aria-hidden
                 className="absolute inset-0 h-full w-full select-none object-contain"
+                style={{ mixBlendMode: "multiply" }}
               />
             </div>
           </div>
