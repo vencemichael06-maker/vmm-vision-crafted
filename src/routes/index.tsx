@@ -165,34 +165,18 @@ function HomePage() {
             </Link>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {projects.slice(0, 4).map((p) => (
-              <Link
-                key={p.slug}
-                to="/work/$slug"
-                params={{ slug: p.slug }}
-                data-reveal
-                className="group relative block overflow-hidden rounded-xl bg-white shadow-[0_10px_40px_-20px_rgba(0,0,0,0.25)] transition hover:-translate-y-1"
-              >
-                <div className="aspect-[16/10] w-full overflow-hidden bg-vmm-ink">
-                  <img
-                    src={p.cover}
-                    alt={p.title}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                  />
-                </div>
-                <div className="flex items-center justify-between gap-4 p-6">
-                  <div>
-                    <p className="text-[11px] font-bold tracking-[0.24em] text-vmm-red">{p.category}</p>
-                    <h3 className="mt-2 font-display text-xl md:text-2xl">{p.title}</h3>
-                  </div>
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-vmm-red text-white transition-transform group-hover:rotate-[-8deg]">
-                    <ArrowRight className="h-5 w-5" />
-                  </span>
-                </div>
-              </Link>
-            ))}
+          <div className="mt-16 grid place-items-center rounded-xl border border-dashed border-vmm-ink/20 bg-white/40 px-6 py-24 text-center" data-reveal>
+            <div className="max-w-lg">
+              <p className="text-[11px] font-bold tracking-[0.28em] text-vmm-red">COMING SOON</p>
+              <h3 className="mt-4 font-display text-3xl md:text-4xl">
+                REAL CASE STUDIES, IN PRODUCTION<span className="text-vmm-red">.</span>
+              </h3>
+              <p className="mt-4 text-sm leading-relaxed text-vmm-ink/70 md:text-base">
+                Featured project entries will appear here — each with its own editorial cover, role, stack, and outcome.
+              </p>
+            </div>
           </div>
+
         </div>
       </section>
 
