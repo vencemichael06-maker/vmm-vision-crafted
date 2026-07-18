@@ -183,12 +183,9 @@ function MobileHero() {
         </div>
 
         <div className="pointer-events-none absolute right-0 z-[2]" style={{ bottom: 0, top: "-38%", width: "min(64vw, 380px)", marginRight: "-4vw" }}>
-          <div className="vmm-glitch relative h-full w-full">
-            <img src={heroPerson.url} alt="Portrait of Vence Michael Montero in a red and black jacket and bucket hat" className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom" draggable={false} fetchPriority="high" />
-            <img src={heroPerson.url} aria-hidden alt="" className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom" draggable={false} />
-            <img src={heroPerson.url} aria-hidden alt="" className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom" draggable={false} />
-          </div>
+          <HeroPersonGlitch />
         </div>
+
       </div>
     </div>
   );
