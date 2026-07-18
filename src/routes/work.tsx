@@ -98,8 +98,6 @@ function WorkPage() {
       </section>
 
 
-        <PageNumber n="003" />
-      </section>
 
       <HomeFooter />
     </div>
