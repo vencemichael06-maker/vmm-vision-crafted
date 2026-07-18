@@ -52,6 +52,12 @@ export function ServicesSection() {
         <div className="md:col-span-6" data-svc-reveal>
           <div className="relative overflow-hidden rounded-2xl bg-vmm-red p-8 text-white md:p-12">
             <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 80% 20%, rgba(255,255,255,0.6) 1px, transparent 1.5px)", backgroundSize: "14px 14px" }} />
+            <img
+              src="/assets/vmm/services/services-cube-art.webp"
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute -bottom-6 right-0 h-[110%] w-auto select-none object-contain opacity-90 mix-blend-screen"
+            />
             <div className="relative">
               <div className="h-[2px] w-10 bg-white/80" />
               <h3 className="mt-6 font-display text-4xl md:text-6xl">
@@ -63,6 +69,7 @@ export function ServicesSection() {
             </div>
           </div>
         </div>
+
 
         <div className="md:col-span-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {services.map((s) => (

@@ -142,3 +142,24 @@
   background: var(--vmm-red);
   color: white;
 }
+
+/* Page 002 hand reveal frame sequence */
+.hand-reveal-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+.hand-reveal-canvas,
+.hand-reveal-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  display: block;
+}
+.hand-reveal-poster { position: absolute; inset: 0; }
+

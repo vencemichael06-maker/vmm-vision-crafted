@@ -14,6 +14,22 @@ export function ContactSection() {
 
   const [submitted, setSubmitted] = useState(false);
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    const body = [
+      `Name: ${f.get("name") ?? ""}`,
+      `Email: ${f.get("email") ?? ""}`,
+      `Project type: ${f.get("project") ?? ""}`,
+      `Budget: ${f.get("budget") ?? ""}`,
+      "",
+      String(f.get("message") ?? ""),
+    ].join("\n");
+    window.location.href = `mailto:hello@vmm.studio?subject=${encodeURIComponent("New project inquiry")}&body=${encodeURIComponent(body)}`;
+    setSubmitted(true);
+  };
+
+
   return (
     <section id="contact" aria-label="Contact" className="relative w-full overflow-hidden py-24 md:py-32" style={{ scrollMarginTop: "80px" }}>
       <Orbs items={[
@@ -56,28 +72,29 @@ export function ContactSection() {
                 </p>
               </div>
             ) : (
-              <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="space-y-6">
-                <Field label="NAME"><input required placeholder="Your full name" className="w-full border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none placeholder:text-vmm-ink/40 focus:border-vmm-red" /></Field>
-                <Field label="EMAIL"><input required type="email" placeholder="Your email address" className="w-full border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none placeholder:text-vmm-ink/40 focus:border-vmm-red" /></Field>
+              <form onSubmit={onSubmit} className="space-y-6">
+                <Field label="NAME"><input name="name" required placeholder="Your full name" className="w-full border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none placeholder:text-vmm-ink/40 focus:border-vmm-red" /></Field>
+                <Field label="EMAIL"><input name="email" required type="email" placeholder="Your email address" className="w-full border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none placeholder:text-vmm-ink/40 focus:border-vmm-red" /></Field>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <Field label="PROJECT TYPE">
-                    <select className="w-full appearance-none border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none focus:border-vmm-red">
+                    <select name="project" className="w-full appearance-none border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none focus:border-vmm-red">
                       <option>Select project type</option><option>Website</option><option>Web app</option><option>Mobile app</option><option>Branding</option>
                     </select>
                   </Field>
                   <Field label="BUDGET">
-                    <select className="w-full appearance-none border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none focus:border-vmm-red">
+                    <select name="budget" className="w-full appearance-none border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none focus:border-vmm-red">
                       <option>Select budget range</option><option>&lt; $2k</option><option>$2k – $5k</option><option>$5k – $10k</option><option>$10k+</option>
                     </select>
                   </Field>
                 </div>
                 <Field label="MESSAGE">
-                  <textarea rows={4} placeholder="Tell me about your project…" className="w-full resize-none border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none placeholder:text-vmm-ink/40 focus:border-vmm-red" />
+                  <textarea name="message" rows={4} placeholder="Tell me about your project…" className="w-full resize-none border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none placeholder:text-vmm-ink/40 focus:border-vmm-red" />
                 </Field>
                 <button type="submit" className="mt-2 inline-flex w-full items-center justify-between gap-3 rounded-md bg-vmm-ink px-6 py-4 text-[12px] font-bold tracking-[0.2em] text-white transition-transform hover:-translate-y-0.5">
                   SEND MESSAGE <ArrowRight className="h-4 w-4" />
                 </button>
               </form>
+
             )}
           </div>
 

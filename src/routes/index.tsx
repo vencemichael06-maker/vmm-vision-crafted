@@ -9,8 +9,8 @@ import { WorkSection } from "@/sections/WorkSection";
 import { ServicesSection } from "@/sections/ServicesSection";
 import { ContactSection } from "@/sections/ContactSection";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
-import heroPerson from "@/assets/vmm/hero_person.png.asset.json";
-import heroBust from "@/assets/vmm/hero_person_bust.png.asset.json";
+import { HeroPersonGlitch } from "@/components/vmm/HeroPersonGlitch";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -88,12 +88,11 @@ function HomePage() {
             </div>
 
             <div className="pointer-events-none absolute z-[4]" style={{ right: "clamp(120px, 14.5vw, 240px)", bottom: 0, width: "clamp(460px, 34vw, 660px)", height: "clamp(640px, 88vh, 920px)" }}>
-              <div className="vmm-glitch vmm-hero-person relative h-full w-full">
-                <img src={heroBust.url} alt="Portrait of Vence Michael Montero in a red and black jacket and bucket hat" className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom" draggable={false} fetchPriority="high" />
-                <img src={heroBust.url} aria-hidden alt="" className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom" draggable={false} />
-                <img src={heroBust.url} aria-hidden alt="" className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom" draggable={false} />
+              <div className="vmm-hero-person h-full w-full">
+                <HeroPersonGlitch />
               </div>
             </div>
+
           </div>
 
           {/* Mobile hero */}
@@ -184,12 +183,9 @@ function MobileHero() {
         </div>
 
         <div className="pointer-events-none absolute right-0 z-[2]" style={{ bottom: 0, top: "-38%", width: "min(64vw, 380px)", marginRight: "-4vw" }}>
-          <div className="vmm-glitch relative h-full w-full">
-            <img src={heroPerson.url} alt="Portrait of Vence Michael Montero in a red and black jacket and bucket hat" className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom" draggable={false} fetchPriority="high" />
-            <img src={heroPerson.url} aria-hidden alt="" className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom" draggable={false} />
-            <img src={heroPerson.url} aria-hidden alt="" className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom" draggable={false} />
-          </div>
+          <HeroPersonGlitch />
         </div>
+
       </div>
     </div>
   );
