@@ -18,31 +18,32 @@ export function Nav() {
   return (
     <>
       <header className="absolute inset-x-0 top-0 z-40">
-        <div className="mx-auto flex w-full max-w-[1760px] items-center justify-between px-5 py-5 md:px-8 md:py-6 lg:px-12">
+        <div className="relative mx-auto flex w-full max-w-[1760px] items-center justify-between px-5 py-5 md:px-10 md:py-6 lg:px-14">
           <Wordmark />
 
-          <nav className="hidden items-center gap-10 lg:flex">
+          {/* Centered desktop nav */}
+          <nav className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-10 lg:flex xl:gap-14">
             {links.map((l) => {
               const active = pathname === l.to || (l.to !== "/" && pathname.startsWith(l.to));
               return (
                 <Link
                   key={l.to}
                   to={l.to}
-                  className="relative text-[13px] font-bold tracking-[0.18em] text-vmm-ink transition-colors hover:text-vmm-red"
+                  className="pointer-events-auto relative text-[13px] font-bold tracking-[0.22em] text-vmm-ink transition-colors hover:text-vmm-red"
                 >
                   {l.label}
                   {active && (
-                    <span className="absolute -bottom-2 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-vmm-red" />
+                    <span className="absolute -bottom-3 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-vmm-red" />
                   )}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex items-center gap-3 md:gap-5">
             <Link
               to="/contact"
-              className="hidden items-center gap-3 rounded-md bg-vmm-ink px-5 py-3 text-[12px] font-bold tracking-[0.18em] text-white transition-transform hover:-translate-y-0.5 md:inline-flex"
+              className="hidden items-center gap-3 rounded-md bg-vmm-ink px-5 py-3 text-[12px] font-bold tracking-[0.2em] text-white transition-transform hover:-translate-y-0.5 md:inline-flex"
             >
               LET'S TALK <ArrowRight className="h-4 w-4" />
             </Link>
@@ -62,6 +63,7 @@ export function Nav() {
     </>
   );
 }
+
 
 function MobileMenu({ onClose }: { onClose: () => void }) {
   return (
