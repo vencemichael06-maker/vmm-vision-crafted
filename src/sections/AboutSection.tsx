@@ -122,13 +122,7 @@ export function AboutSection() {
         <LeftRail />
 
         <div
-          className="mx-auto grid w-full max-w-[1760px] grid-cols-1 gap-10 px-5 py-20 md:gap-8 md:px-16 md:py-0 lg:px-24"
-          style={{
-            gridTemplateColumns:
-              typeof window !== "undefined" && window.innerWidth >= 768
-                ? "minmax(0,34%) minmax(360px,32%) minmax(0,34%)"
-                : undefined,
-          }}
+          className="mx-auto grid w-full max-w-[1760px] grid-cols-1 gap-10 px-5 py-20 md:gap-8 md:px-16 md:py-0 lg:px-24 md:[grid-template-columns:minmax(0,34%)_minmax(360px,32%)_minmax(0,34%)]"
         >
           {/* LEFT */}
           <div className="relative z-[3]">
