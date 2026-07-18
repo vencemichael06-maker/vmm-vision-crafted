@@ -9,8 +9,8 @@ import { WorkSection } from "@/sections/WorkSection";
 import { ServicesSection } from "@/sections/ServicesSection";
 import { ContactSection } from "@/sections/ContactSection";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
-import heroPerson from "@/assets/vmm/hero_person.png.asset.json";
-import heroBust from "@/assets/vmm/hero_person_bust.png.asset.json";
+import { HeroPersonGlitch } from "@/components/vmm/HeroPersonGlitch";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
