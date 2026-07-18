@@ -205,67 +205,67 @@ function HomePage() {
 function MobileHero() {
   return (
     <div className="relative block min-h-[100svh] overflow-hidden md:hidden">
-      {/* LAYER 0 — Background split */}
+      {/* LAYER 0 — Background split (white top / red bottom) */}
       <div aria-hidden className="absolute inset-0 z-0">
-        <div className="absolute inset-x-0 top-0 h-[56svh] bg-vmm-canvas" />
-        <div className="absolute inset-x-0 bottom-0 h-[44svh] bg-[color:var(--vmm-red)]" />
+        <div className="absolute inset-x-0 top-0 h-[52svh] bg-vmm-canvas" />
+        <div className="absolute inset-x-0 bottom-0 h-[48svh] bg-[color:var(--vmm-red)]" />
       </div>
 
-      {/* LAYER 1 — Person media (bridges seam, right-anchored) */}
-      <div className="pointer-events-none absolute inset-0 z-10">
+      {/* LAYER 1 — Decorative background orbs (upper right) */}
+      <div aria-hidden className="pointer-events-none absolute right-[-30px] top-[10svh] z-[1] h-40 w-40 rounded-full bg-black/[0.04] blur-[2px]" />
+      <div aria-hidden className="pointer-events-none absolute right-[-60px] top-[4svh] z-[1] h-24 w-24 rounded-full bg-black/[0.05]" />
+
+      {/* LAYER 2 — Person media (bridges seam, right-anchored, large) */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] flex justify-end">
         <div
-          className="vmm-glitch absolute"
+          className="vmm-glitch relative"
           style={{
-            right: 0,
-            bottom: 0,
-            height: "68svh",
-            width: "62vw",
-            maxWidth: 320,
+            width: "min(78vw, 460px)",
+            height: "72svh",
+            marginRight: "-6vw",
           }}
         >
           <img
-            src={heroPerson.url}
-            alt="Portrait of Vence Michael Montero"
+            src={heroPersonV2.url}
+            alt="Portrait of Vence Michael Montero in a red and black jacket and bucket hat"
             className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom"
             draggable={false}
+            fetchPriority="high"
           />
           <img
-            src={heroPerson.url}
-            aria-hidden
-            className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom"
-            style={{ filter: "url(#vmm-red-tint)" }}
-            draggable={false}
-          />
-          <img
-            src={heroPerson.url}
-            aria-hidden
-            className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom"
-            style={{ filter: "url(#vmm-cyan-tint)" }}
-            draggable={false}
-          />
-          <img
-            src={heroRed.url}
+            src={heroPersonV2.url}
             aria-hidden
             alt=""
-            className="absolute inset-0 h-full w-full select-none object-contain object-bottom opacity-95"
+            className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom"
+            draggable={false}
+          />
+          <img
+            src={heroPersonV2.url}
+            aria-hidden
+            alt=""
+            className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom"
             draggable={false}
           />
         </div>
       </div>
 
-      {/* LAYER 2 — Editorial text content */}
-      <div className="relative z-20 grid min-h-[100svh] grid-rows-[56svh_44svh]">
-        {/* WHITE panel content */}
+      {/* LAYER 3 — Editorial text content */}
+      <div className="relative z-[3] grid min-h-[100svh] grid-rows-[52svh_48svh]">
+        {/* WHITE panel */}
         <div
-          className="px-5"
-          style={{ paddingTop: "calc(env(safe-area-inset-top) + 92px)" }}
+          className="relative px-5"
+          style={{ paddingTop: "calc(env(safe-area-inset-top) + 88px)" }}
         >
-          <p className="text-[11px] font-bold uppercase tracking-[0.32em] text-vmm-red">
+          <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-vmm-red">
             HELLO, I&apos;M
           </p>
           <h1
             className="mt-3 font-display uppercase text-vmm-ink"
-            style={{ fontSize: "clamp(48px, 14vw, 68px)", lineHeight: 0.9, letterSpacing: "-0.02em" }}
+            style={{
+              fontSize: "clamp(48px, 15.5vw, 74px)",
+              lineHeight: 0.9,
+              letterSpacing: "-0.03em",
+            }}
           >
             <span className="block">VENCE</span>
             <span className="block">MICHAEL</span>
@@ -274,40 +274,52 @@ function MobileHero() {
             </span>
           </h1>
           <p
-            className="mt-5 text-vmm-ink/80"
-            style={{ fontSize: "clamp(13px, 3.7vw, 15px)", lineHeight: 1.55, maxWidth: "58%" }}
+            className="mt-5 text-[13.5px] leading-[1.55] text-vmm-ink/80"
+            style={{ maxWidth: "62%" }}
           >
             I design and build digital experiences that are clean, modern, and impactful.
           </p>
           <Link
             to="/work"
             aria-label="View my work"
-            className="relative z-20 mt-6 inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white"
+            className="mt-6 inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white"
           >
             VIEW MY WORK <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
-        {/* RED panel content */}
-        <div className="relative px-5 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-8">
+        {/* RED panel */}
+        <div className="relative px-5 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-6">
+          {/* 001 rotated vertical */}
           <div
             aria-hidden
-            className="font-display leading-none text-vmm-ink"
-            style={{ fontSize: "clamp(72px, 22vw, 108px)" }}
+            className="absolute left-5 top-4 origin-top-left font-display font-black leading-none text-vmm-ink"
+            style={{
+              fontSize: "clamp(64px, 20vw, 108px)",
+              writingMode: "vertical-rl",
+              transform: "rotate(180deg) translateX(-100%)",
+              letterSpacing: "-0.02em",
+            }}
           >
             001
           </div>
-          <div className="mt-3 h-px w-8 bg-vmm-ink/60" />
-          <div className="mt-3 text-[11px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
-            UI/UX DESIGNER
-            <br />
-            &amp; WEB DEVELOPER
+
+          {/* Role label */}
+          <div className="ml-[92px] mt-1 flex flex-col gap-2">
+            <div className="h-px w-6 bg-vmm-ink" />
+            <div className="text-[10.5px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+              UI/UX DESIGNER
+              <br />
+              &amp; WEB DEVELOPER
+            </div>
           </div>
-          <div className="mt-10 flex flex-col items-start gap-2">
+
+          {/* Scroll indicator */}
+          <div className="ml-[92px] mt-8 flex flex-col items-start gap-3">
             <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white">
               <MousePointer2 className="h-4 w-4" />
             </div>
-            <div className="text-[11px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+            <div className="text-[10.5px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
               SCROLL
               <br />
               DOWN
@@ -316,49 +328,28 @@ function MobileHero() {
         </div>
       </div>
 
-      {/* LAYER 3 — Vertical location rail */}
+      {/* LAYER 4 — Vertical location rail (upper right, inside white panel) */}
       <div
-        className="pointer-events-none absolute right-2 z-30 text-vmm-ink"
-        style={{ top: "calc(env(safe-area-inset-top) + 120px)" }}
+        className="pointer-events-none absolute right-2 z-[4] text-vmm-ink"
+        style={{ top: "calc(env(safe-area-inset-top) + 132px)" }}
       >
         <div
           className="font-bold uppercase"
           style={{
             writingMode: "vertical-rl",
-            transform: "rotate(180deg)",
             letterSpacing: "0.28em",
             fontSize: "10px",
+            lineHeight: 1.4,
           }}
         >
-          BASED IN <span className="font-black">PHILIPPINES</span> &nbsp;•&nbsp; AVAILABLE FOR FREELANCE
+          <span className="opacity-70">BASED IN</span>
+          <span className="mx-1 font-black">PHILIPPINES</span>
+          <span className="opacity-70">&nbsp;·&nbsp; AVAILABLE FOR FREELANCE</span>
         </div>
       </div>
-
-      {/* SVG tint filters for chromatic separation */}
-      <svg width="0" height="0" className="absolute" aria-hidden>
-        <defs>
-          <filter id="vmm-red-tint">
-            <feColorMatrix
-              type="matrix"
-              values="1 0 0 0 0.95
-                      0 0 0 0 0.16
-                      0 0 0 0 0.14
-                      0 0 0 1 0"
-            />
-          </filter>
-          <filter id="vmm-cyan-tint">
-            <feColorMatrix
-              type="matrix"
-              values="0 0 0 0 0.13
-                      0 0 0 0 0.91
-                      0 0 0 0 1
-                      0 0 0 1 0"
-            />
-          </filter>
-        </defs>
-      </svg>
     </div>
   );
 }
+
 
 
