@@ -1,12 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
 import { Nav } from "@/components/vmm/Nav";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, RightRail, PageNumber } from "@/components/vmm/SideRail";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
 import { useGsap } from "@/lib/vmm/useGsap";
-import { projects } from "@/lib/vmm/projects";
+
 
 export const Route = createFileRoute("/work")({
   head: () => ({
@@ -34,15 +33,6 @@ function WorkPage() {
       });
     });
   }, []);
-
-  const visible = projects.filter((p) => {
-    if (f === "ALL") return true;
-    if (f === "WEBSITES") return p.category === "WEBSITE";
-    if (f === "WEB APPS") return p.category === "WEB APP";
-    if (f === "MOBILE APPS") return p.category === "MOBILE APP";
-    if (f === "BRANDING") return p.category === "BRANDING";
-    return true;
-  });
 
   return (
     <div className="relative">
@@ -87,37 +77,27 @@ function WorkPage() {
             })}
           </div>
 
-          <div className="mt-10 space-y-6">
-            {visible.map((p) => (
-              <Link
-                key={p.slug}
-                to="/work/$slug"
-                params={{ slug: p.slug }}
-                className="work-row group grid grid-cols-1 items-stretch overflow-hidden rounded-xl bg-white shadow-[0_10px_40px_-20px_rgba(0,0,0,0.2)] transition hover:-translate-y-0.5 md:grid-cols-[320px_1fr_88px] lg:grid-cols-[420px_1fr_120px]"
-              >
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-vmm-ink md:aspect-auto">
-                  <img src={p.cover} alt={p.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
-                  <span className="absolute left-4 top-3 font-display text-2xl text-white/95">{p.index}</span>
-                </div>
-                <div className="flex flex-col justify-center gap-2 p-6 md:p-8">
-                  <p className="text-[11px] font-bold tracking-[0.24em] text-vmm-red">{p.category}</p>
-                  <h3 className="font-display text-xl md:text-2xl">{p.title}</h3>
-                  <p className="max-w-2xl text-sm text-vmm-ink/70 md:text-base">{p.subtitle}</p>
-                  <div className="mt-3 inline-flex items-center gap-2 text-[12px] font-bold tracking-[0.2em] group-hover:text-vmm-red">
-                    VIEW PROJECT
-                    <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-                  </div>
-                </div>
-                <div className="hidden shrink-0 items-center justify-center bg-vmm-red text-white md:flex">
-                  <ArrowUpRight className="h-6 w-6" />
-                </div>
-              </Link>
-            ))}
+          {/* Empty state — ready for real project entries */}
+          <div className="work-row mt-16 grid place-items-center rounded-xl border border-dashed border-vmm-ink/20 bg-white/40 px-6 py-24 text-center">
+            <div className="max-w-lg">
+              <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-vmm-red/10 text-vmm-red">
+                <span className="font-display text-lg">{f === "ALL" ? "00" : f.slice(0, 2)}</span>
+              </div>
+              <h2 className="mt-6 font-display text-3xl md:text-4xl">
+                NEW WORK, LANDING SOON<span className="text-vmm-red">.</span>
+              </h2>
+              <p className="mt-4 text-sm leading-relaxed text-vmm-ink/70 md:text-base">
+                Real project case studies are being prepared for this space. Each entry will include an editorial cover,
+                role, stack, and outcome — presented exactly as the approved production layout.
+              </p>
+            </div>
           </div>
         </div>
 
         <PageNumber n="003" />
       </section>
+
+
 
       <HomeFooter />
     </div>
