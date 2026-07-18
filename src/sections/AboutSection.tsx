@@ -146,7 +146,7 @@ export function AboutSection() {
               <video
                 ref={videoRef}
                 src={handVideo.url}
-                poster={handFirst.url}
+                preload="auto"
                 muted
                 playsInline
                 preload="auto"
