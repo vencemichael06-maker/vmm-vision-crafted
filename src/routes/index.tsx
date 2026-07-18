@@ -7,7 +7,7 @@ import { LeftRail, RightRail, PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
 import heroPerson from "@/assets/vmm/hero_person.png.asset.json";
 import heroRed from "@/assets/vmm/hero_person_red.png.asset.json";
-import { projects } from "@/lib/vmm/projects";
+
 import { HomeToolsStrip, HomeFooter } from "@/components/vmm/HomeExtras";
 
 export const Route = createFileRoute("/")({
