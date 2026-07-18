@@ -189,18 +189,20 @@ function AboutPage() {
           {/* CENTER — HAND MOTION STAGE */}
           <div className="relative md:col-span-4">
             <div
-              className="hand-stage relative mx-auto aspect-[3/4] w-full max-w-[560px]"
-              style={{ perspective: 1000, transformStyle: "preserve-3d" }}
+              className="hand-stage relative mx-auto aspect-[1086/1448] w-full max-w-[560px]"
             >
               <video
                 ref={videoRef}
                 src={handVideo.url}
-                poster={handLast.url}
+                poster={handFirst.url}
                 muted
                 playsInline
                 preload="auto"
+                controls={false}
+                disablePictureInPicture
                 aria-hidden
                 className="absolute inset-0 h-full w-full select-none object-contain"
+                style={{ mixBlendMode: "multiply" }}
               />
             </div>
           </div>
