@@ -79,18 +79,31 @@ export const projects: Project[] = [
     meta: { role: "Design & Frontend", year: "2024", stack: ["Astro", "TypeScript", "Tailwind"] },
   },
   {
-    slug: "caballero-digital",
+    slug: "caballero-bikes",
     index: "04",
     category: "WEBSITE",
-    title: "Caballero Digital Solutions — Agency Website",
-    subtitle: "A sleek and bold website for a digital agency focused on growth and technology.",
+    title: "Caballero Bikes — Motorcycle Marketplace Website",
+    subtitle: "A bold marketplace for premium motorcycles with rich editorial photography.",
     description:
-      "A statement site for a growth-and-tech agency. The palette leans deep black with red flourishes, echoing the VMM system. The layout uses oversized typography and a compact case-study grid.",
+      "A statement marketplace for premium and custom motorcycles. Deep black canvas with red accents echoes the VMM system; oversized display type carries the bikes.",
     cover: caballero.url,
-    gallery: [{ src: realCaballero.url, caption: "Agency homepage" }],
+    gallery: [{ src: realCaballero.url, caption: "Marketplace homepage" }],
     meta: { role: "Design & Frontend", year: "2024", stack: ["Next.js", "Tailwind", "Framer Motion"] },
   },
+  {
+    slug: "ig-sabroso-concept",
+    index: "05",
+    category: "BRANDING",
+    title: "IG Sabroso — Design Concept Guide",
+    subtitle: "A print-forward brand and design concept guide for the IG Sabroso identity system.",
+    description:
+      "A concept guide covering brand tone, typography, layout system, and reference spreads — designed as a printable editorial document that pairs with the live website.",
+    cover: igSabroso.url,
+    gallery: [{ src: realIgSabroso.url, caption: "Concept spreads" }],
+    meta: { role: "Brand & Design", year: "2024", stack: ["Figma", "InDesign"] },
+  },
 ];
+
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
