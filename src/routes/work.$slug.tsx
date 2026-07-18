@@ -30,9 +30,9 @@ export const Route = createFileRoute("/work/$slug")({
     <div className="grid min-h-screen place-items-center px-6 text-center">
       <div>
         <h1 className="font-display text-6xl">Project not found<span className="text-vmm-red">.</span></h1>
-        <Link to="/work" className="mt-6 inline-flex items-center gap-2 text-sm font-bold tracking-[0.2em] hover:text-vmm-red">
+        <a href="/#work" className="mt-6 inline-flex items-center gap-2 text-sm font-bold tracking-[0.2em] hover:text-vmm-red">
           <ArrowLeft className="h-4 w-4" /> BACK TO WORK
-        </Link>
+        </a>
       </div>
     </div>
   ),
@@ -62,9 +62,9 @@ function ProjectDetail() {
         ]} />
 
         <div className="mx-auto w-full max-w-[1760px] px-5 md:px-16 lg:px-24">
-          <Link to="/work" className="inline-flex items-center gap-2 text-[12px] font-bold tracking-[0.2em] hover:text-vmm-red">
+          <a href="/#work" className="inline-flex items-center gap-2 text-[12px] font-bold tracking-[0.2em] hover:text-vmm-red">
             <ArrowLeft className="h-4 w-4" /> BACK TO WORK
-          </Link>
+          </a>
 
           <div className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-12">
             <div className="md:col-span-8">
@@ -141,7 +141,7 @@ function ProjectDetail() {
       <section className="mx-auto w-full max-w-[1760px] px-5 pb-24 md:px-16 lg:px-24">
         <div className="flex items-end justify-between gap-6">
           <h2 className="font-display text-3xl md:text-5xl">MORE WORK<span className="text-vmm-red">.</span></h2>
-          <Link to="/work" className="text-[12px] font-bold tracking-[0.2em] hover:text-vmm-red">VIEW ALL →</Link>
+          <a href="/#work" className="text-[12px] font-bold tracking-[0.2em] hover:text-vmm-red">VIEW ALL →</a>
         </div>
         <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
           {others.map((p) => (
