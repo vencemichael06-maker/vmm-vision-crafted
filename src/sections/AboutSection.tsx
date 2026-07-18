@@ -3,8 +3,7 @@ import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import handVideo from "@/assets/vmm/hand_logo_reveal.mp4.asset.json";
-import handFirst from "@/assets/vmm/hand_logo_reveal_first.jpg.asset.json";
+import handVideo from "@/assets/vmm/hand_logo_reveal_v7.mp4.asset.json";
 
 const skills = [
   { label: "UI/UX Design", value: 90 },
