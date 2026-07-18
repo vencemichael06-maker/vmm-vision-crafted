@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, PageNumber } from "@/components/vmm/SideRail";
@@ -15,9 +15,11 @@ const skills = [
   { label: "Mobile App Development", value: 65 },
 ];
 
+const clamp = (v: number, min: number, max: number) =>
+  Math.min(Math.max(v, min), max);
+
 export function AboutSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const stickyRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoReady, setVideoReady] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -30,43 +32,50 @@ export function AboutSection() {
     return () => mq.removeEventListener("change", on);
   }, []);
 
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = true;
-    v.pause();
-    try { v.currentTime = 0; } catch { /* noop */ }
+  const handleLoadedMetadata = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.pause();
+    try { video.currentTime = 0; } catch { /* noop */ }
+    setVideoReady(true);
   }, []);
 
-  useGsap(({ gsap, ScrollTrigger }) => {
+  // Scroll-driven scrub, calculated from the Page 002 section rect only.
+  useEffect(() => {
+    if (!videoReady || reducedMotion) return;
+    let rafId = 0;
+    const update = () => {
+      const section = sectionRef.current;
+      const video = videoRef.current;
+      if (!section || !video || !video.duration) return;
+      const rect = section.getBoundingClientRect();
+      const scrollable = section.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      const progress = clamp(-rect.top / scrollable, 0, 1);
+      const target = progress * Math.max(video.duration - 0.001, 0);
+      if (Math.abs(video.currentTime - target) > 0.01) {
+        try { video.currentTime = target; } catch { /* noop */ }
+      }
+    };
+    const request = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(update);
+    };
+    request();
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", request);
+      window.removeEventListener("resize", request);
+    };
+  }, [videoReady, reducedMotion]);
+
+  useGsap(({ gsap }) => {
     gsap.from(".about-title span", {
       y: 60, opacity: 0, duration: 0.9, stagger: 0.12, ease: "power3.out",
       scrollTrigger: { trigger: sectionRef.current!, start: "top 70%" },
     });
-
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const v = videoRef.current;
-    const section = sectionRef.current;
-    if (v && section && !prefersReduced) {
-      const attach = () => {
-        const dur = v.duration || 2.07;
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: true,
-          onUpdate: (self) => {
-            const p = Math.max(0, Math.min(1, self.progress));
-            try { v.currentTime = Math.min(dur - 0.02, p * dur); } catch { /* noop */ }
-          },
-        });
-      };
-      if (v.readyState >= 1 && Number.isFinite(v.duration) && v.duration > 0) attach();
-      else v.addEventListener("loadedmetadata", attach, { once: true });
-    }
 
     gsap.utils.toArray<HTMLElement>(".skill-bar").forEach((bar) => {
       const pct = bar.dataset.pct ?? "50";
@@ -98,13 +107,10 @@ export function AboutSection() {
       id="about"
       ref={sectionRef}
       aria-label="About"
-      className="relative w-full bg-vmm-canvas md:h-[280svh]"
+      className="relative w-full bg-vmm-canvas h-[220svh] md:h-[270svh]"
       style={{ scrollMarginTop: "80px" }}
     >
-      <div
-        ref={stickyRef}
-        className="relative w-full md:sticky md:top-0 md:flex md:h-screen md:items-center md:overflow-hidden"
-      >
+      <div className="sticky top-0 h-[100svh] w-full overflow-hidden md:flex md:items-center">
         <Orbs
           items={[
             { size: "m", top: "10%", left: "22%", opacity: 0.55 },
@@ -115,9 +121,17 @@ export function AboutSection() {
         />
         <LeftRail />
 
-        <div className="mx-auto grid w-full max-w-[1760px] grid-cols-1 gap-10 px-5 py-20 md:grid-cols-12 md:gap-8 md:px-16 md:py-0 lg:px-24">
+        <div
+          className="mx-auto grid w-full max-w-[1760px] grid-cols-1 gap-10 px-5 py-20 md:gap-8 md:px-16 md:py-0 lg:px-24"
+          style={{
+            gridTemplateColumns:
+              typeof window !== "undefined" && window.innerWidth >= 768
+                ? "minmax(0,34%) minmax(360px,32%) minmax(0,34%)"
+                : undefined,
+          }}
+        >
           {/* LEFT */}
-          <div className="md:col-span-4">
+          <div className="relative z-[3]">
             <p className="text-[13px] font-bold tracking-[0.28em] text-vmm-red">ABOUT ME</p>
             <h2 className="about-title mt-5 font-display uppercase leading-[0.9] text-vmm-ink"
               style={{ fontSize: "clamp(48px, 6vw, 96px)", letterSpacing: "-0.02em" }}>
@@ -144,48 +158,37 @@ export function AboutSection() {
           </div>
 
           {/* CENTER — hand */}
-          <div className="relative md:col-span-4">
-            <div
-              className="relative mx-auto flex items-end justify-center"
-              style={{ width: "min(36vw, 680px)", height: "min(88svh, 900px)", minHeight: 420 }}
-            >
-              {reducedMotion ? (
-                <img
-                  src={handOpen.url}
-                  alt=""
-                  aria-hidden
-                  className="h-full w-full select-none object-contain object-bottom"
-                />
-              ) : (
-                <>
-                  <img
-                    src={handClosed.url}
-                    alt=""
-                    aria-hidden
-                    className={`absolute inset-0 h-full w-full select-none object-contain object-bottom transition-opacity duration-300 ${videoReady ? "opacity-0" : "opacity-100"}`}
-                  />
-                  <video
-                    ref={videoRef}
-                    preload="auto"
-                    muted
-                    playsInline
-                    controls={false}
-                    disablePictureInPicture
-                    aria-hidden
-                    poster={handClosed.url}
-                    onLoadedData={() => setVideoReady(true)}
-                    className={`relative h-full w-full select-none object-contain object-bottom transition-opacity duration-300 ${videoReady ? "opacity-100" : "opacity-0"}`}
-                  >
-                    <source src={handWebm.url} type="video/webm" />
-                    <source src={handMp4.url} type="video/mp4" />
-                  </video>
-                </>
-              )}
-            </div>
+          <div className="relative z-[1] flex items-end justify-center pointer-events-none">
+            {reducedMotion ? (
+              <img
+                src={handOpen.url}
+                alt=""
+                aria-hidden
+                style={{ width: "clamp(360px, 31vw, 540px)", height: "auto", maxHeight: "78svh" }}
+                className="select-none object-contain"
+              />
+            ) : (
+              <video
+                ref={videoRef}
+                muted
+                playsInline
+                preload="auto"
+                controls={false}
+                disablePictureInPicture
+                aria-hidden
+                poster={handClosed.url}
+                onLoadedMetadata={handleLoadedMetadata}
+                style={{ width: "clamp(360px, 31vw, 540px)", height: "auto", maxHeight: "78svh" }}
+                className="hand-motion-video block select-none object-contain"
+              >
+                <source src={handWebm.url} type="video/webm" />
+                <source src={handMp4.url} type="video/mp4" />
+              </video>
+            )}
           </div>
 
           {/* RIGHT — expertise */}
-          <div className="md:col-span-4">
+          <div className="relative z-[3] bg-transparent">
             <h3 className="font-display text-xl tracking-wide">MY EXPERTISE</h3>
             <div className="mt-8 space-y-6">
               {skills.map((s) => (
