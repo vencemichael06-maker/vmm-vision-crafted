@@ -1,9 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import handVideo from "@/assets/vmm/hand_logo_reveal_v7.mp4.asset.json";
+import handWebm from "@/assets/vmm/hand_reveal_transparent.webm.asset.json";
+import handMp4 from "@/assets/vmm/hand_reveal_paper.mp4.asset.json";
+import handClosed from "@/assets/vmm/hand_closed.png.asset.json";
+import handOpen from "@/assets/vmm/hand_open.png.asset.json";
 
 const skills = [
   { label: "UI/UX Design", value: 90 },
@@ -16,6 +19,16 @@ export function AboutSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const stickyRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoReady, setVideoReady] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const on = () => setReducedMotion(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
 
   useEffect(() => {
     const v = videoRef.current;
@@ -142,19 +155,42 @@ export function AboutSection() {
 
           {/* CENTER — hand */}
           <div className="relative md:col-span-4">
-            <div className="hand-stage relative mx-auto aspect-[1086/1448] w-full max-w-[520px]">
-              <video
-                ref={videoRef}
-                src={handVideo.url}
-                preload="auto"
-                muted
-                playsInline
-                controls={false}
-                disablePictureInPicture
-                aria-hidden
-                className="absolute inset-0 h-full w-full select-none object-contain"
-                style={{ mixBlendMode: "multiply" }}
-              />
+            <div
+              className="relative mx-auto flex items-end justify-center"
+              style={{ width: "min(36vw, 680px)", height: "min(88svh, 900px)", minHeight: 420 }}
+            >
+              {reducedMotion ? (
+                <img
+                  src={handOpen.url}
+                  alt=""
+                  aria-hidden
+                  className="h-full w-full select-none object-contain object-bottom"
+                />
+              ) : (
+                <>
+                  <img
+                    src={handClosed.url}
+                    alt=""
+                    aria-hidden
+                    className={`absolute inset-0 h-full w-full select-none object-contain object-bottom transition-opacity duration-300 ${videoReady ? "opacity-0" : "opacity-100"}`}
+                  />
+                  <video
+                    ref={videoRef}
+                    preload="auto"
+                    muted
+                    playsInline
+                    controls={false}
+                    disablePictureInPicture
+                    aria-hidden
+                    poster={handClosed.url}
+                    onLoadedData={() => setVideoReady(true)}
+                    className={`relative h-full w-full select-none object-contain object-bottom transition-opacity duration-300 ${videoReady ? "opacity-100" : "opacity-0"}`}
+                  >
+                    <source src={handWebm.url} type="video/webm" />
+                    <source src={handMp4.url} type="video/mp4" />
+                  </video>
+                </>
+              )}
             </div>
           </div>
 
