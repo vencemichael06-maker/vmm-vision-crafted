@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, MousePointer2 } from "lucide-react";
 import { useRef } from "react";
 import { Nav } from "@/components/vmm/Nav";
-import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, RightRail, PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
 import heroPerson from "@/assets/vmm/hero_person.png.asset.json";
