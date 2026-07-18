@@ -40,6 +40,15 @@ export function AboutSection() {
     setVideoReady(true);
   }, []);
 
+  // Fallback: if metadata already loaded before React attached the handler.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || reducedMotion) return;
+    if (v.readyState >= 1 && Number.isFinite(v.duration) && v.duration > 0) {
+      handleLoadedMetadata();
+    }
+  }, [handleLoadedMetadata, reducedMotion]);
+
   // Scroll-driven scrub, calculated from the Page 002 section rect only.
   useEffect(() => {
     if (!videoReady || reducedMotion) return;
