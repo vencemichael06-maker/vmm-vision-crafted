@@ -1,12 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import handWebm from "@/assets/vmm/hand_reveal_transparent_v2.webm.asset.json";
-import handMp4 from "@/assets/vmm/hand_reveal_paper.mp4.asset.json";
-import handClosed from "@/assets/vmm/hand_closed.png.asset.json";
-import handOpen from "@/assets/vmm/hand_open.png.asset.json";
+import { HandRevealFrameSequence } from "@/components/vmm/HandRevealFrameSequence";
 
 const skills = [
   { label: "UI/UX Design", value: 90 },
@@ -15,70 +12,8 @@ const skills = [
   { label: "Mobile App Development", value: 65 },
 ];
 
-const clamp = (v: number, min: number, max: number) =>
-  Math.min(Math.max(v, min), max);
-
 export function AboutSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [videoReady, setVideoReady] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const on = () => setReducedMotion(mq.matches);
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
-
-  const handleLoadedMetadata = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.pause();
-    try { video.currentTime = 0; } catch { /* noop */ }
-    setVideoReady(true);
-  }, []);
-
-  // Fallback: if metadata already loaded before React attached the handler.
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v || reducedMotion) return;
-    if (v.readyState >= 1 && Number.isFinite(v.duration) && v.duration > 0) {
-      handleLoadedMetadata();
-    }
-  }, [handleLoadedMetadata, reducedMotion]);
-
-  // Scroll-driven scrub, calculated from the Page 002 section rect only.
-  useEffect(() => {
-    if (!videoReady || reducedMotion) return;
-    let rafId = 0;
-    const update = () => {
-      const section = sectionRef.current;
-      const video = videoRef.current;
-      if (!section || !video || !video.duration) return;
-      const rect = section.getBoundingClientRect();
-      const scrollable = section.offsetHeight - window.innerHeight;
-      if (scrollable <= 0) return;
-      const progress = clamp(-rect.top / scrollable, 0, 1);
-      const target = progress * Math.max(video.duration - 0.001, 0);
-      if (Math.abs(video.currentTime - target) > 0.01) {
-        try { video.currentTime = target; } catch { /* noop */ }
-      }
-    };
-    const request = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(update);
-    };
-    request();
-    window.addEventListener("scroll", request, { passive: true });
-    window.addEventListener("resize", request);
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("scroll", request);
-      window.removeEventListener("resize", request);
-    };
-  }, [videoReady, reducedMotion]);
 
   useGsap(({ gsap }) => {
     gsap.from(".about-title span", {
@@ -130,9 +65,7 @@ export function AboutSection() {
         />
         <LeftRail />
 
-        <div
-          className="mx-auto grid w-full max-w-[1760px] grid-cols-1 gap-10 px-5 py-20 md:gap-8 md:px-16 md:py-0 lg:px-24 md:[grid-template-columns:minmax(0,34%)_minmax(360px,32%)_minmax(0,34%)]"
-        >
+        <div className="mx-auto grid w-full max-w-[1760px] grid-cols-1 gap-10 px-5 py-20 md:gap-8 md:px-16 md:py-0 lg:px-24 md:[grid-template-columns:minmax(0,34%)_minmax(360px,32%)_minmax(0,34%)]">
           {/* LEFT */}
           <div className="relative z-[3]">
             <p className="text-[13px] font-bold tracking-[0.28em] text-vmm-red">ABOUT ME</p>
@@ -160,34 +93,12 @@ export function AboutSection() {
             </a>
           </div>
 
-          {/* CENTER — hand */}
-          <div className="relative z-[1] flex items-end justify-center pointer-events-none">
-            {reducedMotion ? (
-              <img
-                src={handOpen.url}
-                alt=""
-                aria-hidden
-                style={{ width: "clamp(360px, 31vw, 540px)", height: "auto", maxHeight: "78svh" }}
-                className="select-none object-contain"
-              />
-            ) : (
-              <video
-                ref={videoRef}
-                muted
-                playsInline
-                preload="auto"
-                controls={false}
-                disablePictureInPicture
-                aria-hidden
-                poster={handClosed.url}
-                onLoadedMetadata={handleLoadedMetadata}
-                style={{ width: "clamp(360px, 31vw, 540px)", height: "auto", maxHeight: "78svh" }}
-                className="hand-motion-video block select-none object-contain"
-              >
-                <source src={handWebm.url} type="video/webm" />
-                <source src={handMp4.url} type="video/mp4" />
-              </video>
-            )}
+          {/* CENTER — hand frame sequence */}
+          <div
+            className="relative z-[1] pointer-events-none"
+            style={{ height: "min(78svh, 720px)" }}
+          >
+            <HandRevealFrameSequence sectionRef={sectionRef} />
           </div>
 
           {/* RIGHT — expertise */}
