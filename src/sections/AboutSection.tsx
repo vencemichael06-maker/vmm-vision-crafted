@@ -145,19 +145,42 @@ export function AboutSection() {
 
           {/* CENTER — hand */}
           <div className="relative md:col-span-4">
-            <div className="hand-stage relative mx-auto aspect-[1086/1448] w-full max-w-[520px]">
-              <video
-                ref={videoRef}
-                src={handVideo.url}
-                preload="auto"
-                muted
-                playsInline
-                controls={false}
-                disablePictureInPicture
-                aria-hidden
-                className="absolute inset-0 h-full w-full select-none object-contain"
-                style={{ mixBlendMode: "multiply" }}
-              />
+            <div
+              className="relative mx-auto flex items-end justify-center"
+              style={{ width: "min(36vw, 680px)", height: "min(88svh, 900px)", minHeight: 420 }}
+            >
+              {reducedMotion ? (
+                <img
+                  src={handOpen.url}
+                  alt=""
+                  aria-hidden
+                  className="h-full w-full select-none object-contain object-bottom"
+                />
+              ) : (
+                <>
+                  <img
+                    src={handClosed.url}
+                    alt=""
+                    aria-hidden
+                    className={`absolute inset-0 h-full w-full select-none object-contain object-bottom transition-opacity duration-300 ${videoReady ? "opacity-0" : "opacity-100"}`}
+                  />
+                  <video
+                    ref={videoRef}
+                    preload="auto"
+                    muted
+                    playsInline
+                    controls={false}
+                    disablePictureInPicture
+                    aria-hidden
+                    poster={handClosed.url}
+                    onLoadedData={() => setVideoReady(true)}
+                    className={`relative h-full w-full select-none object-contain object-bottom transition-opacity duration-300 ${videoReady ? "opacity-100" : "opacity-0"}`}
+                  >
+                    <source src={handWebm.url} type="video/webm" />
+                    <source src={handMp4.url} type="video/mp4" />
+                  </video>
+                </>
+              )}
             </div>
           </div>
 
