@@ -116,18 +116,33 @@ function HomePage() {
           </div>
 
           <div className="relative md:col-span-6">
-            <div className="relative mx-auto aspect-[3/4] w-full max-w-[560px] md:absolute md:right-0 md:top-0 md:h-[110%] md:w-[62vw] md:max-w-none">
-              <img
-                src={heroPerson.url}
-                alt="Portrait of Vence Michael Montero"
-                className="vmm-hero-person absolute inset-x-0 bottom-0 h-full w-full select-none object-contain object-bottom"
-              />
-              <img
-                src={heroRed.url}
-                alt=""
-                aria-hidden
-                className="vmm-hero-red-overlay absolute inset-x-0 bottom-0 h-full w-full select-none object-contain object-bottom"
-              />
+            {/* Person bust — right-anchored, bleeds slightly right */}
+            <div
+              className="pointer-events-none absolute right-[-2vw] top-[2%] h-[112%] w-[54vw] max-w-[820px] lg:right-[-1vw] xl:right-[2vw]"
+            >
+              <div className="vmm-glitch vmm-hero-person relative h-full w-full">
+                <img
+                  src={heroBust.url}
+                  alt="Portrait of Vence Michael Montero in a red and black jacket and bucket hat"
+                  className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom"
+                  draggable={false}
+                  fetchPriority="high"
+                />
+                <img
+                  src={heroBust.url}
+                  aria-hidden
+                  alt=""
+                  className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom"
+                  draggable={false}
+                />
+                <img
+                  src={heroBust.url}
+                  aria-hidden
+                  alt=""
+                  className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom"
+                  draggable={false}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -135,16 +150,18 @@ function HomePage() {
         {/* ===== MOBILE LAYOUT (below md) ===== */}
         <MobileHero />
 
-
-
         <PageNumber n="001" />
-        <div className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-4 md:flex">
-          <div className="text-[11px] font-bold tracking-[0.28em]">SCROLL DOWN</div>
-          <div className="grid h-11 w-11 place-items-center rounded-full bg-vmm-ink text-white">
+        {/* Scroll indicator — bottom right per design guide */}
+        <div className="pointer-events-none absolute bottom-8 right-6 z-[4] hidden flex-col items-center gap-3 md:flex lg:right-10">
+          <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white shadow-lg">
             <MousePointer2 className="h-4 w-4" />
+          </div>
+          <div className="text-center text-[10.5px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+            SCROLL<br/>DOWN
           </div>
         </div>
       </section>
+
 
 
       {/* Featured work strip */}
