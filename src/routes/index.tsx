@@ -206,114 +206,104 @@ function HomePage() {
 function MobileHero() {
   return (
     <div className="relative block overflow-hidden md:hidden">
-      {/* Content stack determines total height. Two stacked panels. */}
-      <div className="relative">
-        {/* WHITE PANEL */}
-        <div
-          className="relative bg-vmm-canvas px-5 pb-14"
-          style={{ paddingTop: "calc(env(safe-area-inset-top) + 88px)" }}
-        >
-          {/* subtle background orbs */}
-          <div aria-hidden className="pointer-events-none absolute right-[-40px] top-[80px] h-40 w-40 rounded-full bg-black/[0.035]" />
-          <div aria-hidden className="pointer-events-none absolute right-[-70px] top-[30px] h-24 w-24 rounded-full bg-black/[0.05]" />
+      {/* WHITE PANEL */}
+      <div
+        className="relative bg-vmm-canvas px-5 pb-16"
+        style={{ paddingTop: "calc(env(safe-area-inset-top) + 88px)" }}
+      >
+        <div aria-hidden className="pointer-events-none absolute right-[-40px] top-[80px] h-40 w-40 rounded-full bg-black/[0.035]" />
+        <div aria-hidden className="pointer-events-none absolute right-[-70px] top-[30px] h-24 w-24 rounded-full bg-black/[0.05]" />
 
-          {/* Text column — constrained so person doesn't collide */}
-          <div className="relative z-[3]" style={{ maxWidth: "76%" }}>
-            <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-vmm-red">
-              HELLO, I&apos;M
-            </p>
-            <h1
-              className="mt-3 font-display uppercase text-vmm-ink"
-              style={{
-                fontSize: "clamp(44px, 14.5vw, 66px)",
-                lineHeight: 0.9,
-                letterSpacing: "-0.03em",
-              }}
-            >
-              <span className="block">VENCE</span>
-              <span className="block">MICHAEL</span>
-              <span className="block">
-                MONTERO<span className="text-vmm-red">.</span>
-              </span>
-            </h1>
-            <p className="mt-5 text-[13.5px] leading-[1.55] text-vmm-ink/80">
-              I design and build digital experiences that are clean, modern, and impactful.
-            </p>
-            <Link
-              to="/work"
-              aria-label="View my work"
-              className="mt-6 inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white"
-            >
-              VIEW MY WORK <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          {/* Vertical location rail — right edge */}
-          <div
-            className="pointer-events-none absolute right-2 z-[2] text-vmm-ink"
-            style={{ top: "calc(env(safe-area-inset-top) + 130px)" }}
+        <div className="relative z-[3]">
+          <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-vmm-red">
+            HELLO, I&apos;M
+          </p>
+          <h1
+            className="mt-3 font-display uppercase text-vmm-ink"
+            style={{
+              fontSize: "clamp(40px, 13.2vw, 60px)",
+              lineHeight: 0.9,
+              letterSpacing: "-0.03em",
+            }}
           >
-            <div
-              className="font-bold uppercase"
-              style={{
-                writingMode: "vertical-rl",
-                letterSpacing: "0.28em",
-                fontSize: "10px",
-              }}
-            >
-              <span className="opacity-70">BASED IN</span>
-              <span className="mx-1 font-black">PHILIPPINES</span>
-              <span className="opacity-70">&nbsp;·&nbsp; AVAILABLE FOR FREELANCE</span>
-            </div>
-          </div>
+            <span className="block">VENCE</span>
+            <span className="block">MICHAEL</span>
+            <span className="block">
+              MONTERO<span className="text-vmm-red">.</span>
+            </span>
+          </h1>
+          <p className="mt-5 max-w-[62%] text-[13.5px] leading-[1.55] text-vmm-ink/80">
+            I design and build digital experiences that are clean, modern, and impactful.
+          </p>
+          <Link
+            to="/work"
+            aria-label="View my work"
+            className="mt-6 inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white"
+          >
+            VIEW MY WORK <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
 
-        {/* RED PANEL */}
-        <div className="relative bg-[color:var(--vmm-red)] px-5 pt-6 pb-[calc(env(safe-area-inset-bottom)+28px)]">
-          <div className="relative z-[3] flex items-start gap-4" style={{ minHeight: 340 }}>
-            {/* 001 rotated */}
-            <div
-              aria-hidden
-              className="font-display font-black leading-[0.85] text-vmm-ink"
-              style={{
-                fontSize: "clamp(60px, 18vw, 96px)",
-                writingMode: "vertical-rl",
-                transform: "rotate(180deg)",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              001
-            </div>
+        {/* Vertical location rail */}
+        <div
+          className="pointer-events-none absolute right-2 z-[2] text-vmm-ink"
+          style={{ top: "calc(env(safe-area-inset-top) + 130px)" }}
+        >
+          <div
+            className="font-bold uppercase"
+            style={{ writingMode: "vertical-rl", letterSpacing: "0.28em", fontSize: "10px" }}
+          >
+            <span className="opacity-70">BASED IN</span>
+            <span className="mx-1 font-black">PHILIPPINES</span>
+            <span className="opacity-70">&nbsp;·&nbsp; AVAILABLE FOR FREELANCE</span>
+          </div>
+        </div>
+      </div>
 
-            <div className="flex flex-1 flex-col">
-              <div className="h-px w-6 bg-vmm-ink" />
-              <div className="mt-3 text-[10.5px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
-                UI/UX DESIGNER
+      {/* RED PANEL — contains person as absolute child bridging seam */}
+      <div className="relative bg-[color:var(--vmm-red)] px-5 pt-8 pb-[calc(env(safe-area-inset-bottom)+32px)]">
+        {/* Left content column */}
+        <div className="relative z-[3] flex max-w-[52%] items-start gap-4">
+          <div
+            aria-hidden
+            className="font-display font-black leading-[0.85] text-vmm-ink"
+            style={{
+              fontSize: "clamp(58px, 17vw, 88px)",
+              writingMode: "vertical-rl",
+              transform: "rotate(180deg)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            001
+          </div>
+
+          <div className="flex flex-1 flex-col pt-2">
+            <div className="h-px w-6 bg-vmm-ink" />
+            <div className="mt-3 text-[10.5px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+              UI/UX DESIGNER
+              <br />
+              &amp; WEB DEVELOPER
+            </div>
+            <div className="mt-14 flex flex-col items-start gap-3">
+              <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white">
+                <MousePointer2 className="h-4 w-4" />
+              </div>
+              <div className="text-[10.5px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+                SCROLL
                 <br />
-                &amp; WEB DEVELOPER
-              </div>
-
-              <div className="mt-10 flex flex-col items-start gap-3">
-                <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white">
-                  <MousePointer2 className="h-4 w-4" />
-                </div>
-                <div className="text-[10.5px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
-                  SCROLL
-                  <br />
-                  DOWN
-                </div>
+                DOWN
               </div>
             </div>
           </div>
         </div>
 
-        {/* PERSON — absolute, spans seam, right-anchored, in front of panels but behind text via z-index */}
+        {/* PERSON — anchored to bottom-right of red panel, extends UP into white section */}
         <div
           className="pointer-events-none absolute right-0 z-[2]"
           style={{
             bottom: 0,
-            width: "min(72vw, 440px)",
-            height: "78%",
+            top: "-38%",
+            width: "min(64vw, 380px)",
             marginRight: "-4vw",
           }}
         >
@@ -345,6 +335,7 @@ function MobileHero() {
     </div>
   );
 }
+
 
 
 
