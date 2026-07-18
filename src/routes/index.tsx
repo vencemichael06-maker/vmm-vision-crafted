@@ -6,7 +6,7 @@ import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, RightRail, PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
 import heroPerson from "@/assets/vmm/hero_person.png.asset.json";
-import heroPersonV2 from "@/assets/vmm/hero_person_v2.png.asset.json";
+import heroPerson from "@/assets/vmm/hero_person_v2.png.asset.json";
 import heroRed from "@/assets/vmm/hero_person_red.png.asset.json";
 import { projects } from "@/lib/vmm/projects";
 import { HomeToolsStrip, HomeFooter } from "@/components/vmm/HomeExtras";
@@ -309,21 +309,21 @@ function MobileHero() {
         >
           <div className="vmm-glitch relative h-full w-full">
             <img
-              src={heroPersonV2.url}
+              src={heroPerson.url}
               alt="Portrait of Vence Michael Montero in a red and black jacket and bucket hat"
               className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom"
               draggable={false}
               fetchPriority="high"
             />
             <img
-              src={heroPersonV2.url}
+              src={heroPerson.url}
               aria-hidden
               alt=""
               className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom"
               draggable={false}
             />
             <img
-              src={heroPersonV2.url}
+              src={heroPerson.url}
               aria-hidden
               alt=""
               className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom"
