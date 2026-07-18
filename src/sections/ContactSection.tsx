@@ -14,6 +14,22 @@ export function ContactSection() {
 
   const [submitted, setSubmitted] = useState(false);
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    const body = [
+      `Name: ${f.get("name") ?? ""}`,
+      `Email: ${f.get("email") ?? ""}`,
+      `Project type: ${f.get("project") ?? ""}`,
+      `Budget: ${f.get("budget") ?? ""}`,
+      "",
+      String(f.get("message") ?? ""),
+    ].join("\n");
+    window.location.href = `mailto:hello@vmm.studio?subject=${encodeURIComponent("New project inquiry")}&body=${encodeURIComponent(body)}`;
+    setSubmitted(true);
+  };
+
+
   return (
     <section id="contact" aria-label="Contact" className="relative w-full overflow-hidden py-24 md:py-32" style={{ scrollMarginTop: "80px" }}>
       <Orbs items={[
