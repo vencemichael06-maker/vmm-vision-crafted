@@ -52,24 +52,24 @@ export function HomeFooter() {
         </div>
         <nav className="grid grid-cols-2 gap-3 text-sm">
           {[
-            ["/", "Home"],
-            ["/about", "About"],
-            ["/work", "Work"],
-            ["/services", "Services"],
-            ["/contact", "Contact"],
-          ].map(([to, l]) => (
-            <Link key={to} to={to} className="text-white/70 hover:text-vmm-red">
+            ["home", "Home"],
+            ["about", "About"],
+            ["work", "Work"],
+            ["services", "Services"],
+            ["contact", "Contact"],
+          ].map(([hash, l]) => (
+            <a key={hash} href={`#${hash}`} className="text-white/70 hover:text-vmm-red">
               {l}
-            </Link>
+            </a>
           ))}
         </nav>
         <div className="md:justify-self-end">
-          <Link
-            to="/contact"
+          <a
+            href="#contact"
             className="inline-flex items-center gap-3 rounded-md bg-vmm-red px-6 py-4 text-[12px] font-bold tracking-[0.2em] text-white"
           >
             START A PROJECT <ArrowRight className="h-4 w-4" />
-          </Link>
+          </a>
         </div>
       </div>
       <div className="border-t border-white/10">
@@ -81,3 +81,4 @@ export function HomeFooter() {
     </footer>
   );
 }
+
