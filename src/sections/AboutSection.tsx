@@ -1,9 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import handVideo from "@/assets/vmm/hand_logo_reveal_v7.mp4.asset.json";
+import handWebm from "@/assets/vmm/hand_reveal_transparent.webm.asset.json";
+import handMp4 from "@/assets/vmm/hand_reveal_paper.mp4.asset.json";
+import handClosed from "@/assets/vmm/hand_closed.png.asset.json";
+import handOpen from "@/assets/vmm/hand_open.png.asset.json";
 
 const skills = [
   { label: "UI/UX Design", value: 90 },
