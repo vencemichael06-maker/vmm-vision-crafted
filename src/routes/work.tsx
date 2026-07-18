@@ -1,12 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
 import { Nav } from "@/components/vmm/Nav";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, RightRail, PageNumber } from "@/components/vmm/SideRail";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
 import { useGsap } from "@/lib/vmm/useGsap";
-import { projects } from "@/lib/vmm/projects";
+
 
 export const Route = createFileRoute("/work")({
   head: () => ({
