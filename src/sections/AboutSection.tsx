@@ -51,30 +51,20 @@ export function AboutSection() {
     const v = videoRef.current;
     const section = sectionRef.current;
     if (v && section && !prefersReduced) {
-      let targetTime = 0;
-      let rafId: number | null = null;
-      const tick = () => {
-        rafId = null;
-        const cur = v.currentTime;
-        const diff = targetTime - cur;
-        if (Math.abs(diff) < 0.01) return;
-        try { v.currentTime = cur + diff * 0.35; } catch { /* noop */ }
-        rafId = requestAnimationFrame(tick);
-      };
       const attach = () => {
         const dur = v.duration || 2.07;
         ScrollTrigger.create({
           trigger: section,
           start: "top top",
           end: "bottom bottom",
+          scrub: true,
           onUpdate: (self) => {
             const p = Math.max(0, Math.min(1, self.progress));
-            targetTime = Math.min(dur - 0.03, p * dur);
-            if (rafId == null) rafId = requestAnimationFrame(tick);
+            try { v.currentTime = Math.min(dur - 0.02, p * dur); } catch { /* noop */ }
           },
         });
       };
-      if (v.readyState >= 1 && !Number.isNaN(v.duration)) attach();
+      if (v.readyState >= 1 && Number.isFinite(v.duration) && v.duration > 0) attach();
       else v.addEventListener("loadedmetadata", attach, { once: true });
     }
 
