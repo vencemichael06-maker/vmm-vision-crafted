@@ -18,7 +18,7 @@ export function Nav() {
   return (
     <>
       <header className="absolute inset-x-0 top-0 z-40">
-        <div className="relative mx-auto flex w-full max-w-[1760px] items-center justify-between px-5 py-5 md:px-10 md:py-6 lg:px-14">
+        <div className="relative flex w-full items-center justify-between px-5 py-5 md:px-6 md:py-6 lg:px-8 xl:px-10">
           <Wordmark />
 
           {/* Centered desktop nav */}

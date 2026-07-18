@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, MousePointer2 } from "lucide-react";
 import { useRef } from "react";
 import { Nav } from "@/components/vmm/Nav";
-import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail, RightRail, PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
 import heroPerson from "@/assets/vmm/hero_person.png.asset.json";
@@ -78,73 +77,110 @@ function HomePage() {
       <Nav />
 
       {/* HERO */}
-      <section ref={heroRef} className="relative w-full overflow-x-clip md:min-h-[100svh] md:overflow-hidden md:pt-32">
-        <Orbs
-          items={[
-            { size: "m", top: "12%", left: "22%", opacity: 0.7 },
-            { size: "s", top: "8%", right: "18%", opacity: 0.55 },
-            { size: "s", top: "38%", right: "8%", opacity: 0.5 },
-            { size: "s", bottom: "18%", left: "3%", opacity: 0.6 },
-          ]}
-        />
+      <section
+        ref={heroRef}
+        className="relative w-full overflow-x-clip bg-vmm-canvas md:h-[100svh] md:min-h-[720px] md:overflow-hidden"
+      >
+        {/* Decorative subtle circles (desktop) */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 hidden md:block">
+          <div
+            className="absolute rounded-full bg-white"
+            style={{ top: "12%", left: "24%", width: "clamp(140px, 12vw, 190px)", height: "clamp(140px, 12vw, 190px)", boxShadow: "inset 0 0 40px rgba(0,0,0,0.04)", opacity: 0.9 }}
+          />
+          <div
+            className="absolute rounded-full bg-white"
+            style={{ top: "6%", left: "34%", width: "clamp(70px, 6vw, 96px)", height: "clamp(70px, 6vw, 96px)", boxShadow: "inset 0 0 20px rgba(0,0,0,0.05)", opacity: 0.85 }}
+          />
+          <div
+            className="absolute rounded-full bg-white"
+            style={{ top: "22%", right: "18%", width: "clamp(90px, 7vw, 110px)", height: "clamp(90px, 7vw, 110px)", boxShadow: "inset 0 0 24px rgba(0,0,0,0.05)", opacity: 0.85 }}
+          />
+          <div
+            className="absolute rounded-full bg-white"
+            style={{ bottom: "10%", left: "12%", width: "clamp(70px, 6vw, 100px)", height: "clamp(70px, 6vw, 100px)", boxShadow: "inset 0 0 20px rgba(0,0,0,0.05)", opacity: 0.85 }}
+          />
+        </div>
+
         <LeftRail />
         <RightRail />
 
-        {/* Full-width red panel (desktop) */}
+        {/* Red field — starts ~43vw / 51vh, extends to bottom-right of viewport */}
         <div
           aria-hidden
-          className="vmm-hero-red-panel absolute right-0 top-[52%] hidden h-[42%] w-[58%] bg-vmm-red md:block"
+          className="vmm-hero-red-panel absolute hidden bg-vmm-red md:block"
+          style={{ left: "43vw", top: "51vh", right: 0, bottom: 0 }}
         />
 
-        {/* ===== DESKTOP / TABLET LAYOUT ===== */}
-        <div className="relative mx-auto hidden w-full max-w-[1760px] grid-cols-1 gap-8 px-5 pb-24 md:grid md:grid-cols-12 md:px-16 md:pb-32 lg:px-24">
-          <div className="z-10 md:col-span-6 md:pt-10 lg:pt-16">
-            <p className="vmm-hero-eyebrow text-[13px] font-bold tracking-[0.28em] text-vmm-red">HELLO, I'M</p>
-            <h1 className="vmm-hero-title mt-4 font-display text-[15vw] leading-[0.9] md:text-[6.5vw] lg:text-[5.2vw]">
+        {/* ===== DESKTOP LAYOUT ===== */}
+        <div className="relative hidden h-full w-full md:block">
+          {/* Copy block — positioned by viewport % per approved reference */}
+          <div
+            className="absolute z-[5] max-w-[42vw]"
+            style={{ left: "13vw", top: "33vh" }}
+          >
+            <p className="vmm-hero-eyebrow text-[13px] font-bold tracking-[0.32em] text-vmm-red">
+              HELLO, I&apos;M
+            </p>
+            <h1
+              className="vmm-hero-title mt-5 font-display uppercase text-vmm-ink"
+              style={{
+                fontSize: "clamp(52px, 4.7vw, 88px)",
+                lineHeight: 0.92,
+                letterSpacing: "-0.02em",
+              }}
+            >
               <span className="block">VENCE MICHAEL</span>
               <span className="block">
                 MONTERO<span className="text-vmm-red">.</span>
               </span>
             </h1>
-            <p className="vmm-hero-lede mt-6 max-w-md text-base leading-relaxed text-vmm-ink/80 md:text-lg">
+            <p
+              className="vmm-hero-lede mt-6 max-w-[26rem] text-[15px] leading-[1.6] text-vmm-ink/80"
+              style={{ marginTop: "clamp(24px, 4.2vh, 44px)" }}
+            >
               I design and build digital experiences that are clean, modern, and impactful.
             </p>
             <Link
               to="/work"
-              className="vmm-hero-cta mt-8 inline-flex items-center gap-4 rounded-md bg-vmm-ink px-7 py-4 text-[12px] font-bold tracking-[0.2em] text-white transition-transform hover:-translate-y-0.5"
+              className="vmm-hero-cta mt-8 inline-flex items-center gap-6 bg-vmm-ink px-7 py-4 text-[12px] font-bold tracking-[0.22em] text-white transition-transform hover:-translate-y-0.5"
+              style={{ marginTop: "clamp(24px, 4vh, 42px)" }}
             >
               VIEW MY WORK <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
-          <div className="relative md:col-span-6">
-            {/* Person bust — right-anchored, bleeds slightly right */}
-            <div
-              className="pointer-events-none absolute right-[-2vw] top-[2%] h-[112%] w-[54vw] max-w-[820px] lg:right-[-1vw] xl:right-[2vw]"
-            >
-              <div className="vmm-glitch vmm-hero-person relative h-full w-full">
-                <img
-                  src={heroBust.url}
-                  alt="Portrait of Vence Michael Montero in a red and black jacket and bucket hat"
-                  className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom"
-                  draggable={false}
-                  fetchPriority="high"
-                />
-                <img
-                  src={heroBust.url}
-                  aria-hidden
-                  alt=""
-                  className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom"
-                  draggable={false}
-                />
-                <img
-                  src={heroBust.url}
-                  aria-hidden
-                  alt=""
-                  className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom"
-                  draggable={false}
-                />
-              </div>
+          {/* Portrait — right-anchored, bottom-aligned, dominates right half */}
+          <div
+            className="pointer-events-none absolute z-[4]"
+            style={{
+              right: "clamp(120px, 14.5vw, 240px)",
+              bottom: 0,
+              width: "clamp(460px, 34vw, 660px)",
+              height: "clamp(640px, 88vh, 920px)",
+            }}
+          >
+            <div className="vmm-glitch vmm-hero-person relative h-full w-full">
+              <img
+                src={heroBust.url}
+                alt="Portrait of Vence Michael Montero in a red and black jacket and bucket hat"
+                className="vmm-glitch-base absolute inset-0 h-full w-full select-none object-contain object-bottom"
+                draggable={false}
+                fetchPriority="high"
+              />
+              <img
+                src={heroBust.url}
+                aria-hidden
+                alt=""
+                className="vmm-glitch-r absolute inset-0 h-full w-full select-none object-contain object-bottom"
+                draggable={false}
+              />
+              <img
+                src={heroBust.url}
+                aria-hidden
+                alt=""
+                className="vmm-glitch-c absolute inset-0 h-full w-full select-none object-contain object-bottom"
+                draggable={false}
+              />
             </div>
           </div>
         </div>
@@ -153,16 +189,21 @@ function HomePage() {
         <MobileHero />
 
         <PageNumber n="001" />
-        {/* Scroll indicator — bottom right per design guide */}
-        <div className="pointer-events-none absolute bottom-8 right-6 z-[4] hidden flex-col items-center gap-3 md:flex lg:right-10">
-          <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white shadow-lg">
-            <MousePointer2 className="h-4 w-4" />
+
+        {/* Scroll indicator — bottom right, mouse symbol */}
+        <div className="pointer-events-none absolute bottom-8 z-[6] hidden flex-col items-center gap-3 md:flex" style={{ right: "clamp(24px, 3vw, 48px)" }}>
+          <div className="grid h-11 w-11 place-items-center rounded-full bg-vmm-ink text-white">
+            <svg width="14" height="20" viewBox="0 0 14 20" fill="none" aria-hidden>
+              <rect x="1" y="1" width="12" height="18" rx="6" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="6.25" y="4.5" width="1.5" height="4" rx="0.75" fill="currentColor" />
+            </svg>
           </div>
-          <div className="text-center text-[10.5px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+          <div className="text-center text-[10.5px] font-bold leading-tight tracking-[0.28em] text-vmm-ink">
             SCROLL<br/>DOWN
           </div>
         </div>
       </section>
+
 
 
 
