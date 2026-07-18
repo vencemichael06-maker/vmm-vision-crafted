@@ -149,7 +149,6 @@ export function AboutSection() {
                 preload="auto"
                 muted
                 playsInline
-                preload="auto"
                 controls={false}
                 disablePictureInPicture
                 aria-hidden
