@@ -173,19 +173,19 @@ function MobileHero() {
           </a>
         </div>
 
-        {/* Vertical PHILIPPINES rail — pinned to right, fits inside 40px gutter */}
+        {/* Vertical rail — reads top→bottom: BASED IN · PHILIPPINES · AVAILABLE FOR FREELANCE */}
         <div
           className="pointer-events-none absolute right-3 z-[5] text-vmm-ink"
-          style={{ top: "calc(env(safe-area-inset-top) + 150px)" }}
+          style={{ top: "calc(env(safe-area-inset-top) + 190px)" }}
         >
           <div
-            className="flex items-center gap-3 font-bold uppercase"
-            style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+            className="flex items-start gap-3 font-bold uppercase"
+            style={{ writingMode: "vertical-rl" }}
           >
             <span style={{ fontSize: "9.5px", letterSpacing: "0.28em" }} className="opacity-80">
               BASED IN
             </span>
-            <span className="font-black" style={{ fontSize: "12px", letterSpacing: "0.2em" }}>
+            <span className="font-black" style={{ fontSize: "13px", letterSpacing: "0.2em" }}>
               PHILIPPINES
             </span>
             <span style={{ fontSize: "9.5px", letterSpacing: "0.28em" }} className="opacity-80">
