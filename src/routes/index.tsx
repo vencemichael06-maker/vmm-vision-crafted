@@ -11,7 +11,6 @@ import { ContactSection } from "@/sections/ContactSection";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
 import { HeroPersonGlitch } from "@/components/vmm/HeroPersonGlitch";
 import { LoadCurtain } from "@/components/vmm/LoadCurtain";
-import { HeroGlitchMedia } from "@/components/vmm/VMMDesktopMotionMedia";
 import "@/styles/vmm-desktop-motion-media.css";
 
 
