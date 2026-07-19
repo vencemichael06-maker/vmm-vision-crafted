@@ -10,6 +10,7 @@ import { ServicesSection } from "@/sections/ServicesSection";
 import { ContactSection } from "@/sections/ContactSection";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
 import { HeroPersonGlitch } from "@/components/vmm/HeroPersonGlitch";
+import { LoadCurtain } from "@/components/vmm/LoadCurtain";
 
 
 export const Route = createFileRoute("/")({
@@ -47,6 +48,7 @@ function HomePage() {
 
   return (
     <div className="relative bg-vmm-canvas text-vmm-ink">
+      <LoadCurtain />
       <Nav />
       <main>
         {/* ============ PAGE 001 — HOME / HERO ============ */}
@@ -135,49 +137,76 @@ function MobileHero() {
   // scroll cue. The person image spans both bands anchored bottom-right.
   return (
     <div className="relative block overflow-hidden md:hidden">
-      {/* Two-tone canvas */}
-      <div className="relative bg-vmm-canvas" style={{ paddingTop: "calc(env(safe-area-inset-top) + 76px)" }}>
-        {/* Decorative circles */}
-        <div aria-hidden className="pointer-events-none absolute right-[-40px] top-[110px] h-40 w-40 rounded-full bg-black/[0.04]" />
-        <div aria-hidden className="pointer-events-none absolute right-[-70px] top-[60px] h-24 w-24 rounded-full bg-black/[0.06]" />
+      {/* Two-tone canvas — pad top well below the fixed nav */}
+      <div
+        className="relative bg-vmm-canvas"
+        style={{ paddingTop: "calc(env(safe-area-inset-top) + 108px)" }}
+      >
+        {/* Decorative circles (kept behind rail) */}
+        <div aria-hidden className="pointer-events-none absolute right-[-40px] top-[150px] h-40 w-40 rounded-full bg-black/[0.04]" />
+        <div aria-hidden className="pointer-events-none absolute right-[-70px] top-[100px] h-24 w-24 rounded-full bg-black/[0.06]" />
 
-        {/* Copy column */}
-        <div className="relative z-[3] px-5 pb-8">
-          <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-vmm-red">HELLO, I&apos;M</p>
-          <h1 className="mt-3 font-display uppercase text-vmm-ink" style={{ fontSize: "clamp(40px, 13vw, 60px)", lineHeight: 0.92, letterSpacing: "-0.03em" }}>
+        {/* Copy column — reserve 40px right gutter for the rail */}
+        <div className="relative z-[3] pl-5 pr-[52px] pb-8">
+          <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-vmm-red">
+            HELLO, I&apos;M
+          </p>
+          <h1
+            className="mt-3 font-display uppercase text-vmm-ink"
+            style={{ fontSize: "clamp(38px, 12vw, 56px)", lineHeight: 0.92, letterSpacing: "-0.03em" }}
+          >
             <span className="block">VENCE</span>
             <span className="block">MICHAEL</span>
-            <span className="block">MONTERO<span className="text-vmm-red">.</span></span>
+            <span className="block">
+              MONTERO<span className="text-vmm-red">.</span>
+            </span>
           </h1>
-          <p className="mt-5 max-w-[62%] text-[13.5px] leading-[1.55] text-vmm-ink/80">
+          <p className="mt-5 max-w-[68%] text-[13.5px] leading-[1.55] text-vmm-ink/80">
             I design and build digital experiences that are clean, modern, and impactful.
           </p>
-          <a href="#work" aria-label="View my work" className="mt-6 inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white">
+          <a
+            href="#work"
+            aria-label="View my work"
+            className="mt-6 inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white"
+          >
             VIEW MY WORK <ArrowRight className="h-4 w-4" />
           </a>
         </div>
 
-        {/* Vertical PHILIPPINES rail on right (over white band only) */}
-        <div className="pointer-events-none absolute right-2 z-[2] text-vmm-ink" style={{ top: "calc(env(safe-area-inset-top) + 120px)" }}>
-          <div className="flex flex-col items-center gap-2 font-bold uppercase" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
-            <span style={{ fontSize: "10px", letterSpacing: "0.3em" }} className="opacity-80">BASED IN</span>
-            <span className="font-black" style={{ fontSize: "13px", letterSpacing: "0.22em" }}>PHILIPPINES</span>
-            <span style={{ fontSize: "10px", letterSpacing: "0.3em" }} className="opacity-80">AVAILABLE FOR FREELANCE</span>
+        {/* Vertical PHILIPPINES rail — pinned to right, fits inside 40px gutter */}
+        <div
+          className="pointer-events-none absolute right-3 z-[5] text-vmm-ink"
+          style={{ top: "calc(env(safe-area-inset-top) + 150px)" }}
+        >
+          <div
+            className="flex items-center gap-3 font-bold uppercase"
+            style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+          >
+            <span style={{ fontSize: "9.5px", letterSpacing: "0.28em" }} className="opacity-80">
+              BASED IN
+            </span>
+            <span className="font-black" style={{ fontSize: "12px", letterSpacing: "0.2em" }}>
+              PHILIPPINES
+            </span>
+            <span style={{ fontSize: "9.5px", letterSpacing: "0.28em" }} className="opacity-80">
+              AVAILABLE FOR FREELANCE
+            </span>
           </div>
         </div>
       </div>
 
       {/* Red band */}
-      <div className="relative bg-[color:var(--vmm-red)] px-5 pt-10 pb-[calc(env(safe-area-inset-bottom)+40px)]" style={{ minHeight: "56vh" }}>
-        <div className="relative z-[3] flex max-w-[46%] flex-col gap-8">
-          <div className="flex items-start gap-4">
-            <div
-              aria-hidden
-              className="font-display font-black leading-[0.85] text-vmm-ink"
-              style={{ fontSize: "clamp(64px, 20vw, 104px)", letterSpacing: "-0.02em" }}
-            >
-              001
-            </div>
+      <div
+        className="relative bg-[color:var(--vmm-red)] px-5 pt-10 pb-[calc(env(safe-area-inset-bottom)+40px)]"
+        style={{ minHeight: "58vh" }}
+      >
+        <div className="relative z-[3] flex max-w-[44%] flex-col gap-8">
+          <div
+            aria-hidden
+            className="font-display font-black leading-[0.85] text-vmm-ink"
+            style={{ fontSize: "clamp(64px, 20vw, 104px)", letterSpacing: "-0.02em" }}
+          >
+            001
           </div>
           <div>
             <div className="h-px w-6 bg-vmm-ink" />
@@ -196,16 +225,18 @@ function MobileHero() {
         </div>
       </div>
 
-      {/* Single continuous person, bridging both bands, bottom-anchored */}
+      {/* Single continuous person, bridging both bands, bottom-right anchored.
+          Shifted right so the head sits over the red band, not the copy. */}
       <div
         className="pointer-events-none absolute right-0 z-[4]"
         style={{
           bottom: 0,
-          width: "min(74vw, 440px)",
-          height: "78%",
-          marginRight: "-4vw",
+          width: "min(70vw, 420px)",
+          height: "72%",
+          marginRight: "-6vw",
         }}
       >
+
         <HeroPersonGlitch />
       </div>
     </div>

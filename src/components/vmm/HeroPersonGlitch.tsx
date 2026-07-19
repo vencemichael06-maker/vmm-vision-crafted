@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 const SESSION_KEY = "vmm-hero-glitch-played";
-const PERSON_SRC = "/assets/vmm/hero/hero-person-transparent-1264x2048.webp";
+import heroPersonV4 from "@/assets/vmm/hero_person_v4.png.asset.json";
+const PERSON_SRC = heroPersonV4.url;
 
 type Props = {
   className?: string;
