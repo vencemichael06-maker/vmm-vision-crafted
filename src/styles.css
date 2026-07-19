@@ -4,6 +4,7 @@
 @import "@fontsource/roboto-condensed/900.css";
 @source "../src";
 @import "tw-animate-css";
+@import "./styles/desktop-hand-scroll-reveal.css";
 
 
 @custom-variant dark (&:is(.dark *));
