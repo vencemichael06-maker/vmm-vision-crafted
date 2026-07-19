@@ -96,10 +96,14 @@ export function AboutSection() {
             </a>
           </div>
 
-          {/* CENTER — hand frame sequence */}
+          {/* CENTER — desktop uses supplied exact-sync MP4; smaller viewports keep the frame sequence */}
           <div className="relative z-[1] pointer-events-none" style={{ height: "min(78svh, 720px)" }}>
-          <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} />
-
+            <div className="hidden h-full w-full lg:block pointer-events-auto">
+              <AboutHandRevealMedia />
+            </div>
+            <div className="h-full w-full lg:hidden">
+              <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} />
+            </div>
           </div>
 
           {/* RIGHT — expertise */}
