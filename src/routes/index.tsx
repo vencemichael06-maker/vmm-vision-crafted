@@ -139,14 +139,14 @@ function MobileHero() {
   // Mobile hero: continuous figure bridging white + red bands, matching approved reference.
   return (
     <div className="relative block overflow-hidden md:hidden">
-      {/* Full-height figure spanning both bands, anchored right */}
+      {/* Full-height figure spanning both bands, anchored right, bridging the seam */}
       <div
         aria-hidden
         className="pointer-events-none absolute z-[4]"
         style={{
-          right: "-8vw",
-          top: "20vh",
-          width: "78vw",
+          right: "-12vw",
+          top: "32vh",
+          width: "96vw",
           bottom: 0,
         }}
       >
