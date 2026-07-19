@@ -86,8 +86,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer" },
       { name: "twitter:description", content: "I design and build digital experiences that are clean, modern and impactful." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/Q5LHLb7e1bfnaFVDsEOBCPWBXXD2/social-images/social-1784473238118-CD0BFBF6-464A-45B1-B7CA-3E0DAB8CF7AE.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/Q5LHLb7e1bfnaFVDsEOBCPWBXXD2/social-images/social-1784473238118-CD0BFBF6-464A-45B1-B7CA-3E0DAB8CF7AE.webp" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/cc2d0a05-9e9e-4ee1-8ed7-46bc01b10e5e" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/cc2d0a05-9e9e-4ee1-8ed7-46bc01b10e5e" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
