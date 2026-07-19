@@ -55,6 +55,7 @@ export function AboutSection() {
       id="about"
       ref={sectionRef}
       aria-label="About"
+      data-vmm-page002-track
       className="relative w-full bg-vmm-canvas lg:h-[260svh] md:h-[240svh] h-[210svh]"
       style={{ scrollMarginTop: "80px" }}
     >
