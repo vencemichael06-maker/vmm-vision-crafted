@@ -134,7 +134,7 @@ export function HandRevealFrameSequence({ sectionRef, className = "", onProgress
       window.removeEventListener("scroll", request);
       window.removeEventListener("resize", request);
     };
-  }, [ready, sectionRef, reducedMotion, onProgress]);
+  }, [ready, sectionRef, reducedMotion, onProgress, progressBias]);
 
   return (
     <div className={`hand-reveal-media ${className}`} aria-hidden="true">
