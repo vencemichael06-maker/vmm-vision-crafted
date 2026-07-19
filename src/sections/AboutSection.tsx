@@ -15,6 +15,77 @@ const skills = [
 
 export function AboutSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const unlockedRef = useRef(false);
+  const lastProgressRef = useRef(0);
+  const pauseTimerRef = useRef<number | null>(null);
+  const reducedMotionRef = useRef(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    reducedMotionRef.current = mq.matches;
+    const on = () => (reducedMotionRef.current = mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+
+  useEffect(() => {
+    const unlock = () => {
+      const a = audioRef.current;
+      if (!a || unlockedRef.current) return;
+      const prevMuted = a.muted;
+      a.muted = true;
+      a.play()
+        .then(() => {
+          a.pause();
+          a.currentTime = 0;
+          a.muted = prevMuted;
+          unlockedRef.current = true;
+        })
+        .catch(() => {});
+    };
+    const opts = { once: true, passive: true } as AddEventListenerOptions;
+    window.addEventListener("pointerdown", unlock, opts);
+    window.addEventListener("touchstart", unlock, opts);
+    window.addEventListener("keydown", unlock, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("touchstart", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+  }, []);
+
+  const handleProgress = useCallback((p: number) => {
+    const a = audioRef.current;
+    if (!a || reducedMotionRef.current) return;
+    const dur = a.duration;
+    if (!dur || Number.isNaN(dur) || !Number.isFinite(dur)) return;
+    const clamped = Math.min(Math.max(p, 0), 1);
+    const prev = lastProgressRef.current;
+    const delta = clamped - prev;
+    lastProgressRef.current = clamped;
+
+    // Stop at keyframe extremes (fully closed or fully open)
+    if (clamped <= 0.002 || clamped >= 0.998) {
+      if (!a.paused) a.pause();
+      a.currentTime = clamped >= 0.998 ? dur : 0;
+      return;
+    }
+
+    // Scrub audio time to hand progress (forward on scroll-down, reverse on scroll-up)
+    const target = clamped * dur;
+    if (Math.abs(a.currentTime - target) > 0.04) a.currentTime = target;
+
+    if (Math.abs(delta) > 0.0008 && unlockedRef.current) {
+      a.playbackRate = delta > 0 ? 1 : 0.85;
+      if (a.paused) a.play().catch(() => {});
+      if (pauseTimerRef.current) window.clearTimeout(pauseTimerRef.current);
+      pauseTimerRef.current = window.setTimeout(() => {
+        a.pause();
+      }, 140);
+    }
+  }, []);
+
 
   useGsap(({ gsap }) => {
     gsap.from(".about-title span", {
