@@ -136,17 +136,17 @@ function HomePage() {
 }
 
 function MobileHero() {
-  // Mobile hero: continuous figure bridging white + red bands, matching approved reference.
+  // Mobile hero: white top with copy + CTA, red bottom band with figure bridging the seam.
   return (
     <div className="relative block overflow-hidden md:hidden">
-      {/* Full-height figure spanning both bands, anchored right, bridging the seam */}
+      {/* Figure — anchored to red band, torso visible in red, head crosses into white */}
       <div
         aria-hidden
         className="pointer-events-none absolute z-[4]"
         style={{
-          right: "-12vw",
-          top: "32vh",
-          width: "96vw",
+          right: "-6vw",
+          top: "40vh",
+          width: "78vw",
           bottom: 0,
         }}
       >
@@ -156,11 +156,11 @@ function MobileHero() {
       {/* White band */}
       <div
         className="relative bg-vmm-canvas"
-        style={{ paddingTop: "calc(env(safe-area-inset-top) + 88px)", paddingBottom: "28px" }}
+        style={{ paddingTop: "calc(env(safe-area-inset-top) + 88px)", paddingBottom: "24px" }}
       >
         {/* Decorative circles */}
-        <div aria-hidden className="pointer-events-none absolute right-[8vw] top-[128px] h-40 w-40 rounded-full bg-black/[0.05]" />
-        <div aria-hidden className="pointer-events-none absolute right-[-30px] top-[80px] h-24 w-24 rounded-full bg-black/[0.04]" />
+        <div aria-hidden className="pointer-events-none absolute right-[6vw] top-[140px] h-44 w-44 rounded-full bg-black/[0.05]" />
+        <div aria-hidden className="pointer-events-none absolute right-[-40px] top-[90px] h-28 w-28 rounded-full bg-black/[0.04]" />
 
         {/* Copy column */}
         <div className="relative z-[3] px-6">
@@ -173,7 +173,7 @@ function MobileHero() {
             <span className="block">MICHAEL</span>
             <span className="block">MONTERO<span className="text-vmm-red">.</span></span>
           </h1>
-          <p className="mt-6 max-w-[58%] text-[14px] leading-[1.55] text-vmm-ink/80">
+          <p className="mt-6 max-w-[70%] text-[14px] leading-[1.55] text-vmm-ink/80">
             I design and build digital experiences that are clean, modern, and impactful.
           </p>
           <a
@@ -188,7 +188,7 @@ function MobileHero() {
         {/* Vertical PHILIPPINES rail on right */}
         <div
           className="pointer-events-none absolute right-2 z-[5] text-vmm-ink"
-          style={{ top: "calc(env(safe-area-inset-top) + 150px)" }}
+          style={{ top: "calc(env(safe-area-inset-top) + 160px)" }}
         >
           <div
             className="flex flex-col items-center gap-3 font-bold uppercase"
@@ -204,18 +204,16 @@ function MobileHero() {
       {/* Red band */}
       <div
         className="relative overflow-hidden bg-[color:var(--vmm-red)] px-6 pt-10"
-        style={{ minHeight: "62vh", paddingBottom: "calc(env(safe-area-inset-bottom) + 44px)" }}
+        style={{ minHeight: "72vh", paddingBottom: "calc(env(safe-area-inset-bottom) + 44px)" }}
       >
-        <div className="relative z-[3] flex max-w-[42%] flex-col gap-10">
+        <div className="relative z-[3] flex max-w-[46%] flex-col gap-8">
           {/* Rotated 001 */}
           <div
             aria-hidden
             className="font-display font-black leading-[0.85] text-vmm-ink"
             style={{
-              fontSize: "clamp(72px, 22vw, 120px)",
+              fontSize: "clamp(80px, 26vw, 140px)",
               letterSpacing: "-0.02em",
-              writingMode: "vertical-rl",
-              transform: "rotate(180deg)",
             }}
           >
             001
@@ -223,12 +221,12 @@ function MobileHero() {
 
           <div>
             <div className="h-8 w-px bg-vmm-ink" />
-            <div className="mt-4 text-[11px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+            <div className="mt-3 text-[11px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
               UI/UX DESIGNER<br />&amp; WEB DEVELOPER
             </div>
           </div>
 
-          <div className="mt-4 flex flex-col items-start gap-3">
+          <div className="mt-6 flex flex-col items-start gap-3">
             <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white">
               <MousePointer2 className="h-4 w-4" />
             </div>
@@ -241,3 +239,4 @@ function MobileHero() {
     </div>
   );
 }
+
