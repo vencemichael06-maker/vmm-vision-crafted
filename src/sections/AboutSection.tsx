@@ -149,9 +149,15 @@ export function AboutSection() {
         </div>
       </div>
 
-      {/* ============== MOBILE / TABLET (<1024px) — unchanged sticky implementation ============== */}
-      <div className="relative w-full bg-vmm-canvas h-[220svh] lg:hidden">
-        <div className="sticky top-0 min-h-[100svh] w-full overflow-hidden">
+      {/* ============== MOBILE / TABLET (<1024px) — sticky scrub stage ============== */}
+      <div className="sticky top-0 w-full min-h-[100svh] overflow-hidden bg-vmm-canvas lg:hidden">
+        <div className="relative w-full">
+          <Orbs
+            items={[
+              { size: "m", top: "10%", left: "22%", opacity: 0.55 },
+              { size: "s", bottom: "22%", right: "8%", opacity: 0.45 },
+            ]}
+          />
           <Orbs
             items={[
               { size: "m", top: "10%", left: "22%", opacity: 0.55 },
