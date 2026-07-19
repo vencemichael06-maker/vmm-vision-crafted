@@ -10,6 +10,7 @@ import { ServicesSection } from "@/sections/ServicesSection";
 import { ContactSection } from "@/sections/ContactSection";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
 import { HeroPersonGlitch } from "@/components/vmm/HeroPersonGlitch";
+import { LoadCurtain } from "@/components/vmm/LoadCurtain";
 
 
 export const Route = createFileRoute("/")({
