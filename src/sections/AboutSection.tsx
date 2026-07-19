@@ -96,7 +96,8 @@ export function AboutSection() {
 
           {/* CENTER — hand frame sequence */}
           <div className="relative z-[1] pointer-events-none" style={{ height: "min(78svh, 720px)" }}>
-            <HandRevealFrameSequence sectionRef={sectionRef} />
+          <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} />
+
           </div>
 
           {/* RIGHT — expertise */}
