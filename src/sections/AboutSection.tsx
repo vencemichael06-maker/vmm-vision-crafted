@@ -158,12 +158,6 @@ export function AboutSection() {
               { size: "s", bottom: "22%", right: "8%", opacity: 0.45 },
             ]}
           />
-          <Orbs
-            items={[
-              { size: "m", top: "10%", left: "22%", opacity: 0.55 },
-              { size: "s", bottom: "22%", right: "8%", opacity: 0.45 },
-            ]}
-          />
           <div className="w-full px-5 pt-8 pb-10">
             <div className="relative grid grid-cols-[minmax(0,1fr)_56%] gap-2">
               <div className="relative z-[3] min-w-0">
