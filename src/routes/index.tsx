@@ -173,26 +173,7 @@ function MobileHero() {
           </a>
         </div>
 
-        {/* Vertical rail — reads top→bottom: BASED IN · PHILIPPINES · AVAILABLE FOR FREELANCE */}
-        <div
-          className="pointer-events-none absolute right-3 z-[5] text-vmm-ink"
-          style={{ top: "calc(env(safe-area-inset-top) + 190px)" }}
-        >
-          <div
-            className="flex items-start gap-3 font-bold uppercase"
-            style={{ writingMode: "vertical-rl" }}
-          >
-            <span style={{ fontSize: "9.5px", letterSpacing: "0.28em" }} className="opacity-80">
-              BASED IN
-            </span>
-            <span className="font-black" style={{ fontSize: "13px", letterSpacing: "0.2em" }}>
-              PHILIPPINES
-            </span>
-            <span style={{ fontSize: "9.5px", letterSpacing: "0.28em" }} className="opacity-80">
-              AVAILABLE FOR FREELANCE
-            </span>
-          </div>
-        </div>
+        {/* Vertical rail intentionally hidden on mobile; desktop rail lives in LeftRail/RightRail. */}
       </div>
 
       {/* Red band */}
