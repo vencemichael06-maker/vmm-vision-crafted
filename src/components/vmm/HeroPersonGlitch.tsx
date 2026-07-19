@@ -77,7 +77,6 @@ export function HeroPersonGlitch({ className = "", style }: Props) {
 
   return (
     <div
-    <div
       className={`vmm-hpg vmm-hpg--${phase} ${pulse ? "vmm-hpg--pulse" : ""} relative h-full w-full ${className}`}
       style={style}
       aria-hidden="true"
