@@ -100,9 +100,9 @@ export function AboutSection() {
             </a>
           </div>
 
-          {/* CENTER — scroll-scrubbed hand + logo arc */}
-          <div className="relative z-[1] pointer-events-none mx-auto flex w-full items-end justify-center">
-            <HandRevealDesktop pinRef={desktopRef} end="+=220%" />
+          {/* CENTER — scroll-scrubbed hand + logo arc (transparent WebM). */}
+          <div className="relative z-[1] pointer-events-none mx-auto flex w-full items-end justify-center" style={{ height: "min(88svh, 900px)" }}>
+            <HandRevealScrollVideo sectionRef={sectionRef} />
           </div>
 
           {/* RIGHT — expertise */}
