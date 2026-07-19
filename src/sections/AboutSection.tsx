@@ -3,8 +3,8 @@ import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import { HandRevealFrameSequence } from "@/components/vmm/HandRevealFrameSequence";
-import { HandRevealDesktop } from "@/components/vmm/HandRevealDesktop";
+import { HandRevealScrollVideo } from "@/components/vmm/HandRevealScrollVideo";
+
 
 const skills = [
   { label: "UI/UX Design", value: 90 },
@@ -54,13 +54,13 @@ export function AboutSection() {
       id="about"
       ref={sectionRef}
       aria-label="About"
-      className="relative w-full bg-vmm-canvas"
+      className="relative w-full bg-vmm-canvas lg:h-[260svh] md:h-[240svh] h-[210svh]"
       style={{ scrollMarginTop: "80px" }}
     >
-      {/* ============== DESKTOP (>=1024px) — ScrollTrigger pin/scrub ============== */}
+      {/* ============== DESKTOP (>=1024px) — sticky scrub stage ============== */}
       <div
         ref={desktopRef}
-        className="relative hidden w-full min-h-[100svh] overflow-hidden bg-vmm-canvas lg:flex lg:items-center"
+        className="sticky top-0 hidden w-full min-h-[100svh] overflow-hidden bg-vmm-canvas lg:flex lg:items-center"
       >
         <Orbs
           items={[
@@ -100,9 +100,9 @@ export function AboutSection() {
             </a>
           </div>
 
-          {/* CENTER — scroll-scrubbed hand + logo arc */}
-          <div className="relative z-[1] pointer-events-none mx-auto flex w-full items-end justify-center">
-            <HandRevealDesktop pinRef={desktopRef} end="+=220%" />
+          {/* CENTER — scroll-scrubbed hand + logo arc (transparent WebM). */}
+          <div className="relative z-[1] pointer-events-none mx-auto flex w-full items-end justify-center" style={{ height: "min(88svh, 900px)" }}>
+            <HandRevealScrollVideo sectionRef={sectionRef} />
           </div>
 
           {/* RIGHT — expertise */}
@@ -149,9 +149,9 @@ export function AboutSection() {
         </div>
       </div>
 
-      {/* ============== MOBILE / TABLET (<1024px) — unchanged sticky implementation ============== */}
-      <div className="relative w-full bg-vmm-canvas h-[220svh] lg:hidden">
-        <div className="sticky top-0 min-h-[100svh] w-full overflow-hidden">
+      {/* ============== MOBILE / TABLET (<1024px) — sticky scrub stage ============== */}
+      <div className="sticky top-0 w-full min-h-[100svh] overflow-hidden bg-vmm-canvas lg:hidden">
+        <div className="relative w-full">
           <Orbs
             items={[
               { size: "m", top: "10%", left: "22%", opacity: 0.55 },
@@ -193,7 +193,7 @@ export function AboutSection() {
 
               <div className="pointer-events-none relative z-[2] self-stretch min-h-[380px]">
                 <div className="absolute bottom-0 right-[-20px] top-0 flex w-[64vw] items-end justify-end">
-                  <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.4} />
+                  <HandRevealScrollVideo sectionRef={sectionRef} />
                 </div>
               </div>
             </div>
