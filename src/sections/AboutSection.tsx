@@ -4,6 +4,7 @@ import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
 import { HandRevealScrollVideo } from "@/components/vmm/HandRevealScrollVideo";
+import { DesktopHandScrollReveal } from "@/components/vmm/DesktopHandScrollReveal";
 
 
 const skills = [
@@ -54,12 +55,14 @@ export function AboutSection() {
       id="about"
       ref={sectionRef}
       aria-label="About"
+      data-vmm-page002-track
       className="relative w-full bg-vmm-canvas lg:h-[260svh] md:h-[240svh] h-[210svh]"
       style={{ scrollMarginTop: "80px" }}
     >
       {/* ============== DESKTOP (>=1024px) — sticky scrub stage ============== */}
       <div
         ref={desktopRef}
+        data-vmm-page002-sticky
         className="sticky top-0 hidden w-full min-h-[100svh] overflow-hidden bg-vmm-canvas lg:flex lg:items-center"
       >
         <Orbs
@@ -100,9 +103,9 @@ export function AboutSection() {
             </a>
           </div>
 
-          {/* CENTER — scroll-scrubbed hand + logo arc (transparent WebM). */}
-          <div className="relative z-[1] pointer-events-none mx-auto flex w-full items-end justify-center" style={{ height: "min(88svh, 900px)" }}>
-            <HandRevealScrollVideo sectionRef={sectionRef} />
+          {/* CENTER — desktop scroll-scrubbed PNG frame sequence (transparent). */}
+          <div className="relative z-[1] pointer-events-none mx-auto flex w-full items-end justify-center">
+            <DesktopHandScrollReveal />
           </div>
 
           {/* RIGHT — expertise */}
