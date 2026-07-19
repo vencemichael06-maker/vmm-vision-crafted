@@ -84,8 +84,22 @@ function HomePage() {
               </a>
             </div>
 
+            {/* Hero figure — anchored to right + bottom of red panel */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute z-[4] hidden md:block"
+              style={{
+                right: "clamp(80px, 8vw, 160px)",
+                bottom: 0,
+                width: "clamp(360px, 34vw, 620px)",
+                height: "min(94svh, 900px)",
+              }}
+            >
+              <HeroPersonGlitch />
+            </div>
 
           </div>
+
 
           {/* Mobile hero */}
           <MobileHero />
