@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import glitchVideo from "@/assets/vmm/hero_glitch_overlay.webm.asset.json";
+import { useEffect, useState } from "react";
 import heroPerson from "@/assets/vmm/vmm_hero_person_tight.webp.asset.json";
 
 const SESSION_KEY = "vmm-hero-glitch-played";
-const VIDEO_SRC = glitchVideo.url;
 const PERSON_SRC = heroPerson.url;
 
 type Props = {
@@ -12,58 +10,47 @@ type Props = {
 };
 
 /**
- * Hero person = stable transparent WebP portrait (always present) with a
- * one-shot transparent WebM glitch overlay layered on top. The overlay
- * plays once per browser session, then unmounts, leaving the clean portrait.
- * Respects prefers-reduced-motion.
+ * Hero person = stable transparent portrait with a CSS-driven one-shot
+ * glitch reveal (RGB split + horizontal slice + ease-out settle, ~900ms,
+ * 5 phases per the motion direction board). Plays exactly once per browser
+ * session; after that the clean portrait renders directly. Respects
+ * prefers-reduced-motion (skips the glitch entirely).
  */
 export function HeroPersonGlitch({ className = "", style }: Props) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [showOverlay, setShowOverlay] = useState(true);
+  const [playGlitch, setPlayGlitch] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const alreadyPlayed = sessionStorage.getItem(SESSION_KEY) === "1";
-    if (reduced || alreadyPlayed) {
-      setShowOverlay(false);
-      return;
-    }
-    const v = videoRef.current;
-    if (!v) return;
-    const onEnded = () => {
-      sessionStorage.setItem(SESSION_KEY, "1");
-      setShowOverlay(false);
-    };
-    v.addEventListener("ended", onEnded);
-    v.play().catch(() => {
-      sessionStorage.setItem(SESSION_KEY, "1");
-      setShowOverlay(false);
-    });
-    return () => v.removeEventListener("ended", onEnded);
+    if (reduced || alreadyPlayed) return;
+    setPlayGlitch(true);
+    sessionStorage.setItem(SESSION_KEY, "1");
   }, []);
 
+  const imgClass =
+    "absolute inset-0 h-full w-full select-none object-contain object-bottom";
+
+  if (!playGlitch) {
+    return (
+      <div className={`relative h-full w-full ${className}`} style={style} aria-hidden="true">
+        <img src={PERSON_SRC} alt="" draggable={false} className={imgClass} />
+      </div>
+    );
+  }
+
   return (
-    <div className={`relative h-full w-full ${className}`} style={style} aria-hidden="true">
-      <img
-        src={PERSON_SRC}
-        alt=""
-        draggable={false}
-        className="absolute inset-0 h-full w-full select-none object-contain object-bottom"
-      />
-      {showOverlay && (
-        <video
-          ref={videoRef}
-          src={VIDEO_SRC}
-          muted
-          playsInline
-          preload="auto"
-          autoPlay
-          disablePictureInPicture
-          className="absolute inset-0 h-full w-full select-none object-contain object-bottom mix-blend-screen"
-          draggable={false}
-        />
-      )}
+    <div
+      className={`vmm-glitch relative h-full w-full ${className}`}
+      style={style}
+      aria-hidden="true"
+    >
+      {/* Cyan channel ghost */}
+      <img src={PERSON_SRC} alt="" draggable={false} className={`vmm-glitch-c ${imgClass}`} />
+      {/* Red channel ghost */}
+      <img src={PERSON_SRC} alt="" draggable={false} className={`vmm-glitch-r ${imgClass}`} />
+      {/* Base subject with clip-path slice reveal */}
+      <img src={PERSON_SRC} alt="" draggable={false} className={`vmm-glitch-base ${imgClass}`} />
     </div>
   );
 }
