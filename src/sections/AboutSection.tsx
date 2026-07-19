@@ -101,7 +101,7 @@ export function AboutSection() {
           </div>
 
           {/* CENTER — scroll-scrubbed hand + logo arc (transparent WebM). */}
-          <div className="relative z-[1] pointer-events-none mx-auto flex w-full items-end justify-center" style={{ height: "min(88svh, 900px)" }}>
+          <div className="relative z-[20] pointer-events-none mx-auto flex w-full items-end justify-center" style={{ height: "min(88svh, 900px)" }}>
             <HandRevealGif sectionRef={sectionRef} />
           </div>
 
@@ -191,7 +191,7 @@ export function AboutSection() {
                 </a>
               </div>
 
-              <div className="pointer-events-none relative z-[2] self-stretch min-h-[380px]">
+              <div className="pointer-events-none relative z-[20] self-stretch min-h-[380px]">
                 <div className="absolute bottom-0 right-[-20px] top-0 flex w-[64vw] items-end justify-end">
                   <HandRevealGif sectionRef={sectionRef} />
                 </div>
