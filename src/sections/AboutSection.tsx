@@ -4,7 +4,7 @@ import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
 import { HandRevealScrollVideo } from "@/components/vmm/HandRevealScrollVideo";
-import { HandRevealDesktop } from "@/components/vmm/HandRevealDesktop";
+
 
 const skills = [
   { label: "UI/UX Design", value: 90 },
