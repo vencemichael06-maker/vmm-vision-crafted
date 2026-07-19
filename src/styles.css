@@ -187,26 +187,34 @@
 }
 .hand-reveal-poster { position: absolute; inset: 0; }
 
-/* Desktop Page 002 stage — GSAP ScrollTrigger pin/scrub target.
-   Frame WebPs are opaque on white; multiply keys the white out over Paper
-   so no rectangular background is visible. */
-.page002-hand-stage {
+/* Page 002 scroll-scrubbed hand + logo reveal video.
+   Transparent WebM floats over Paper; MP4 fallback shares the same
+   #F7F7F5 background so no rectangular wrapper is visible either way. */
+.hand-scrub-layer {
   position: relative;
-  width: min(38vw, 680px);
-  height: min(78vh, 860px);
-  display: grid;
-  place-items: end center;
-  overflow: visible;
-  isolation: isolate;
-  background: transparent;
-}
-.page002-hand-canvas {
-  display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  display: grid;
+  place-items: end center;
+  pointer-events: none;
   background: transparent;
-  mix-blend-mode: multiply;
+}
+.hand-scrub-video {
+  display: block;
+  width: min(35vw, 680px);
+  height: min(86svh, 900px);
+  object-fit: contain;
+  object-position: center bottom;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+@media (max-width: 1024px) {
+  .hand-scrub-video { width: min(56vw, 520px); height: min(78svh, 720px); }
+}
+@media (max-width: 767px) {
+  .hand-scrub-video { width: min(64vw, 460px); height: min(62svh, 560px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .page002-hand-canvas { mix-blend-mode: multiply; }
