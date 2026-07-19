@@ -126,6 +126,13 @@ export function AboutSection() {
       className="relative w-full bg-vmm-canvas h-[220svh] md:h-[270svh]"
       style={{ scrollMarginTop: "80px" }}
     >
+      <audio
+        ref={audioRef}
+        src={handSfx.url}
+        preload="auto"
+        playsInline
+        aria-hidden="true"
+      />
       <div className="sticky top-0 min-h-[100svh] w-full overflow-hidden md:flex md:items-center">
         <Orbs
           items={[
