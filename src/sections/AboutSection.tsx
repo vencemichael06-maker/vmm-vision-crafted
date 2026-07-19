@@ -253,7 +253,7 @@ export function AboutSection() {
             {/* Hand — right column, wrist anchored bottom, sized by viewport so it reads at ~64vw */}
             <div className="pointer-events-none relative z-[2] self-stretch min-h-[380px]">
               <div className="absolute bottom-0 right-[-20px] top-0 flex w-[64vw] items-end justify-end">
-                <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.4} />
+                <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.4} onProgress={handleProgress} />
               </div>
             </div>
           </div>
