@@ -173,7 +173,22 @@ function MobileHero() {
       </div>
 
       {/* Red band */}
-      <div className="relative bg-[color:var(--vmm-red)] px-5 pt-10 pb-[calc(env(safe-area-inset-bottom)+40px)]" style={{ minHeight: "56vh" }}>
+      <div className="relative overflow-hidden bg-[color:var(--vmm-red)] px-5 pt-10 pb-[calc(env(safe-area-inset-bottom)+40px)]" style={{ minHeight: "56vh" }}>
+        {/* Mobile hero figure — right side of red band, does not cover copy */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute z-[2]"
+          style={{
+            right: "-6vw",
+            bottom: 0,
+            width: "62vw",
+            height: "100%",
+            maxHeight: "62vh",
+          }}
+        >
+          <HeroPersonGlitch />
+        </div>
+
         <div className="relative z-[3] flex max-w-[46%] flex-col gap-8">
           <div className="flex items-start gap-4">
             <div
