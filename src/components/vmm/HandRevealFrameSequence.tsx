@@ -16,7 +16,7 @@ type Props = {
   progressBias?: number;
 };
 
-export function HandRevealFrameSequence({ sectionRef, className = "", onProgress }: Props) {
+export function HandRevealFrameSequence({ sectionRef, className = "", onProgress, progressBias = 1 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const frameRef = useRef(-1);
