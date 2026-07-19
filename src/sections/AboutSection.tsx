@@ -3,7 +3,7 @@ import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import { HandRevealScrollVideo } from "@/components/vmm/HandRevealScrollVideo";
+import { HandRevealGif } from "@/components/vmm/HandRevealGif";
 
 
 const skills = [
@@ -101,8 +101,8 @@ export function AboutSection() {
           </div>
 
           {/* CENTER — scroll-scrubbed hand + logo arc (transparent WebM). */}
-          <div className="relative z-[1] pointer-events-none mx-auto flex w-full items-end justify-center" style={{ height: "min(88svh, 900px)" }}>
-            <HandRevealScrollVideo sectionRef={sectionRef} />
+          <div className="relative z-[20] pointer-events-none mx-auto flex w-full items-end justify-center" style={{ height: "min(88svh, 900px)" }}>
+            <HandRevealGif sectionRef={sectionRef} />
           </div>
 
           {/* RIGHT — expertise */}
@@ -191,9 +191,9 @@ export function AboutSection() {
                 </a>
               </div>
 
-              <div className="pointer-events-none relative z-[2] self-stretch min-h-[380px]">
+              <div className="pointer-events-none relative z-[20] self-stretch min-h-[380px]">
                 <div className="absolute bottom-0 right-[-20px] top-0 flex w-[64vw] items-end justify-end">
-                  <HandRevealScrollVideo sectionRef={sectionRef} />
+                  <HandRevealGif sectionRef={sectionRef} />
                 </div>
               </div>
             </div>
