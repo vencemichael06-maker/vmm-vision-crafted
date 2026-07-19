@@ -113,7 +113,8 @@ export function HandRevealFrameSequence({ sectionRef, className = "", onProgress
       }
       const rect = section.getBoundingClientRect();
       const scrollable = section.offsetHeight - window.innerHeight;
-      const progress = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+      const raw = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+      const progress = clamp(raw * progressBias, 0, 1);
       const frame = Math.round(progress * (FRAME_COUNT - 1));
       drawFrame(frame);
       onProgress?.(progress, frame);
