@@ -146,7 +146,7 @@ export function AboutSection() {
         {/* ============== MOBILE LAYOUT ============== */}
         <div className="w-full px-5 pt-8 pb-10 md:hidden">
           {/* Top block: text left, hand right */}
-          <div className="relative grid grid-cols-[minmax(0,1fr)_50%] gap-3">
+          <div className="relative grid grid-cols-[minmax(0,1fr)_56%] gap-2">
             <div className="relative z-[3] min-w-0">
               <p className="text-[11px] font-bold tracking-[0.28em] text-vmm-red">ABOUT ME</p>
               <h2
