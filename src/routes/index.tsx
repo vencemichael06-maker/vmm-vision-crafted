@@ -93,9 +93,7 @@ function HomePage() {
 
             <div className="pointer-events-none absolute z-[4]" style={{ right: "clamp(120px, 14.5vw, 240px)", bottom: 0, width: "clamp(460px, 34vw, 660px)", height: "clamp(640px, 88vh, 920px)" }}>
               <div className="vmm-hero-person h-full w-full">
-                {/* Desktop (>=1024px): supplied glitch MP4; below that fall back to the existing static portrait. */}
-                <div className="hidden h-full w-full lg:block"><HeroGlitchMedia /></div>
-                <div className="h-full w-full lg:hidden"><HeroPersonGlitch /></div>
+                <HeroPersonGlitch />
               </div>
             </div>
 
