@@ -1,9 +1,10 @@
-import { useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
 import { HandRevealFrameSequence } from "@/components/vmm/HandRevealFrameSequence";
+import handSfx from "@/assets/vmm/about_hand_sfx.mp3.asset.json";
 
 const skills = [
   { label: "UI/UX Design", value: 90 },
@@ -14,6 +15,77 @@ const skills = [
 
 export function AboutSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const unlockedRef = useRef(false);
+  const lastProgressRef = useRef(0);
+  const pauseTimerRef = useRef<number | null>(null);
+  const reducedMotionRef = useRef(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    reducedMotionRef.current = mq.matches;
+    const on = () => (reducedMotionRef.current = mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+
+  useEffect(() => {
+    const unlock = () => {
+      const a = audioRef.current;
+      if (!a || unlockedRef.current) return;
+      const prevMuted = a.muted;
+      a.muted = true;
+      a.play()
+        .then(() => {
+          a.pause();
+          a.currentTime = 0;
+          a.muted = prevMuted;
+          unlockedRef.current = true;
+        })
+        .catch(() => {});
+    };
+    const opts = { once: true, passive: true } as AddEventListenerOptions;
+    window.addEventListener("pointerdown", unlock, opts);
+    window.addEventListener("touchstart", unlock, opts);
+    window.addEventListener("keydown", unlock, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("touchstart", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+  }, []);
+
+  const handleProgress = useCallback((p: number) => {
+    const a = audioRef.current;
+    if (!a || reducedMotionRef.current) return;
+    const dur = a.duration;
+    if (!dur || Number.isNaN(dur) || !Number.isFinite(dur)) return;
+    const clamped = Math.min(Math.max(p, 0), 1);
+    const prev = lastProgressRef.current;
+    const delta = clamped - prev;
+    lastProgressRef.current = clamped;
+
+    // Stop at keyframe extremes (fully closed or fully open)
+    if (clamped <= 0.002 || clamped >= 0.998) {
+      if (!a.paused) a.pause();
+      a.currentTime = clamped >= 0.998 ? dur : 0;
+      return;
+    }
+
+    // Scrub audio time to hand progress (forward on scroll-down, reverse on scroll-up)
+    const target = clamped * dur;
+    if (Math.abs(a.currentTime - target) > 0.04) a.currentTime = target;
+
+    if (Math.abs(delta) > 0.0008 && unlockedRef.current) {
+      a.playbackRate = delta > 0 ? 1 : 0.85;
+      if (a.paused) a.play().catch(() => {});
+      if (pauseTimerRef.current) window.clearTimeout(pauseTimerRef.current);
+      pauseTimerRef.current = window.setTimeout(() => {
+        a.pause();
+      }, 140);
+    }
+  }, []);
+
 
   useGsap(({ gsap }) => {
     gsap.from(".about-title span", {
@@ -54,6 +126,13 @@ export function AboutSection() {
       className="relative w-full bg-vmm-canvas h-[220svh] md:h-[270svh]"
       style={{ scrollMarginTop: "80px" }}
     >
+      <audio
+        ref={audioRef}
+        src={handSfx.url}
+        preload="auto"
+        playsInline
+        aria-hidden="true"
+      />
       <div className="sticky top-0 min-h-[100svh] w-full overflow-hidden md:flex md:items-center">
         <Orbs
           items={[
@@ -96,7 +175,7 @@ export function AboutSection() {
 
           {/* CENTER — hand frame sequence */}
           <div className="relative z-[1] pointer-events-none" style={{ height: "min(78svh, 720px)" }}>
-          <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} />
+          <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} onProgress={handleProgress} />
 
           </div>
 
@@ -181,7 +260,7 @@ export function AboutSection() {
             {/* Hand — right column, wrist anchored bottom, sized by viewport so it reads at ~64vw */}
             <div className="pointer-events-none relative z-[2] self-stretch min-h-[380px]">
               <div className="absolute bottom-0 right-[-20px] top-0 flex w-[64vw] items-end justify-end">
-                <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.4} />
+                <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.4} onProgress={handleProgress} />
               </div>
             </div>
           </div>
