@@ -94,11 +94,14 @@ export function AboutSection() {
             </a>
           </div>
 
-          {/* CENTER — hand frame sequence */}
-          <div className="relative z-[1] pointer-events-none" style={{ height: "min(78svh, 720px)" }}>
-          <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.4} />
-
+          {/* CENTER — hand frame sequence (exact-sync v7: hand opens as logo arc reveals) */}
+          <div
+            className="relative z-[1] pointer-events-none mx-auto flex w-full items-end justify-center"
+            style={{ height: "min(86svh, 820px)" }}
+          >
+            <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1} />
           </div>
+
 
           {/* RIGHT — expertise */}
           <div className="relative z-[3] bg-transparent">

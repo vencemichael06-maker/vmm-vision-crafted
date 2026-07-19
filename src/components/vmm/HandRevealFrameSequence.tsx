@@ -2,7 +2,7 @@ import { RefObject, useEffect, useMemo, useRef, useState } from "react";
 
 const FRAME_COUNT = 48;
 const CANVAS_WIDTH = 720;
-const CANVAS_HEIGHT = 913;
+const CANVAS_HEIGHT = 960;
 
 function clamp(v: number, min: number, max: number) {
   return Math.min(Math.max(v, min), max);
