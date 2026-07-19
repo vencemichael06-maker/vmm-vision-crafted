@@ -163,3 +163,9 @@
 }
 .hand-reveal-poster { position: absolute; inset: 0; }
 
+@keyframes vmm-curtain-fade {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+
