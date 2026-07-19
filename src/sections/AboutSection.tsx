@@ -3,9 +3,7 @@ import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import { HandRevealScrollVideo } from "@/components/vmm/HandRevealScrollVideo";
-import { DesktopHandScrollReveal } from "@/components/vmm/DesktopHandScrollReveal";
-
+import { HandRevealFrameSequence } from "@/components/vmm/HandRevealFrameSequence";
 
 const skills = [
   { label: "UI/UX Design", value: 90 },
@@ -48,23 +46,15 @@ export function AboutSection() {
     });
   }, []);
 
-  const desktopRef = useRef<HTMLDivElement | null>(null);
-
   return (
     <section
       id="about"
       ref={sectionRef}
       aria-label="About"
-      data-vmm-page002-track
-      className="relative w-full bg-vmm-canvas lg:h-[260svh] md:h-[240svh] h-[210svh]"
+      className="relative w-full bg-vmm-canvas h-[220svh] md:h-[270svh]"
       style={{ scrollMarginTop: "80px" }}
     >
-      {/* ============== DESKTOP (>=1024px) — sticky scrub stage ============== */}
-      <div
-        ref={desktopRef}
-        data-vmm-page002-sticky
-        className="sticky top-0 hidden w-full min-h-[100svh] overflow-hidden bg-vmm-canvas lg:flex lg:items-center"
-      >
+      <div className="sticky top-0 min-h-[100svh] w-full overflow-hidden md:flex md:items-center">
         <Orbs
           items={[
             { size: "m", top: "10%", left: "22%", opacity: 0.55 },
@@ -75,7 +65,8 @@ export function AboutSection() {
         />
         <LeftRail />
 
-        <div className="mx-auto grid w-full max-w-[1760px] gap-8 px-16 py-0 lg:px-24 [grid-template-columns:minmax(0,34%)_minmax(360px,32%)_minmax(0,34%)]">
+        {/* ============== DESKTOP LAYOUT ============== */}
+        <div className="mx-auto hidden w-full max-w-[1760px] gap-8 px-16 py-0 md:grid lg:px-24 md:[grid-template-columns:minmax(0,34%)_minmax(360px,32%)_minmax(0,34%)]">
           {/* LEFT */}
           <div className="relative z-[3]">
             <p className="text-[13px] font-bold tracking-[0.28em] text-vmm-red">ABOUT ME</p>
@@ -103,9 +94,10 @@ export function AboutSection() {
             </a>
           </div>
 
-          {/* CENTER — desktop scroll-scrubbed PNG frame sequence (transparent). */}
-          <div className="relative z-[1] pointer-events-none mx-auto flex w-full items-end justify-center">
-            <DesktopHandScrollReveal />
+          {/* CENTER — hand frame sequence */}
+          <div className="relative z-[1] pointer-events-none" style={{ height: "min(78svh, 720px)" }}>
+          <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} />
+
           </div>
 
           {/* RIGHT — expertise */}
@@ -141,7 +133,7 @@ export function AboutSection() {
         </div>
 
         {/* Desktop 002 badge */}
-        <div className="pointer-events-none absolute bottom-8 left-6 z-[6] flex items-end gap-4 lg:left-8 xl:left-10">
+        <div className="pointer-events-none absolute bottom-8 left-6 z-[6] hidden items-end gap-4 md:flex lg:left-8 xl:left-10">
           <div
             className="font-display font-black leading-[0.82] text-vmm-ink"
             style={{ fontSize: "clamp(64px, 6.2vw, 104px)", letterSpacing: "-0.02em" }}
@@ -150,103 +142,98 @@ export function AboutSection() {
           </div>
           <div className="mb-3 h-px w-10 bg-vmm-ink/60" />
         </div>
-      </div>
 
-      {/* ============== MOBILE / TABLET (<1024px) — sticky scrub stage ============== */}
-      <div className="sticky top-0 w-full min-h-[100svh] overflow-hidden bg-vmm-canvas lg:hidden">
-        <div className="relative w-full">
-          <Orbs
-            items={[
-              { size: "m", top: "10%", left: "22%", opacity: 0.55 },
-              { size: "s", bottom: "22%", right: "8%", opacity: 0.45 },
-            ]}
-          />
-          <div className="w-full px-5 pt-8 pb-10">
-            <div className="relative grid grid-cols-[minmax(0,1fr)_56%] gap-2">
-              <div className="relative z-[3] min-w-0">
-                <p className="text-[11px] font-bold tracking-[0.28em] text-vmm-red">ABOUT ME</p>
-                <h2
-                  className="about-title mt-3 font-display uppercase leading-[0.92] text-vmm-ink"
-                  style={{ fontSize: "clamp(30px, 9.2vw, 46px)", letterSpacing: "-0.02em" }}
-                >
-                  <span className="block">I DESIGN<span className="text-vmm-red">.</span></span>
-                  <span className="block">I BUILD<span className="text-vmm-red">.</span></span>
-                  <span className="block">I SOLVE<span className="text-vmm-red">.</span></span>
-                </h2>
-                <p className="mt-4 text-[13px] leading-relaxed text-vmm-ink/80">
-                  I'm a UI/UX Designer and Frontend Developer who loves turning ideas into intuitive, functional, and visually stunning digital products.
-                </p>
+        {/* ============== MOBILE LAYOUT ============== */}
+        <div className="w-full px-5 pt-8 pb-10 md:hidden">
+          {/* Top block: text left, hand right */}
+          <div className="relative grid grid-cols-[minmax(0,1fr)_56%] gap-2">
+            <div className="relative z-[3] min-w-0">
+              <p className="text-[11px] font-bold tracking-[0.28em] text-vmm-red">ABOUT ME</p>
+              <h2
+                className="about-title mt-3 font-display uppercase leading-[0.92] text-vmm-ink"
+                style={{ fontSize: "clamp(30px, 9.2vw, 46px)", letterSpacing: "-0.02em" }}
+              >
+                <span className="block">I DESIGN<span className="text-vmm-red">.</span></span>
+                <span className="block">I BUILD<span className="text-vmm-red">.</span></span>
+                <span className="block">I SOLVE<span className="text-vmm-red">.</span></span>
+              </h2>
+              <p className="mt-4 text-[13px] leading-relaxed text-vmm-ink/80">
+                I'm a UI/UX Designer and Frontend Developer who loves turning ideas into intuitive, functional, and visually stunning digital products.
+              </p>
 
-                <a
-                  href="#contact"
-                  className="mt-5 flex w-full items-center justify-between gap-4 bg-vmm-ink px-5 py-4 text-[11px] font-bold tracking-[0.22em] text-white"
-                >
-                  LET'S WORK TOGETHER <ArrowRight className="h-4 w-4" />
-                </a>
-                <a
-                  href="#contact"
-                  className="mt-3 flex w-full items-center justify-between gap-4 bg-vmm-red px-5 py-4 text-[11px] font-bold tracking-[0.22em] leading-tight text-white"
-                >
-                  <span>
-                    AVAILABLE<br />FOR FREELANCE
-                  </span>
-                  <ArrowRight className="h-4 w-4 shrink-0" />
-                </a>
-              </div>
-
-              <div className="pointer-events-none relative z-[2] self-stretch min-h-[380px]">
-                <div className="absolute bottom-0 right-[-20px] top-0 flex w-[64vw] items-end justify-end">
-                  <HandRevealScrollVideo sectionRef={sectionRef} />
-                </div>
-              </div>
+              <a
+                href="#contact"
+                className="mt-5 flex w-full items-center justify-between gap-4 bg-vmm-ink px-5 py-4 text-[11px] font-bold tracking-[0.22em] text-white"
+              >
+                LET'S WORK TOGETHER <ArrowRight className="h-4 w-4" />
+              </a>
+              <a
+                href="#contact"
+                className="mt-3 flex w-full items-center justify-between gap-4 bg-vmm-red px-5 py-4 text-[11px] font-bold tracking-[0.22em] leading-tight text-white"
+              >
+                <span>
+                  AVAILABLE<br />FOR FREELANCE
+                </span>
+                <ArrowRight className="h-4 w-4 shrink-0" />
+              </a>
             </div>
 
-            <div className="mt-8 grid grid-cols-3 gap-2 border-y border-vmm-line py-5">
-              <Stat icon={<CalendarDays className="h-4 w-4" />} n={3} label="Years experience" />
-              <div className="border-l border-vmm-line pl-2">
-                <Stat icon={<FolderCheck className="h-4 w-4" />} n={20} label="Projects completed" />
-              </div>
-              <div className="border-l border-vmm-line pl-2">
-                <Stat icon={<Users className="h-4 w-4" />} n={10} label="Happy clients" />
+            {/* Hand — right column, wrist anchored bottom, sized by viewport so it reads at ~64vw */}
+            <div className="pointer-events-none relative z-[2] self-stretch min-h-[380px]">
+              <div className="absolute bottom-0 right-[-20px] top-0 flex w-[64vw] items-end justify-end">
+                <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.4} />
               </div>
             </div>
+          </div>
 
-            <div className="mt-8">
-              <h3 className="font-display text-lg tracking-wide">MY EXPERTISE</h3>
-              <div className="mt-5 space-y-5">
-                {skills.map((s) => (
-                  <div key={s.label} className="skill-bar" data-pct={s.value}>
-                    <div className="flex items-baseline justify-between text-[12px] font-bold">
-                      <span className="tracking-[0.14em]">{s.label.toUpperCase()}</span>
-                      <span className="skill-pct tabular-nums">0%</span>
-                    </div>
-                    <div className="mt-2 h-[3px] w-full bg-vmm-line">
-                      <div className="skill-fill h-full bg-vmm-ink" style={{ width: 0 }} />
-                    </div>
+          {/* Stats */}
+          <div className="mt-8 grid grid-cols-3 gap-2 border-y border-vmm-line py-5">
+            <Stat icon={<CalendarDays className="h-4 w-4" />} n={3} label="Years experience" />
+            <div className="border-l border-vmm-line pl-2">
+              <Stat icon={<FolderCheck className="h-4 w-4" />} n={20} label="Projects completed" />
+            </div>
+            <div className="border-l border-vmm-line pl-2">
+              <Stat icon={<Users className="h-4 w-4" />} n={10} label="Happy clients" />
+            </div>
+          </div>
+
+          {/* Expertise */}
+          <div className="mt-8">
+            <h3 className="font-display text-lg tracking-wide">MY EXPERTISE</h3>
+            <div className="mt-5 space-y-5">
+              {skills.map((s) => (
+                <div key={s.label} className="skill-bar" data-pct={s.value}>
+                  <div className="flex items-baseline justify-between text-[12px] font-bold">
+                    <span className="tracking-[0.14em]">{s.label.toUpperCase()}</span>
+                    <span className="skill-pct tabular-nums">0%</span>
                   </div>
-                ))}
+                  <div className="mt-2 h-[3px] w-full bg-vmm-line">
+                    <div className="skill-fill h-full bg-vmm-ink" style={{ width: 0 }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom: 002 red badge + scroll indicator */}
+          <div className="mt-10 flex items-end justify-between">
+            <div className="relative bg-vmm-red px-4 pt-3 pb-2 text-vmm-ink">
+              <div
+                className="font-display font-black leading-[0.85]"
+                style={{ fontSize: "56px", letterSpacing: "-0.02em" }}
+              >
+                002
               </div>
             </div>
-
-            <div className="mt-10 flex items-end justify-between">
-              <div className="relative bg-vmm-red px-4 pt-3 pb-2 text-vmm-ink">
-                <div
-                  className="font-display font-black leading-[0.85]"
-                  style={{ fontSize: "56px", letterSpacing: "-0.02em" }}
-                >
-                  002
-                </div>
+            <div className="flex items-center gap-3 pb-2">
+              <div className="grid h-11 w-11 place-items-center rounded-full bg-vmm-ink text-white">
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="8" y="4" width="8" height="14" rx="4" />
+                  <line x1="12" y1="8" x2="12" y2="11" />
+                </svg>
               </div>
-              <div className="flex items-center gap-3 pb-2">
-                <div className="grid h-11 w-11 place-items-center rounded-full bg-vmm-ink text-white">
-                  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="8" y="4" width="8" height="14" rx="4" />
-                    <line x1="12" y1="8" x2="12" y2="11" />
-                  </svg>
-                </div>
-                <div className="text-[11px] font-bold uppercase leading-tight tracking-[0.2em] text-vmm-ink">
-                  SCROLL<br />DOWN
-                </div>
+              <div className="text-[11px] font-bold uppercase leading-tight tracking-[0.2em] text-vmm-ink">
+                SCROLL<br />DOWN
               </div>
             </div>
           </div>

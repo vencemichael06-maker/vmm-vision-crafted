@@ -1,56 +1,49 @@
 import { useEffect, useState } from "react";
-import heroPerson from "@/assets/vmm/vmm_hero_person_tight.webp.asset.json";
 
 const SESSION_KEY = "vmm-hero-glitch-played";
-const PERSON_SRC = heroPerson.url;
+const PERSON_SRC = "/assets/vmm/hero/hero-person-transparent-1264x2048.webp";
 
 type Props = {
   className?: string;
   style?: React.CSSProperties;
 };
 
-/**
- * Hero person = stable transparent portrait with a CSS-driven one-shot
- * glitch reveal (RGB split + horizontal slice + ease-out settle, ~900ms,
- * 5 phases per the motion direction board). Plays exactly once per browser
- * session; after that the clean portrait renders directly. Respects
- * prefers-reduced-motion (skips the glitch entirely).
- */
 export function HeroPersonGlitch({ className = "", style }: Props) {
-  const [playGlitch, setPlayGlitch] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const alreadyPlayed = sessionStorage.getItem(SESSION_KEY) === "1";
     if (reduced || alreadyPlayed) return;
-    setPlayGlitch(true);
+    setAnimate(true);
     sessionStorage.setItem(SESSION_KEY, "1");
+    const t = window.setTimeout(() => setAnimate(false), 1000);
+    return () => window.clearTimeout(t);
   }, []);
 
   const imgClass =
     "absolute inset-0 h-full w-full select-none object-contain object-bottom";
 
-  if (!playGlitch) {
-    return (
-      <div className={`relative h-full w-full ${className}`} style={style} aria-hidden="true">
-        <img src={PERSON_SRC} alt="" draggable={false} className={imgClass} />
-      </div>
-    );
-  }
-
   return (
     <div
-      className={`vmm-glitch relative h-full w-full ${className}`}
+      className={`relative h-full w-full ${animate ? "vmm-glitch" : ""} ${className}`}
       style={style}
       aria-hidden="true"
     >
-      {/* Cyan channel ghost */}
-      <img src={PERSON_SRC} alt="" draggable={false} className={`vmm-glitch-c ${imgClass}`} />
-      {/* Red channel ghost */}
-      <img src={PERSON_SRC} alt="" draggable={false} className={`vmm-glitch-r ${imgClass}`} />
-      {/* Base subject with clip-path slice reveal */}
-      <img src={PERSON_SRC} alt="" draggable={false} className={`vmm-glitch-base ${imgClass}`} />
+      <img
+        src={PERSON_SRC}
+        alt=""
+        decoding="async"
+        fetchPriority="high"
+        draggable={false}
+        className={`${imgClass} vmm-glitch-base`}
+      />
+      {animate && (
+        <>
+          <img src={PERSON_SRC} alt="" aria-hidden draggable={false} className={`${imgClass} vmm-glitch-r`} />
+          <img src={PERSON_SRC} alt="" aria-hidden draggable={false} className={`${imgClass} vmm-glitch-c`} />
+        </>
+      )}
     </div>
   );
 }

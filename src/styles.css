@@ -4,7 +4,6 @@
 @import "@fontsource/roboto-condensed/900.css";
 @source "../src";
 @import "tw-animate-css";
-@import "./styles/desktop-hand-scroll-reveal.css";
 
 
 @custom-variant dark (&:is(.dark *));
@@ -95,66 +94,42 @@
   }
 }
 
-/* One-shot glitch reveal for hero person — 3500ms, 5-phase cadence
-   matching the motion direction board:
-     Phase 1  0%      base loaded (invisible)
-     Phase 2  ~20%    initial ghost / glitch entry (RGB split + slice enters)
-     Phase 3  ~48%    mid reveal (horizontal slices, opacity builds)
-     Phase 4  ~74%    stabilizing reveal (artifacts settle)
-     Phase 5  100%    final hero state (locked, stable)
-   Text is never affected. */
+/* One-shot glitch reveal for hero person */
 @keyframes vmm-glitch-clip {
-  0%   { clip-path: inset(0 0 100% 0); opacity: 0; transform: translate3d(0,0,0); }
-  6%   { clip-path: inset(0 0 92% 0); opacity: 1; transform: translate3d(-6px,0,0); }
-  14%  { clip-path: inset(0 0 70% 0); transform: translate3d(7px,0,0); }
-  22%  { clip-path: inset(18% 0 55% 0); transform: translate3d(-5px,0,0); }
-  30%  { clip-path: inset(6% 0 42% 0); transform: translate3d(6px,0,0); }
-  38%  { clip-path: inset(38% 0 28% 0); transform: translate3d(-4px,0,0); }
-  46%  { clip-path: inset(12% 0 20% 0); transform: translate3d(5px,0,0); }
-  54%  { clip-path: inset(48% 0 8% 0); transform: translate3d(-3px,0,0); }
-  62%  { clip-path: inset(4% 0 4% 0);  transform: translate3d(3px,0,0); }
-  70%  { clip-path: inset(0 0 0 0);    transform: translate3d(-2px,0,0); }
-  80%  { clip-path: inset(0 0 0 0);    transform: translate3d(1.5px,0,0); }
-  90%  { clip-path: inset(0 0 0 0);    transform: translate3d(-0.5px,0,0); }
-  100% { clip-path: inset(0 0 0 0);    transform: translate3d(0,0,0); }
+  0%   { clip-path: inset(0 0 100% 0); opacity: 0; }
+  18%  { clip-path: inset(0 0 62% 0); opacity: 1; transform: translate3d(-4px, 0, 0); }
+  32%  { clip-path: inset(38% 0 22% 0); transform: translate3d(5px, 0, 0); }
+  48%  { clip-path: inset(8% 0 55% 0); transform: translate3d(-3px, 0, 0); }
+  62%  { clip-path: inset(55% 0 6% 0); transform: translate3d(3px, 0, 0); }
+  78%  { clip-path: inset(0 0 0 0); transform: translate3d(-1px, 0, 0); }
+  100% { clip-path: inset(0 0 0 0); transform: translate3d(0, 0, 0); }
 }
 @keyframes vmm-glitch-ghost-r {
-  0%       { opacity: 0;   transform: translate3d(0,0,0); }
-  10%      { opacity: .7;  transform: translate3d(9px,0,0); }
-  24%      { opacity: .6;  transform: translate3d(-6px,0,0); }
-  38%      { opacity: .55; transform: translate3d(7px,0,0); }
-  52%      { opacity: .4;  transform: translate3d(-5px,0,0); }
-  66%      { opacity: .3;  transform: translate3d(4px,0,0); }
-  78%      { opacity: .18; transform: translate3d(-2px,0,0); }
-  90%      { opacity: .08; transform: translate3d(1px,0,0); }
-  100%     { opacity: 0;   transform: translate3d(0,0,0); }
+  0%, 100% { opacity: 0; transform: translate3d(0,0,0); }
+  15%      { opacity: .35; transform: translate3d(4px, 0, 0); }
+  45%      { opacity: .25; transform: translate3d(-3px, 0, 0); }
+  75%      { opacity: 0;   transform: translate3d(0,0,0); }
 }
 @keyframes vmm-glitch-ghost-c {
-  0%       { opacity: 0;   transform: translate3d(0,0,0); }
-  12%      { opacity: .65; transform: translate3d(-9px,0,0); }
-  26%      { opacity: .55; transform: translate3d(6px,0,0); }
-  40%      { opacity: .5;  transform: translate3d(-7px,0,0); }
-  54%      { opacity: .35; transform: translate3d(5px,0,0); }
-  68%      { opacity: .25; transform: translate3d(-4px,0,0); }
-  80%      { opacity: .15; transform: translate3d(2px,0,0); }
-  92%      { opacity: .06; transform: translate3d(-1px,0,0); }
-  100%     { opacity: 0;   transform: translate3d(0,0,0); }
+  0%, 100% { opacity: 0; transform: translate3d(0,0,0); }
+  20%      { opacity: .3;  transform: translate3d(-4px, 0, 0); }
+  55%      { opacity: .2;  transform: translate3d(3px, 0, 0); }
+  85%      { opacity: 0;   transform: translate3d(0,0,0); }
 }
 .vmm-glitch { position: relative; }
-.vmm-glitch .vmm-glitch-base { animation: vmm-glitch-clip 3500ms cubic-bezier(.16,.84,.30,1) both; }
+.vmm-glitch .vmm-glitch-base { animation: vmm-glitch-clip 900ms steps(6, end) both; }
 .vmm-glitch .vmm-glitch-r,
 .vmm-glitch .vmm-glitch-c {
   position: absolute; inset: 0; width: 100%; height: 100%;
   pointer-events: none;
-  mix-blend-mode: screen;
 }
 .vmm-glitch .vmm-glitch-r {
-  animation: vmm-glitch-ghost-r 3500ms cubic-bezier(.16,.84,.30,1) both;
-  filter: drop-shadow(3px 0 0 rgba(255, 42, 26, 0.95));
+  animation: vmm-glitch-ghost-r 900ms steps(5, end) both;
+  filter: drop-shadow(2px 0 0 rgba(237, 32, 40, 0.9));
 }
 .vmm-glitch .vmm-glitch-c {
-  animation: vmm-glitch-ghost-c 3500ms cubic-bezier(.16,.84,.30,1) both;
-  filter: drop-shadow(-3px 0 0 rgba(34, 231, 255, 0.95));
+  animation: vmm-glitch-ghost-c 900ms steps(5, end) both;
+  filter: drop-shadow(-2px 0 0 rgba(34, 231, 255, 0.9));
 }
 @media (prefers-reduced-motion: reduce) {
   .vmm-glitch .vmm-glitch-base { animation: none; opacity: 1; clip-path: none; transform: none; }
@@ -187,43 +162,4 @@
   display: block;
 }
 .hand-reveal-poster { position: absolute; inset: 0; }
-
-/* Page 002 scroll-scrubbed hand + logo reveal video.
-   Transparent WebM floats over Paper; MP4 fallback shares the same
-   #F7F7F5 background so no rectangular wrapper is visible either way. */
-.hand-scrub-layer {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: end center;
-  pointer-events: none;
-  background: transparent;
-}
-.hand-scrub-video {
-  display: block;
-  width: min(35vw, 680px);
-  height: min(86svh, 900px);
-  object-fit: contain;
-  object-position: center bottom;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-}
-@media (max-width: 1024px) {
-  .hand-scrub-video { width: min(56vw, 520px); height: min(78svh, 720px); }
-}
-@media (max-width: 767px) {
-  .hand-scrub-video { width: min(64vw, 460px); height: min(62svh, 560px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .page002-hand-canvas { mix-blend-mode: multiply; }
-}
-
-@keyframes vmm-curtain-fade {
-  0% { opacity: 0; transform: translateY(12px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
 
