@@ -9,6 +9,9 @@ import { WorkSection } from "@/sections/WorkSection";
 import { ServicesSection } from "@/sections/ServicesSection";
 import { ContactSection } from "@/sections/ContactSection";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
+import { HeroPersonGlitch } from "@/components/vmm/HeroPersonGlitch";
+
+
 
 
 
