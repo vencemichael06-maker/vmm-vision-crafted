@@ -96,7 +96,8 @@ export function AboutSection() {
 
           {/* CENTER — hand frame sequence */}
           <div className="relative z-[1] pointer-events-none" style={{ height: "min(78svh, 720px)" }}>
-            <HandRevealFrameSequence sectionRef={sectionRef} />
+          <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} />
+
           </div>
 
           {/* RIGHT — expertise */}
@@ -145,7 +146,7 @@ export function AboutSection() {
         {/* ============== MOBILE LAYOUT ============== */}
         <div className="w-full px-5 pt-8 pb-10 md:hidden">
           {/* Top block: text left, hand right */}
-          <div className="relative grid grid-cols-[minmax(0,1fr)_44%] gap-3">
+          <div className="relative grid grid-cols-[minmax(0,1fr)_56%] gap-2">
             <div className="relative z-[3] min-w-0">
               <p className="text-[11px] font-bold tracking-[0.28em] text-vmm-red">ABOUT ME</p>
               <h2
@@ -177,12 +178,10 @@ export function AboutSection() {
               </a>
             </div>
 
-            {/* Hand — right column, wrist anchored bottom */}
-            <div className="pointer-events-none relative z-[2] self-stretch">
-              <div className="absolute inset-x-0 bottom-0 top-0 flex items-end justify-center">
-                <div className="relative h-full w-full">
-                  <HandRevealFrameSequence sectionRef={sectionRef} />
-                </div>
+            {/* Hand — right column, wrist anchored bottom, sized by viewport so it reads at ~64vw */}
+            <div className="pointer-events-none relative z-[2] self-stretch min-h-[380px]">
+              <div className="absolute bottom-0 right-[-20px] top-0 flex w-[64vw] items-end justify-end">
+                <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.4} />
               </div>
             </div>
           </div>

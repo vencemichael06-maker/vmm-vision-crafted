@@ -12,9 +12,11 @@ type Props = {
   sectionRef: RefObject<HTMLElement | null>;
   className?: string;
   onProgress?: (progress: number, frame: number) => void;
+  /** >1 reveals logos earlier in scroll (default 1.0 = linear). */
+  progressBias?: number;
 };
 
-export function HandRevealFrameSequence({ sectionRef, className = "", onProgress }: Props) {
+export function HandRevealFrameSequence({ sectionRef, className = "", onProgress, progressBias = 1 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const frameRef = useRef(-1);
@@ -111,7 +113,8 @@ export function HandRevealFrameSequence({ sectionRef, className = "", onProgress
       }
       const rect = section.getBoundingClientRect();
       const scrollable = section.offsetHeight - window.innerHeight;
-      const progress = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+      const raw = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+      const progress = clamp(raw * progressBias, 0, 1);
       const frame = Math.round(progress * (FRAME_COUNT - 1));
       drawFrame(frame);
       onProgress?.(progress, frame);
@@ -131,7 +134,7 @@ export function HandRevealFrameSequence({ sectionRef, className = "", onProgress
       window.removeEventListener("scroll", request);
       window.removeEventListener("resize", request);
     };
-  }, [ready, sectionRef, reducedMotion, onProgress]);
+  }, [ready, sectionRef, reducedMotion, onProgress, progressBias]);
 
   return (
     <div className={`hand-reveal-media ${className}`} aria-hidden="true">
