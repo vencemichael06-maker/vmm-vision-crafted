@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import glitchVideo from "@/assets/vmm/hero_glitch_overlay.webm.asset.json";
+import heroPerson from "@/assets/vmm/vmm_hero_person_tight.webp.asset.json";
 
 const SESSION_KEY = "vmm-hero-glitch-played";
 const VIDEO_SRC = glitchVideo.url;
+const PERSON_SRC = heroPerson.url;
 
 type Props = {
   className?: string;
@@ -10,73 +12,58 @@ type Props = {
 };
 
 /**
- * Hero person = transparent WebM (VP9 alpha) containing both the subject
- * and the baked-in glitch reveal. Plays once per browser session. When the
- * session has already played it, or the user prefers reduced motion, we hold
- * on the final frame instead of replaying.
+ * Hero person = stable transparent WebP portrait (always present) with a
+ * one-shot transparent WebM glitch overlay layered on top. The overlay
+ * plays once per browser session, then unmounts, leaving the clean portrait.
+ * Respects prefers-reduced-motion.
  */
 export function HeroPersonGlitch({ className = "", style }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [holdFinal, setHoldFinal] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(true);
 
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
+    if (typeof window === "undefined") return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const alreadyPlayed = sessionStorage.getItem(SESSION_KEY) === "1";
-
-    const holdOnLastFrame = () => {
-      const seekEnd = () => {
-        try {
-          if (Number.isFinite(v.duration) && v.duration > 0) {
-            v.currentTime = Math.max(0, v.duration - 0.05);
-          }
-        } catch {
-          /* noop */
-        }
-        v.pause();
-        setHoldFinal(true);
-      };
-      if (v.readyState >= 1) seekEnd();
-      else v.addEventListener("loadedmetadata", seekEnd, { once: true });
-    };
-
     if (reduced || alreadyPlayed) {
-      holdOnLastFrame();
+      setShowOverlay(false);
       return;
     }
-
+    const v = videoRef.current;
+    if (!v) return;
     const onEnded = () => {
       sessionStorage.setItem(SESSION_KEY, "1");
-      setHoldFinal(true);
+      setShowOverlay(false);
     };
     v.addEventListener("ended", onEnded);
-    // Autoplay muted transparent video; if the browser blocks it, fall back
-    // to the final frame so the person is still visible.
-    v.play().catch(() => holdOnLastFrame());
-
-    return () => {
-      v.removeEventListener("ended", onEnded);
-    };
+    v.play().catch(() => {
+      sessionStorage.setItem(SESSION_KEY, "1");
+      setShowOverlay(false);
+    });
+    return () => v.removeEventListener("ended", onEnded);
   }, []);
 
   return (
-    <div
-      className={`relative h-full w-full ${className}`}
-      style={style}
-      aria-hidden="true"
-    >
-      <video
-        ref={videoRef}
-        src={VIDEO_SRC}
-        muted
-        playsInline
-        preload="auto"
-        autoPlay={!holdFinal}
-        disablePictureInPicture
-        className="absolute inset-0 h-full w-full select-none object-contain object-bottom"
+    <div className={`relative h-full w-full ${className}`} style={style} aria-hidden="true">
+      <img
+        src={PERSON_SRC}
+        alt=""
         draggable={false}
+        className="absolute inset-0 h-full w-full select-none object-contain object-bottom"
       />
+      {showOverlay && (
+        <video
+          ref={videoRef}
+          src={VIDEO_SRC}
+          muted
+          playsInline
+          preload="auto"
+          autoPlay
+          disablePictureInPicture
+          className="absolute inset-0 h-full w-full select-none object-contain object-bottom mix-blend-screen"
+          draggable={false}
+        />
+      )}
     </div>
   );
 }
