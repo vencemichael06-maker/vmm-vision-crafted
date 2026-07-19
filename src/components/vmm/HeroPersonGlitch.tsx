@@ -16,6 +16,7 @@ type Props = {
  */
 export function HeroPersonGlitch({ className = "", style }: Props) {
   const [phase, setPhase] = useState<"init" | "run" | "done">("init");
+  const [pulse, setPulse] = useState(false);
 
   useEffect(() => {
     const reduced =
@@ -34,12 +35,49 @@ export function HeroPersonGlitch({ className = "", style }: Props) {
     };
   }, []);
 
+  // Controlled periodic pulse: short glitch burst every 6-9s, only while visible.
+  useEffect(() => {
+    if (phase !== "done") return;
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let timer: number | null = null;
+    let visible = true;
+    const schedule = () => {
+      const delay = 6000 + Math.random() * 3000;
+      timer = window.setTimeout(() => {
+        if (visible && !document.hidden) {
+          setPulse(true);
+          window.setTimeout(() => setPulse(false), 240);
+        }
+        schedule();
+      }, delay);
+    };
+
+    // Only pulse while hero is in view
+    const el = document.querySelector<HTMLElement>(".vmm-hpg");
+    let io: IntersectionObserver | null = null;
+    if (el) {
+      io = new IntersectionObserver(
+        ([e]) => { visible = e.isIntersecting; },
+        { threshold: 0.2 },
+      );
+      io.observe(el);
+    }
+    schedule();
+    return () => {
+      if (timer !== null) window.clearTimeout(timer);
+      io?.disconnect();
+    };
+  }, [phase]);
+
+
   const imgClass =
     "vmm-hpg__img absolute inset-0 h-full w-full select-none object-contain object-bottom";
 
   return (
     <div
-      className={`vmm-hpg vmm-hpg--${phase} relative h-full w-full ${className}`}
+      className={`vmm-hpg vmm-hpg--${phase} ${pulse ? "vmm-hpg--pulse" : ""} relative h-full w-full ${className}`}
       style={style}
       aria-hidden="true"
     >

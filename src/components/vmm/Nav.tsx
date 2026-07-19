@@ -74,12 +74,10 @@ export function Nav() {
                   key={l.hash}
                   href={onHome ? `#${l.hash}` : `/#${l.hash}`}
                   onClick={(e) => handleAnchorClick(e, l.hash)}
-                  className="pointer-events-auto relative text-[13px] font-bold tracking-[0.22em] text-vmm-ink transition-colors hover:text-vmm-red"
+                  data-active={isActive ? "true" : "false"}
+                  className="vmm-nav-link pointer-events-auto text-[13px] font-bold tracking-[0.22em] text-vmm-ink/80 hover:text-vmm-red"
                 >
                   {l.label}
-                  {isActive && (
-                    <span className="absolute -bottom-3 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-vmm-red" />
-                  )}
                 </a>
               );
             })}
