@@ -182,7 +182,7 @@ export function AboutSection() {
             <div className="pointer-events-none relative z-[2] self-stretch">
               <div className="absolute inset-x-0 bottom-0 top-0 flex items-end justify-center">
                 <div className="relative h-full w-full">
-                  <HandRevealFrameSequence sectionRef={sectionRef} />
+                  <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} />
                 </div>
               </div>
             </div>
