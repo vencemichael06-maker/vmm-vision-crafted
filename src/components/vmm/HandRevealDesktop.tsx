@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { ensureGsap } from "@/lib/vmm/useGsap";
 
-const FRAME_COUNT = 48;
+const FRAME_COUNT = 62;
 const CANVAS_WIDTH = 720;
 const CANVAS_HEIGHT = 960;
 
