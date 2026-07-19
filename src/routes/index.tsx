@@ -9,6 +9,9 @@ import { WorkSection } from "@/sections/WorkSection";
 import { ServicesSection } from "@/sections/ServicesSection";
 import { ContactSection } from "@/sections/ContactSection";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
+import { HeroPersonGlitch } from "@/components/vmm/HeroPersonGlitch";
+
+
 
 
 
@@ -81,8 +84,22 @@ function HomePage() {
               </a>
             </div>
 
+            {/* Hero figure — anchored to right + bottom of red panel */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute z-[4] hidden md:block"
+              style={{
+                right: "clamp(80px, 8vw, 160px)",
+                bottom: 0,
+                width: "clamp(360px, 34vw, 620px)",
+                height: "min(94svh, 900px)",
+              }}
+            >
+              <HeroPersonGlitch />
+            </div>
 
           </div>
+
 
           {/* Mobile hero */}
           <MobileHero />
@@ -156,7 +173,22 @@ function MobileHero() {
       </div>
 
       {/* Red band */}
-      <div className="relative bg-[color:var(--vmm-red)] px-5 pt-10 pb-[calc(env(safe-area-inset-bottom)+40px)]" style={{ minHeight: "56vh" }}>
+      <div className="relative overflow-hidden bg-[color:var(--vmm-red)] px-5 pt-10 pb-[calc(env(safe-area-inset-bottom)+40px)]" style={{ minHeight: "56vh" }}>
+        {/* Mobile hero figure — right side of red band, does not cover copy */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute z-[2]"
+          style={{
+            right: "-6vw",
+            bottom: 0,
+            width: "62vw",
+            height: "100%",
+            maxHeight: "62vh",
+          }}
+        >
+          <HeroPersonGlitch />
+        </div>
+
         <div className="relative z-[3] flex max-w-[46%] flex-col gap-8">
           <div className="flex items-start gap-4">
             <div
