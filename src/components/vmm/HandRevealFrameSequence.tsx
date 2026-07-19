@@ -12,6 +12,8 @@ type Props = {
   sectionRef: RefObject<HTMLElement | null>;
   className?: string;
   onProgress?: (progress: number, frame: number) => void;
+  /** >1 reveals logos earlier in scroll (default 1.0 = linear). */
+  progressBias?: number;
 };
 
 export function HandRevealFrameSequence({ sectionRef, className = "", onProgress }: Props) {
