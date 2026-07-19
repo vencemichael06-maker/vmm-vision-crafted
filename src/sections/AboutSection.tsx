@@ -4,8 +4,6 @@ import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
 import { HandRevealFrameSequence } from "@/components/vmm/HandRevealFrameSequence";
-import { AboutHandRevealMedia } from "@/components/vmm/VMMDesktopMotionMedia";
-import "@/styles/vmm-desktop-motion-media.css";
 
 const skills = [
   { label: "UI/UX Design", value: 90 },
@@ -96,14 +94,10 @@ export function AboutSection() {
             </a>
           </div>
 
-          {/* CENTER — desktop uses supplied exact-sync MP4; smaller viewports keep the frame sequence */}
+          {/* CENTER — hand frame sequence */}
           <div className="relative z-[1] pointer-events-none" style={{ height: "min(78svh, 720px)" }}>
-            <div className="hidden h-full w-full lg:block pointer-events-auto">
-              <AboutHandRevealMedia />
-            </div>
-            <div className="h-full w-full lg:hidden">
-              <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} />
-            </div>
+          <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} />
+
           </div>
 
           {/* RIGHT — expertise */}

@@ -1,54 +1,36 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import ivoCover from "@/assets/vmm/real_ivo_vehicle.webp.asset.json";
-import wiseCover from "@/assets/vmm/real_wise_featured.webp.asset.json";
-import sabrosoCover from "@/assets/vmm/real_ig_sabroso.webp.asset.json";
-import caballeroCover from "@/assets/vmm/real_caballero.webp.asset.json";
 
 type Cat = "WEBSITE" | "MOBILE APP" | "WEB APP" | "BRANDING";
-type Row = {
-  n: string;
-  slug: string;
-  category: Cat;
-  title: string;
-  shortTitle: string;
-  subtitle: string;
-  cover: string;
-  tone: "dark" | "light";
-  featured?: boolean;
-};
+type Row = { n: string; slug: string; category: Cat; title: string; subtitle: string; cover: string; tone: "dark" | "light" };
 
 const rows: Row[] = [
   {
     n: "01", slug: "ivo-cars", category: "WEBSITE",
     title: "IVO Cars — Smart EV Rental Website",
-    shortTitle: "IVO CARS",
-    subtitle: "Smart EV Rental Website",
-    cover: ivoCover.url, tone: "dark", featured: true,
+    subtitle: "A modern and responsive website for an electric vehicle rental service.",
+    cover: "/assets/vmm/projects/ivo-cars.webp", tone: "dark",
   },
   {
     n: "02", slug: "wiseassistant", category: "MOBILE APP",
     title: "WiseAssistant — Offline Personal & Business Assistant",
-    shortTitle: "WISEASSISTANT",
-    subtitle: "Offline Personal & Business Assistant",
-    cover: wiseCover.url, tone: "light",
+    subtitle: "An offline-first assistant that helps you manage tasks, notes, and reminders intelligently.",
+    cover: "/assets/vmm/projects/wiseassistant.webp", tone: "dark",
   },
   {
-    n: "03", slug: "caballero-digital-solutions", category: "WEBSITE",
-    title: "Caballero Digital Solutions — Agency Website",
-    shortTitle: "CABALLERO DIGITAL",
-    subtitle: "Digital Solutions Agency Website",
-    cover: caballeroCover.url, tone: "dark",
-  },
-  {
-    n: "04", slug: "ig-sabroso", category: "WEBSITE",
+    n: "03", slug: "ig-sabroso", category: "WEBSITE",
     title: "IG Sabroso — Construction Company Website",
-    shortTitle: "IG SABROSO",
-    subtitle: "Construction Company Website",
-    cover: sabrosoCover.url, tone: "dark",
+    subtitle: "A professional website showcasing services, projects, and company expertise.",
+    cover: "/assets/vmm/projects/ig-sabroso.webp", tone: "dark",
+  },
+  {
+    n: "04", slug: "caballero-digital-solutions", category: "WEBSITE",
+    title: "Caballero Digital Solutions — Agency Website",
+    subtitle: "A sleek and bold website for a digital agency focused on growth and technology.",
+    cover: "/assets/vmm/projects/caballero-digital-solutions.webp", tone: "dark",
   },
 ];
 
@@ -77,7 +59,7 @@ export function WorkSection() {
   }, [visible.length]);
 
   return (
-    <section id="work" aria-label="Selected work" className="relative w-full overflow-hidden py-20 md:py-32" style={{ scrollMarginTop: "80px" }}>
+    <section id="work" aria-label="Selected work" className="relative w-full overflow-hidden py-24 md:py-32" style={{ scrollMarginTop: "80px" }}>
       <Orbs items={[
         { size: "s", top: "8%", left: "16%", opacity: 0.35 },
         { size: "m", top: "4%", right: "10%", opacity: 0.3 },
@@ -86,28 +68,17 @@ export function WorkSection() {
 
       <div className="mx-auto w-full max-w-[1520px] px-5 md:px-16 lg:px-24">
         <div className="max-w-3xl">
-          <p className="text-[12px] font-bold tracking-[0.32em] text-vmm-red md:text-[13px] md:tracking-[0.28em]">MY WORK</p>
-          <h2 className="mt-3 font-display uppercase text-vmm-ink md:mt-4"
-            style={{ fontSize: "clamp(40px, 6vw, 92px)", letterSpacing: "-0.02em", lineHeight: 0.9 }}>
+          <p className="text-[13px] font-bold tracking-[0.28em] text-vmm-red">MY WORK</p>
+          <h2 className="mt-4 font-display uppercase text-vmm-ink"
+            style={{ fontSize: "clamp(44px, 6vw, 92px)", letterSpacing: "-0.02em", lineHeight: 0.9 }}>
             PROJECTS THAT DELIVER<span className="text-vmm-red">.</span>
           </h2>
-          <p className="mt-5 max-w-xl text-[14px] leading-[1.55] text-vmm-ink/75 md:mt-6 md:text-base md:leading-relaxed">
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-vmm-ink/80">
             I partner with businesses and brands to create digital solutions that are functional, aesthetic, and results-driven.
           </p>
         </div>
 
-        {/* Mobile: single VIEW ALL PROJECTS pill instead of filter tabs */}
-        <div className="mt-7 md:hidden">
-          <a
-            href="#work"
-            className="inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[11.5px] font-bold tracking-[0.24em] text-white"
-          >
-            VIEW ALL PROJECTS <ArrowRight className="h-4 w-4" />
-          </a>
-        </div>
-
-        {/* Desktop: filter tabs */}
-        <div className="mt-12 hidden flex-wrap items-center gap-x-8 gap-y-3 border-b border-vmm-line pb-4 md:flex">
+        <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-3 border-b border-vmm-line pb-4">
           {filters.map((label) => {
             const active = f === label;
             return (
@@ -120,17 +91,7 @@ export function WorkSection() {
           })}
         </div>
 
-        {/* Mobile stacked cards */}
-        <ul className="mt-8 space-y-4 md:hidden">
-          {rows.map((r) => (
-            <li key={r.slug} className="work-row">
-              <MobileProjectCard row={r} />
-            </li>
-          ))}
-        </ul>
-
-        {/* Desktop rows */}
-        <ul className="mt-10 hidden space-y-5 md:mt-12 md:block md:space-y-6">
+        <ul className="mt-10 space-y-5 md:mt-12 md:space-y-6">
           {visible.map((r) => (
             <li key={r.slug} className="work-row">
               <ProjectRow row={r} />
@@ -141,61 +102,6 @@ export function WorkSection() {
 
       <PageNumber n="003" />
     </section>
-  );
-}
-
-function MobileProjectCard({ row }: { row: Row }) {
-  const isLight = row.tone === "light";
-  const isFeatured = !!row.featured;
-  return (
-    <article
-      aria-label={row.title}
-      className={`group relative flex w-full flex-col overflow-hidden rounded-[14px] ${
-        isLight ? "bg-white ring-1 ring-vmm-line" : "bg-vmm-ink text-white"
-      }`}
-    >
-      {/* Media */}
-      <div
-        className={`relative w-full overflow-hidden ${
-          isFeatured ? "aspect-[16/10]" : "aspect-[16/9]"
-        } ${isLight ? "bg-vmm-canvas" : "bg-vmm-ink"}`}
-      >
-        <img
-          src={row.cover}
-          alt={row.title}
-          className="absolute inset-0 h-full w-full object-cover"
-          loading="lazy"
-        />
-        {isFeatured && (
-          <span className="absolute left-3 top-3 rounded-sm bg-vmm-red px-2.5 py-1 text-[9.5px] font-bold tracking-[0.24em] text-white">
-            FEATURED PROJECT
-          </span>
-        )}
-      </div>
-
-      {/* Caption */}
-      <div className={`flex items-start justify-between gap-4 px-4 pb-4 pt-3 ${isLight ? "text-vmm-ink" : "text-white"}`}>
-        <div className="min-w-0">
-          <h3
-            className="font-display uppercase leading-[1]"
-            style={{ fontSize: isFeatured ? "20px" : "17px", letterSpacing: "-0.01em" }}
-          >
-            {row.shortTitle}
-          </h3>
-          <p
-            className={`mt-1.5 truncate text-[11.5px] ${
-              isLight ? "text-vmm-ink/70" : "text-white/70"
-            }`}
-          >
-            {row.subtitle}
-          </p>
-        </div>
-        <ArrowRight
-          className="mt-1 h-4 w-4 shrink-0 text-vmm-red"
-          aria-hidden
-        />
-      </div>
-    </article>
   );
 }
 
