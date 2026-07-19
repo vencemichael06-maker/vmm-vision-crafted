@@ -54,13 +54,13 @@ export function AboutSection() {
       id="about"
       ref={sectionRef}
       aria-label="About"
-      className="relative w-full bg-vmm-canvas"
+      className="relative w-full bg-vmm-canvas lg:h-[260svh] md:h-[240svh] h-[210svh]"
       style={{ scrollMarginTop: "80px" }}
     >
-      {/* ============== DESKTOP (>=1024px) — ScrollTrigger pin/scrub ============== */}
+      {/* ============== DESKTOP (>=1024px) — sticky scrub stage ============== */}
       <div
         ref={desktopRef}
-        className="relative hidden w-full min-h-[100svh] overflow-hidden bg-vmm-canvas lg:flex lg:items-center"
+        className="sticky top-0 hidden w-full min-h-[100svh] overflow-hidden bg-vmm-canvas lg:flex lg:items-center"
       >
         <Orbs
           items={[
