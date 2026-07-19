@@ -49,6 +49,24 @@ export function HandRevealScrollVideo({ sectionRef, className = "" }: Props) {
     let raf = 0;
     let rendered = 0;
 
+    // Keyframe mapping (from reference sheet, seconds):
+    //   0.00 closed · 0.30 first logo · 0.46–0.58 logos build (hand still closed)
+    //   0.74 hand starts opening · 0.90–1.06 mid-open · 1.16 near full arc
+    //   1.22 fully open + full arc · 1.80 hold
+    // Maps scroll progress → timeline seconds so logos appear early and the
+    // hand opening occupies the middle-to-late scroll band.
+    const KEY_P = [0.00, 0.10, 0.22, 0.34, 0.46, 0.58, 0.70, 0.82, 0.90, 1.00];
+    const KEY_T = [0.00, 0.16, 0.30, 0.46, 0.58, 0.74, 0.90, 1.06, 1.22, 1.80];
+
+    const mapProgressToTime = (p: number, duration: number) => {
+      const c = clamp(p, 0, 1);
+      let i = 1;
+      while (i < KEY_P.length - 1 && c > KEY_P[i]) i++;
+      const local = (c - KEY_P[i - 1]) / Math.max(1e-6, KEY_P[i] - KEY_P[i - 1]);
+      const seconds = KEY_T[i - 1] + local * (KEY_T[i] - KEY_T[i - 1]);
+      return clamp(seconds, 0, Math.max(0, duration - 0.001));
+    };
+
     const tick = () => {
       const rect = section.getBoundingClientRect();
       const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
@@ -58,7 +76,7 @@ export function HandRevealScrollVideo({ sectionRef, className = "" }: Props) {
       rendered += (target - rendered) * 0.2;
 
       if (video.readyState >= 2 && Number.isFinite(video.duration) && video.duration > 0) {
-        const t = clamp(rendered * video.duration, 0, Math.max(0, video.duration - 0.001));
+        const t = mapProgressToTime(rendered, video.duration);
         if (Math.abs(video.currentTime - t) > 1 / 120) video.currentTime = t;
       }
       raf = window.requestAnimationFrame(tick);
