@@ -9,7 +9,7 @@ import { WorkSection } from "@/sections/WorkSection";
 import { ServicesSection } from "@/sections/ServicesSection";
 import { ContactSection } from "@/sections/ContactSection";
 import { HomeFooter } from "@/components/vmm/HomeExtras";
-import { HeroPersonGlitch } from "@/components/vmm/HeroPersonGlitch";
+
 
 
 export const Route = createFileRoute("/")({
@@ -34,13 +34,7 @@ function HomePage() {
       .from(".vmm-hero-title span", { y: 60, opacity: 0, duration: 0.9, stagger: 0.08 }, "-=0.3")
       .from(".vmm-hero-lede", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4")
       .from(".vmm-hero-cta", { y: 20, opacity: 0, duration: 0.5 }, "-=0.3")
-      .from(".vmm-hero-red-panel", { scaleX: 0, transformOrigin: "left center", duration: 1.1, ease: "power4.inOut" }, 0.15)
-      .from(".vmm-hero-person", { y: 60, opacity: 0, duration: 1.2, ease: "power4.out" }, 0.2);
-
-    gsap.to(".vmm-hero-person", {
-      yPercent: -8,
-      scrollTrigger: { trigger: heroRef.current!, start: "top top", end: "bottom top", scrub: 1 },
-    });
+      .from(".vmm-hero-red-panel", { scaleX: 0, transformOrigin: "left center", duration: 1.1, ease: "power4.inOut" }, 0.15);
 
     return () => ScrollTrigger.getAll().forEach((s) => s.kill());
   }, []);
@@ -87,11 +81,6 @@ function HomePage() {
               </a>
             </div>
 
-            <div className="pointer-events-none absolute z-[4]" style={{ right: "clamp(120px, 14.5vw, 240px)", bottom: 0, width: "clamp(460px, 34vw, 660px)", height: "clamp(640px, 88vh, 920px)" }}>
-              <div className="vmm-hero-person h-full w-full">
-                <HeroPersonGlitch />
-              </div>
-            </div>
 
           </div>
 
@@ -130,9 +119,8 @@ function HomePage() {
 }
 
 function MobileHero() {
-  // Reference-accurate mobile hero: single continuous person bridging the
-  // white → red seam. White band holds copy; red band holds 001 + rail +
-  // scroll cue. The person image spans both bands anchored bottom-right.
+  // Mobile hero: two-tone white/red band layout with copy, 001, rail and
+  // scroll cue. No portrait figure.
   return (
     <div className="relative block overflow-hidden md:hidden">
       {/* Two-tone canvas */}
@@ -196,18 +184,6 @@ function MobileHero() {
         </div>
       </div>
 
-      {/* Single continuous person, bridging both bands, bottom-anchored */}
-      <div
-        className="pointer-events-none absolute right-0 z-[4]"
-        style={{
-          bottom: 0,
-          width: "min(74vw, 440px)",
-          height: "78%",
-          marginRight: "-4vw",
-        }}
-      >
-        <HeroPersonGlitch />
-      </div>
     </div>
   );
 }
