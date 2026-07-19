@@ -92,6 +92,7 @@ export function HandRevealDesktop({ pinRef, end = "+=220%" }: Props) {
 
   // Bind ScrollTrigger only after frames are decoded and only on desktop.
   useEffect(() => {
+    (window as any).__handDebug = { ready, reducedMotion, pin: !!pinRef.current };
     if (!ready) return;
     if (reducedMotion) return;
     const pinEl = pinRef.current;
@@ -100,6 +101,7 @@ export function HandRevealDesktop({ pinRef, end = "+=220%" }: Props) {
     if (!pinEl || !canvas || !ctx) return;
 
     const mm = window.matchMedia("(min-width: 1024px)");
+    (window as any).__handDebug = { ready, reducedMotion, pin: true, mmMatches: mm.matches };
     if (!mm.matches) return; // desktop-only
 
     const { gsap, ScrollTrigger } = ensureGsap();
