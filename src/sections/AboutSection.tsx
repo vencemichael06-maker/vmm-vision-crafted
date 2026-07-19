@@ -62,6 +62,7 @@ export function AboutSection() {
       {/* ============== DESKTOP (>=1024px) — sticky scrub stage ============== */}
       <div
         ref={desktopRef}
+        data-vmm-page002-sticky
         className="sticky top-0 hidden w-full min-h-[100svh] overflow-hidden bg-vmm-canvas lg:flex lg:items-center"
       >
         <Orbs
