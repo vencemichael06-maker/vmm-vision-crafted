@@ -49,6 +49,19 @@
   --vmm-red-soft: #F21F10;
   --vmm-line: #D6D6D2;
 
+  /* ===== VMM Motion Tokens (signature system) ===== */
+  --vmm-dur-micro: 180ms;
+  --vmm-dur-ui: 240ms;
+  --vmm-dur-surface: 340ms;
+  --vmm-dur-support: 520ms;
+  --vmm-dur-headline: 780ms;
+  --vmm-dur-section: 880ms;
+  --vmm-dur-hero: 1200ms;
+  --vmm-stagger: 80ms;
+  --vmm-ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+  --vmm-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --vmm-ease-ui: cubic-bezier(0.2, 0, 0, 1);
+
 
   --background: var(--vmm-canvas);
   --foreground: var(--vmm-ink);
