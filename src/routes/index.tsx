@@ -48,6 +48,7 @@ function HomePage() {
 
   return (
     <div className="relative bg-vmm-canvas text-vmm-ink">
+      <LoadCurtain />
       <Nav />
       <main>
         {/* ============ PAGE 001 — HOME / HERO ============ */}
