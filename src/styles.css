@@ -187,6 +187,31 @@
 }
 .hand-reveal-poster { position: absolute; inset: 0; }
 
+/* Desktop Page 002 stage — GSAP ScrollTrigger pin/scrub target.
+   Frame WebPs are opaque on white; multiply keys the white out over Paper
+   so no rectangular background is visible. */
+.page002-hand-stage {
+  position: relative;
+  width: min(38vw, 680px);
+  height: min(78vh, 860px);
+  display: grid;
+  place-items: end center;
+  overflow: visible;
+  isolation: isolate;
+  background: transparent;
+}
+.page002-hand-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: transparent;
+  mix-blend-mode: multiply;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page002-hand-canvas { mix-blend-mode: multiply; }
+}
+
 @keyframes vmm-curtain-fade {
   0% { opacity: 0; transform: translateY(12px); }
   100% { opacity: 1; transform: translateY(0); }
