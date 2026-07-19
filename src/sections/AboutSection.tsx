@@ -178,12 +178,10 @@ export function AboutSection() {
               </a>
             </div>
 
-            {/* Hand — right column, wrist anchored bottom */}
-            <div className="pointer-events-none relative z-[2] self-stretch">
-              <div className="absolute inset-x-0 bottom-0 top-0 flex items-end justify-center">
-                <div className="relative h-full w-full">
-                  <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} />
-                </div>
+            {/* Hand — right column, wrist anchored bottom, bleeds to viewport edge */}
+            <div className="pointer-events-none relative z-[2] self-stretch -mr-5 min-h-[340px]">
+              <div className="absolute inset-0 flex items-end justify-center">
+                <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.4} />
               </div>
             </div>
           </div>
