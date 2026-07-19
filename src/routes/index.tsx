@@ -136,86 +136,108 @@ function HomePage() {
 }
 
 function MobileHero() {
-  // Mobile hero: two-tone white/red band layout with copy, 001, rail and
-  // scroll cue. No portrait figure.
+  // Mobile hero: continuous figure bridging white + red bands, matching approved reference.
   return (
     <div className="relative block overflow-hidden md:hidden">
-      {/* Two-tone canvas */}
-      <div className="relative bg-vmm-canvas" style={{ paddingTop: "calc(env(safe-area-inset-top) + 76px)" }}>
+      {/* Full-height figure spanning both bands, anchored right */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute z-[4]"
+        style={{
+          right: "-8vw",
+          top: "20vh",
+          width: "78vw",
+          bottom: 0,
+        }}
+      >
+        <HeroPersonGlitch />
+      </div>
+
+      {/* White band */}
+      <div
+        className="relative bg-vmm-canvas"
+        style={{ paddingTop: "calc(env(safe-area-inset-top) + 88px)", paddingBottom: "28px" }}
+      >
         {/* Decorative circles */}
-        <div aria-hidden className="pointer-events-none absolute right-[-40px] top-[110px] h-40 w-40 rounded-full bg-black/[0.04]" />
-        <div aria-hidden className="pointer-events-none absolute right-[-70px] top-[60px] h-24 w-24 rounded-full bg-black/[0.06]" />
+        <div aria-hidden className="pointer-events-none absolute right-[8vw] top-[128px] h-40 w-40 rounded-full bg-black/[0.05]" />
+        <div aria-hidden className="pointer-events-none absolute right-[-30px] top-[80px] h-24 w-24 rounded-full bg-black/[0.04]" />
 
         {/* Copy column */}
-        <div className="relative z-[3] px-5 pb-8">
+        <div className="relative z-[3] px-6">
           <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-vmm-red">HELLO, I&apos;M</p>
-          <h1 className="mt-3 font-display uppercase text-vmm-ink" style={{ fontSize: "clamp(40px, 13vw, 60px)", lineHeight: 0.92, letterSpacing: "-0.03em" }}>
+          <h1
+            className="mt-4 font-display font-black uppercase text-vmm-ink"
+            style={{ fontSize: "clamp(46px, 15vw, 72px)", lineHeight: 0.92, letterSpacing: "-0.03em" }}
+          >
             <span className="block">VENCE</span>
             <span className="block">MICHAEL</span>
             <span className="block">MONTERO<span className="text-vmm-red">.</span></span>
           </h1>
-          <p className="mt-5 max-w-[62%] text-[13.5px] leading-[1.55] text-vmm-ink/80">
+          <p className="mt-6 max-w-[58%] text-[14px] leading-[1.55] text-vmm-ink/80">
             I design and build digital experiences that are clean, modern, and impactful.
           </p>
-          <a href="#work" aria-label="View my work" className="mt-6 inline-flex min-h-[48px] items-center gap-6 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white">
+          <a
+            href="#work"
+            aria-label="View my work"
+            className="mt-7 inline-flex min-h-[52px] items-center gap-8 bg-vmm-ink px-6 text-[12px] font-bold tracking-[0.22em] text-white"
+          >
             VIEW MY WORK <ArrowRight className="h-4 w-4" />
           </a>
         </div>
 
-        {/* Vertical PHILIPPINES rail on right (over white band only) */}
-        <div className="pointer-events-none absolute right-2 z-[2] text-vmm-ink" style={{ top: "calc(env(safe-area-inset-top) + 120px)" }}>
-          <div className="flex flex-col items-center gap-2 font-bold uppercase" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+        {/* Vertical PHILIPPINES rail on right */}
+        <div
+          className="pointer-events-none absolute right-2 z-[5] text-vmm-ink"
+          style={{ top: "calc(env(safe-area-inset-top) + 150px)" }}
+        >
+          <div
+            className="flex flex-col items-center gap-3 font-bold uppercase"
+            style={{ writingMode: "vertical-rl" }}
+          >
             <span style={{ fontSize: "10px", letterSpacing: "0.3em" }} className="opacity-80">BASED IN</span>
-            <span className="font-black" style={{ fontSize: "13px", letterSpacing: "0.22em" }}>PHILIPPINES</span>
+            <span className="font-black" style={{ fontSize: "14px", letterSpacing: "0.24em" }}>PHILIPPINES</span>
             <span style={{ fontSize: "10px", letterSpacing: "0.3em" }} className="opacity-80">AVAILABLE FOR FREELANCE</span>
           </div>
         </div>
       </div>
 
       {/* Red band */}
-      <div className="relative overflow-hidden bg-[color:var(--vmm-red)] px-5 pt-10 pb-[calc(env(safe-area-inset-bottom)+40px)]" style={{ minHeight: "56vh" }}>
-        {/* Mobile hero figure — right side of red band, does not cover copy */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute z-[2]"
-          style={{
-            right: "-6vw",
-            bottom: 0,
-            width: "62vw",
-            height: "100%",
-            maxHeight: "62vh",
-          }}
-        >
-          <HeroPersonGlitch />
-        </div>
-
-        <div className="relative z-[3] flex max-w-[46%] flex-col gap-8">
-          <div className="flex items-start gap-4">
-            <div
-              aria-hidden
-              className="font-display font-black leading-[0.85] text-vmm-ink"
-              style={{ fontSize: "clamp(64px, 20vw, 104px)", letterSpacing: "-0.02em" }}
-            >
-              001
-            </div>
+      <div
+        className="relative overflow-hidden bg-[color:var(--vmm-red)] px-6 pt-10"
+        style={{ minHeight: "62vh", paddingBottom: "calc(env(safe-area-inset-bottom) + 44px)" }}
+      >
+        <div className="relative z-[3] flex max-w-[42%] flex-col gap-10">
+          {/* Rotated 001 */}
+          <div
+            aria-hidden
+            className="font-display font-black leading-[0.85] text-vmm-ink"
+            style={{
+              fontSize: "clamp(72px, 22vw, 120px)",
+              letterSpacing: "-0.02em",
+              writingMode: "vertical-rl",
+              transform: "rotate(180deg)",
+            }}
+          >
+            001
           </div>
+
           <div>
-            <div className="h-px w-6 bg-vmm-ink" />
-            <div className="mt-3 text-[10.5px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+            <div className="h-8 w-px bg-vmm-ink" />
+            <div className="mt-4 text-[11px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
               UI/UX DESIGNER<br />&amp; WEB DEVELOPER
             </div>
           </div>
-          <div className="mt-6 flex flex-col items-start gap-3">
+
+          <div className="mt-4 flex flex-col items-start gap-3">
             <div className="grid h-12 w-12 place-items-center rounded-full bg-vmm-ink text-white">
               <MousePointer2 className="h-4 w-4" />
             </div>
-            <div className="text-[10.5px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
+            <div className="text-[11px] font-bold leading-tight tracking-[0.24em] text-vmm-ink">
               SCROLL<br />DOWN
             </div>
           </div>
         </div>
       </div>
-
     </div>
   );
 }
