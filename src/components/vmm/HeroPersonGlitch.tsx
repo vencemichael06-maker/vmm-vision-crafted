@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 const SESSION_KEY = "vmm-hero-glitch-played";
-import heroPersonV4 from "@/assets/vmm/hero_person_v4.png.asset.json";
-const PERSON_SRC = heroPersonV4.url;
+import heroPersonV5 from "@/assets/vmm/hero_person_v5.png.asset.json";
+const PERSON_SRC = heroPersonV5.url;
 
 type Props = {
   className?: string;
@@ -18,7 +18,7 @@ export function HeroPersonGlitch({ className = "", style }: Props) {
     if (reduced || alreadyPlayed) return;
     setAnimate(true);
     sessionStorage.setItem(SESSION_KEY, "1");
-    const t = window.setTimeout(() => setAnimate(false), 1000);
+    const t = window.setTimeout(() => setAnimate(false), 3000);
     return () => window.clearTimeout(t);
   }, []);
 
