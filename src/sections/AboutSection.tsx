@@ -3,7 +3,7 @@ import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { LeftRail } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import { HandRevealScrollVideo } from "@/components/vmm/HandRevealScrollVideo";
+import { HandRevealGif } from "@/components/vmm/HandRevealGif";
 
 
 const skills = [
