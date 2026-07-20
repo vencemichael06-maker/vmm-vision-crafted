@@ -34,7 +34,7 @@ export function ServicesSection() {
       ]} />
 
       <div className="mx-auto grid w-full max-w-[1760px] grid-cols-1 gap-10 px-5 md:grid-cols-12 md:px-16 lg:px-24">
-        <div className="md:col-span-6" data-svc-reveal>
+        <div className="md:col-span-12" data-svc-reveal>
           <p className="text-[13px] font-bold tracking-[0.28em] text-vmm-red">SERVICES</p>
           <h2 className="mt-4 font-display leading-[0.9]"
             style={{ fontSize: "clamp(44px, 5.5vw, 88px)", letterSpacing: "-0.02em" }}>
@@ -44,47 +44,20 @@ export function ServicesSection() {
           <p className="mt-6 max-w-md text-base leading-relaxed text-vmm-ink/80">
             I help brands and businesses turn ideas into powerful digital experiences through thoughtful design and clean, scalable development.
           </p>
-          <a href="#contact" className="mt-8 inline-flex items-center gap-3 rounded-md bg-vmm-ink px-6 py-4 text-[12px] font-bold tracking-[0.2em] text-white transition-transform hover:-translate-y-0.5">
-            LET'S WORK TOGETHER <ArrowRight className="h-4 w-4" />
-          </a>
         </div>
-
-        <div className="md:col-span-6" data-svc-reveal>
-          <div className="relative overflow-hidden rounded-2xl bg-vmm-red p-8 text-white md:p-12">
-            <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 80% 20%, rgba(255,255,255,0.6) 1px, transparent 1.5px)", backgroundSize: "14px 14px" }} />
-            <img
-              src="/assets/vmm/services/services-cube-art.webp"
-              alt=""
-              aria-hidden
-              className="pointer-events-none absolute -bottom-6 right-0 h-[110%] w-auto select-none object-contain opacity-90 mix-blend-screen"
-            />
-            <div className="relative">
-              <div className="h-[2px] w-10 bg-white/80" />
-              <h3 className="mt-6 font-display text-4xl md:text-6xl">
-                DESIGN<span className="opacity-70">.</span><br />
-                DEVELOP<span className="opacity-70">.</span><br />
-                DELIVER IMPACT<span className="opacity-70">.</span>
-              </h3>
-              <p className="mt-6 max-w-sm text-white/90">End-to-end digital solutions crafted for growth.</p>
-            </div>
-          </div>
-        </div>
-
 
         <div className="md:col-span-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {services.map((s) => (
             <div key={s.title} data-svc-reveal
-              className="group relative flex h-full flex-col justify-between rounded-2xl border border-vmm-line bg-white p-6 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.15)] transition hover:-translate-y-1">
-              <div>
-                <span className="grid h-11 w-11 place-items-center rounded-md bg-vmm-red/10 text-vmm-red">{s.icon}</span>
-                <h3 className="mt-5 font-display text-xl">{s.title.toUpperCase()}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-vmm-ink/70">{s.body}</p>
-              </div>
-              <ArrowRight className="mt-8 h-5 w-5 text-vmm-ink transition-transform group-hover:translate-x-1" />
+              className="group relative flex h-full flex-col rounded-2xl border border-vmm-line bg-white p-6 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.15)] transition hover:-translate-y-1">
+              <span className="grid h-11 w-11 place-items-center rounded-md bg-vmm-red/10 text-vmm-red">{s.icon}</span>
+              <h3 className="mt-5 font-display text-xl">{s.title.toUpperCase()}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-vmm-ink/70">{s.body}</p>
             </div>
           ))}
         </div>
       </div>
+
 
       <div className="mx-auto mt-20 w-full max-w-[1760px] px-5 md:mt-28 md:px-16 lg:px-24">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
