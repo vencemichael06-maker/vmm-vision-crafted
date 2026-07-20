@@ -127,16 +127,25 @@ export function ContactSection() {
   );
 }
 
-function Info({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
-  return (
-    <div className="flex items-center gap-4 border-b border-vmm-line pb-4">
+function Info({ icon, label, value, href, external }: { icon: React.ReactNode; label: string; value: string; href?: string; external?: boolean }) {
+  const body = (
+    <>
       <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-vmm-ink text-white">{icon}</span>
-      <div>
+      <div className="min-w-0">
         <div className="text-[11px] font-bold tracking-[0.2em] text-vmm-red">{label}</div>
-        <div className="text-base">{value}</div>
+        <div className="truncate text-base">{value}</div>
       </div>
-    </div>
+    </>
   );
+  const cls = "flex items-center gap-4 border-b border-vmm-line pb-4";
+  if (href) {
+    return (
+      <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} className={`${cls} transition-colors hover:text-vmm-red`}>
+        {body}
+      </a>
+    );
+  }
+  return <div className={cls}>{body}</div>;
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
