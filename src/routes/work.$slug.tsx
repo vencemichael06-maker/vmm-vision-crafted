@@ -125,7 +125,7 @@ function ProjectDetail() {
             Selected screens
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {p.gallery.map((g) => (
+            {p.gallery.map((g: { src: string; caption: string }) => (
               <figure
                 key={g.src}
                 className="overflow-hidden rounded-xl border border-vmm-line bg-vmm-canvas"
