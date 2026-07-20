@@ -142,7 +142,7 @@ export function AboutSection() {
             { size: "s", bottom: "12%", left: "8%", opacity: 0.4 },
           ]}
         />
-        <LeftRail />
+        
 
         {/* ============== DESKTOP LAYOUT ============== */}
         <div className="mx-auto hidden w-full max-w-[1760px] gap-8 px-16 py-0 md:grid lg:px-24 md:[grid-template-columns:minmax(0,34%)_minmax(360px,32%)_minmax(0,34%)]">
