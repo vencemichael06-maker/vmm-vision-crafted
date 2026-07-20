@@ -31,7 +31,7 @@ export function ContactSection() {
 
 
   return (
-    <section id="contact" aria-label="Contact" className="relative w-full overflow-hidden py-24 md:py-32" style={{ scrollMarginTop: "80px" }}>
+    <section id="contact" aria-label="Contact" className="relative w-full overflow-hidden py-16 md:py-32" style={{ scrollMarginTop: "80px" }}>
       <Orbs items={[
         { size: "s", top: "10%", left: "8%", opacity: 0.35 },
         { size: "m", top: "6%", left: "26%", opacity: 0.4 },
