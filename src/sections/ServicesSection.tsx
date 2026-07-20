@@ -1,4 +1,4 @@
-import { ArrowRight, Braces, Layout, PenTool, Settings2, Search, Pencil, Code, Send } from "lucide-react";
+import { Braces, Layout, PenTool, Settings2, Search, Pencil, Code, Send } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
