@@ -30,7 +30,7 @@ export function ContactSection() {
       "",
       String(f.get("message") ?? ""),
     ].join("\n");
-    window.location.href = `mailto:hello@vmm.studio?subject=${encodeURIComponent("New project inquiry")}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("New project inquiry")}&body=${encodeURIComponent(body)}`;
     setSubmitted(true);
   };
 
@@ -58,7 +58,8 @@ export function ContactSection() {
           </p>
 
           <div className="mt-10 space-y-6">
-            <Info icon={<Mail className="h-5 w-5" />} label="EMAIL" value="hello@vmm.studio" />
+            <Info icon={<Mail className="h-5 w-5" />} label="EMAIL" value={CONTACT_EMAIL} href={`mailto:${CONTACT_EMAIL}`} />
+            <Info icon={<MessageCircle className="h-5 w-5" />} label="WHATSAPP" value={WHATSAPP_NUMBER_DISPLAY} href={WHATSAPP_URL} external />
             <Info icon={<MapPin className="h-5 w-5" />} label="LOCATION" value="Philippines" />
             <Info icon={<CalendarClock className="h-5 w-5" />} label="AVAILABILITY" value="Available for freelance" />
           </div>
@@ -73,7 +74,10 @@ export function ContactSection() {
                 </div>
                 <h3 className="mt-6 font-display text-3xl">MESSAGE READY<span className="text-vmm-red">.</span></h3>
                 <p className="mt-3 max-w-md text-sm text-vmm-ink/70">
-                  This visual demo doesn't send email. Copy your message and reach out at hello@vmm.studio to continue the conversation.
+                  Your email client should have opened with the message pre-filled. If it didn't, email me directly at{" "}
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="font-bold text-vmm-ink underline">{CONTACT_EMAIL}</a>{" "}
+                  or reach me on{" "}
+                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="font-bold text-vmm-ink underline">WhatsApp</a>.
                 </p>
               </div>
             ) : (
@@ -83,7 +87,7 @@ export function ContactSection() {
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <Field label="PROJECT TYPE">
                     <select name="project" className="w-full appearance-none border-b border-vmm-ink/60 bg-transparent py-2 text-base outline-none focus:border-vmm-red">
-                      <option>Select project type</option><option>Website</option><option>Web app</option><option>Mobile app</option><option>Branding</option>
+                      <option>Select project type</option><option>Website</option><option>Web app</option><option>Mobile app</option><option>Automation</option><option>Branding</option>
                     </select>
                   </Field>
                   <Field label="BUDGET">
@@ -104,15 +108,15 @@ export function ContactSection() {
           </div>
 
           <div className="mt-6 flex items-center gap-4 rounded-2xl bg-white p-5 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.2)] md:mt-8">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-vmm-ink text-white">
-              <Headphones className="h-5 w-5" />
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-emerald-500 text-white">
+              <MessageCircle className="h-5 w-5" />
             </span>
-            <div className="flex-1">
-              <p className="text-sm font-bold">Prefer a quick chat?</p>
-              <p className="text-xs text-vmm-ink/70">Book a free 30-min consultation and let's talk about how we can work together.</p>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold">Prefer a quick message?</p>
+              <p className="text-xs text-vmm-ink/70">Reach out on WhatsApp for the fastest reply — usually within a day.</p>
             </div>
-            <a href="mailto:hello@vmm.studio" className="inline-flex items-center gap-2 border-b border-vmm-ink text-[12px] font-bold tracking-[0.2em] hover:text-vmm-red">
-              BOOK A CALL <ArrowRight className="h-4 w-4" />
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex shrink-0 items-center gap-2 border-b border-vmm-ink text-[12px] font-bold tracking-[0.2em] hover:text-vmm-red">
+              WHATSAPP <ArrowRight className="h-4 w-4" />
             </a>
           </div>
         </div>
