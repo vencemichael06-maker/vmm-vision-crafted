@@ -1,5 +1,5 @@
 // Link no longer needed — single-page anchors used throughout
-import { ArrowRight } from "lucide-react";
+
 import toolN8n from "@/assets/vmm/tool_n8n.png.asset.json";
 import toolVs from "@/assets/vmm/tool_vscode.png.asset.json";
 import toolVapi from "@/assets/vmm/tool_vapi.png.asset.json";
