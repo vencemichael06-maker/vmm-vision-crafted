@@ -43,14 +43,14 @@ export function HomeToolsStrip() {
 export function HomeFooter() {
   return (
     <footer className="w-full bg-vmm-ink text-white">
-      <div className="mx-auto grid max-w-[1760px] grid-cols-1 gap-10 px-5 py-16 md:grid-cols-3 md:px-16 lg:px-24">
+      <div className="mx-auto grid max-w-[1760px] grid-cols-1 gap-10 px-5 py-16 md:grid-cols-2 md:px-16 lg:px-24">
         <div>
           <Wordmark className="text-white [&>span:first-child]:text-white" />
           <p className="mt-4 max-w-xs text-sm text-white/70">
             UI/UX Designer & Web Developer building clean, modern and impactful digital experiences.
           </p>
         </div>
-        <nav className="grid grid-cols-2 gap-3 text-sm">
+        <nav className="grid grid-cols-2 gap-3 text-sm md:justify-self-end">
           {[
             ["home", "Home"],
             ["about", "About"],
@@ -63,15 +63,8 @@ export function HomeFooter() {
             </a>
           ))}
         </nav>
-        <div className="md:justify-self-end">
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-3 rounded-md bg-vmm-red px-6 py-4 text-[12px] font-bold tracking-[0.2em] text-white"
-          >
-            START A PROJECT <ArrowRight className="h-4 w-4" />
-          </a>
-        </div>
       </div>
+
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-[1760px] flex-col gap-2 px-5 py-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between md:px-16 lg:px-24">
           <p>© {new Date().getFullYear()} Vence Michael Montero. All rights reserved.</p>
