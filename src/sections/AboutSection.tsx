@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
-import { LeftRail } from "@/components/vmm/SideRail";
+
 import { useGsap } from "@/lib/vmm/useGsap";
 import { HandRevealFrameSequence } from "@/components/vmm/HandRevealFrameSequence";
 import handSfx from "@/assets/vmm/about_hand_sfx.mp3.asset.json";
