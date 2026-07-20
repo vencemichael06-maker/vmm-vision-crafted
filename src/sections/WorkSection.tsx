@@ -59,7 +59,7 @@ export function WorkSection() {
   }, [visible.length]);
 
   return (
-    <section id="work" aria-label="Selected work" className="relative w-full overflow-hidden py-24 md:py-32" style={{ scrollMarginTop: "80px" }}>
+    <section id="work" aria-label="Selected work" className="relative w-full overflow-hidden py-16 md:py-32" style={{ scrollMarginTop: "80px" }}>
       <Orbs items={[
         { size: "s", top: "8%", left: "16%", opacity: 0.35 },
         { size: "m", top: "4%", right: "10%", opacity: 0.3 },

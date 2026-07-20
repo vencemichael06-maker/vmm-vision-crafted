@@ -26,7 +26,7 @@ export function ServicesSection() {
   }, []);
 
   return (
-    <section id="services" aria-label="Services" className="relative w-full overflow-hidden py-24 md:py-32" style={{ scrollMarginTop: "80px" }}>
+    <section id="services" aria-label="Services" className="relative w-full overflow-hidden py-16 md:py-32" style={{ scrollMarginTop: "80px" }}>
       <Orbs items={[
         { size: "m", top: "10%", left: "22%", opacity: 0.4 },
         { size: "s", top: "6%", right: "22%", opacity: 0.35 },
