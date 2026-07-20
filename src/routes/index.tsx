@@ -91,12 +91,13 @@ function HomePage() {
               style={{
                 right: "clamp(80px, 8vw, 160px)",
                 bottom: 0,
-                width: "clamp(360px, 34vw, 620px)",
-                height: "min(94svh, 900px)",
+                top: "clamp(96px, 12vh, 140px)",
+                width: "clamp(320px, 28vw, 520px)",
               }}
             >
               <HeroPersonGlitch />
             </div>
+
 
           </div>
 
