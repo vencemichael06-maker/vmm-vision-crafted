@@ -62,7 +62,7 @@ export function ServicesSection() {
       <div className="mx-auto mt-20 w-full max-w-[1760px] px-5 md:mt-28 md:px-16 lg:px-24">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
-            <div className="font-display text-6xl md:text-7xl">004</div>
+            
             <p className="mt-6 text-[13px] font-bold tracking-[0.28em] text-vmm-red">MY PROCESS</p>
             <h3 className="mt-3 font-display text-4xl md:text-5xl">
               A CLEAR PROCESS.<br />
