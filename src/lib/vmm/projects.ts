@@ -1,110 +1,172 @@
-import ivoBooking from "@/assets/vmm/card_ivo_booking.png.asset.json";
-import ivoFleet from "@/assets/vmm/card_ivo_fleet.png.asset.json";
-import ivoVehicle from "@/assets/vmm/card_ivo_vehicle.png.asset.json";
-import ivoPlans from "@/assets/vmm/card_ivo_plans.png.asset.json";
-import wiseAlarm from "@/assets/vmm/card_wise_alarm.png.asset.json";
-import igSabroso from "@/assets/vmm/card_ig_sabroso.png.asset.json";
-import caballero from "@/assets/vmm/card_caballero.png.asset.json";
+// VMM Portfolio — proof-backed public project set.
+// Source of truth: VMM_Portfolio_Pre_Implementation_Final_QA_Report.docx §3.
 
-import realIvoBooking from "@/assets/vmm/real_ivo_booking.webp.asset.json";
-import realIvoFleet from "@/assets/vmm/real_ivo_fleet.webp.asset.json";
-import realIvoVehicle from "@/assets/vmm/real_ivo_vehicle.webp.asset.json";
-import realIvoPlans from "@/assets/vmm/real_ivo_plans.webp.asset.json";
-import realWiseFeatured from "@/assets/vmm/real_wise_featured.webp.asset.json";
-import realWisePersonal from "@/assets/vmm/real_wise_personal.webp.asset.json";
-import realWiseBusiness from "@/assets/vmm/real_wise_business.webp.asset.json";
-import realWiseAlarm from "@/assets/vmm/real_wise_alarm.webp.asset.json";
-import realWiseDevice from "@/assets/vmm/real_wise_device.webp.asset.json";
-import realIgSabroso from "@/assets/vmm/real_ig_sabroso.webp.asset.json";
-import realCaballero from "@/assets/vmm/real_caballero.webp.asset.json";
+import thumbCaballeroD from "@/assets/vmm/proj/thumb-caballero-desktop.webp.asset.json";
+import thumbCaballeroM from "@/assets/vmm/proj/thumb-caballero-mobile.webp.asset.json";
+import thumbIgD from "@/assets/vmm/proj/thumb-ig-sabroso-desktop.webp.asset.json";
+import thumbIgM from "@/assets/vmm/proj/thumb-ig-sabroso-mobile.webp.asset.json";
+import thumbWaD from "@/assets/vmm/proj/thumb-wiseassistant-desktop.webp.asset.json";
+import thumbWaM from "@/assets/vmm/proj/thumb-wiseassistant-mobile.webp.asset.json";
+import thumbSheetD from "@/assets/vmm/proj/thumb-google-sheet-desktop.webp.asset.json";
+import thumbSheetM from "@/assets/vmm/proj/thumb-google-sheet-mobile.webp.asset.json";
+import thumbMbwosD from "@/assets/vmm/proj/thumb-mbwos-desktop.webp.asset.json";
+import thumbMbwosM from "@/assets/vmm/proj/thumb-mbwos-mobile.webp.asset.json";
+
+import heroCaballero from "@/assets/vmm/proj/hero-caballero.webp.asset.json";
+import heroIg from "@/assets/vmm/proj/hero-ig-sabroso.webp.asset.json";
+import heroSheet from "@/assets/vmm/proj/hero-google-sheet.webp.asset.json";
+import heroMbwosExec from "@/assets/vmm/proj/hero-mbwos-exec.webp.asset.json";
+import heroMbwosCust from "@/assets/vmm/proj/hero-mbwos-customers.webp.asset.json";
+import heroMbwosAppr from "@/assets/vmm/proj/hero-mbwos-approvals.webp.asset.json";
+import waDevice1 from "@/assets/vmm/proj/wa-device1.webp.asset.json";
+import waDevice2 from "@/assets/vmm/proj/wa-device2.webp.asset.json";
+import waDevice3 from "@/assets/vmm/proj/wa-device3.webp.asset.json";
+import waDevice4 from "@/assets/vmm/proj/wa-device4.webp.asset.json";
+import waDevice5 from "@/assets/vmm/proj/wa-device5.webp.asset.json";
+
+export type ProjectCategory =
+  | "Websites"
+  | "Mobile Product"
+  | "AI & Automation"
+  | "Operations Systems";
+
+export type ProjectStatus = "Completed" | "Ongoing" | "Case Study" | "Beta";
+
+export type ProjectCta =
+  | { kind: "external"; href: string; label: string }
+  | { kind: "case-study"; label: string }
+  | { kind: "disabled"; label: string; reason: string };
 
 export type Project = {
   slug: string;
   index: string;
-  category: "WEBSITE" | "MOBILE APP" | "WEB APP" | "BRANDING";
+  category: ProjectCategory;
   title: string;
   subtitle: string;
-  description: string;
-  cover: string;
+  status: ProjectStatus;
+  statusNote?: string;
+  thumbnail: { desktop: string; mobile: string };
+  cta: ProjectCta;
+  summary: string;
+  role: string;
+  year: string;
+  stack: string[];
   gallery: { src: string; caption: string }[];
-  meta: { role: string; year: string; stack: string[] };
 };
 
 export const projects: Project[] = [
   {
-    slug: "ivo-cars",
+    slug: "caballero-digital-solutions",
     index: "01",
-    category: "WEBSITE",
-    title: "IVO Cars — Smart EV Rental Website",
-    subtitle: "A modern and responsive website for an electric vehicle rental service.",
-    description:
-      "IVO Cars needed a clean marketing and booking surface for its EV rental fleet. The site pairs an editorial hero with a fleet browser, a plans & FAQ section, and a streamlined booking flow — all wrapped in a black-forward visual language that lets the vehicles carry the color.",
-    cover: ivoBooking.url,
-    gallery: [
-      { src: realIvoBooking.url, caption: "Booking flow — vehicle, dates, extras" },
-      { src: realIvoFleet.url, caption: "Fleet grid" },
-      { src: realIvoVehicle.url, caption: "Vehicle overview" },
-      { src: realIvoPlans.url, caption: "Plans & FAQ" },
-    ],
-    meta: { role: "Design & Frontend", year: "2025", stack: ["Next.js", "TypeScript", "Tailwind", "GSAP"] },
+    category: "Websites",
+    title: "Caballero Digital Solutions",
+    subtitle: "Agency website — brand, services, packages, project showcase.",
+    status: "Completed",
+    thumbnail: { desktop: thumbCaballeroD.url, mobile: thumbCaballeroM.url },
+    cta: {
+      kind: "external",
+      href: "https://caballerodigitalsolutions.com",
+      label: "Visit project",
+    },
+    summary:
+      "A bold agency website for Caballero Digital Solutions: dark editorial hero, services matrix, packages, featured project carousel, and a book-a-consultation flow. Built for growing businesses who need a professional online presence.",
+    role: "Design & Frontend",
+    year: "2025",
+    stack: ["Next.js", "TypeScript", "Tailwind", "Framer Motion"],
+    gallery: [{ src: heroCaballero.url, caption: "Homepage hero and featured project" }],
+  },
+  {
+    slug: "ig-sabroso-construction",
+    index: "02",
+    category: "Websites",
+    title: "IG Sabroso Construction",
+    subtitle: "Construction company website — services, projects, booking.",
+    status: "Ongoing",
+    statusNote: "Ongoing — 90% complete",
+    thumbnail: { desktop: thumbIgD.url, mobile: thumbIgM.url },
+    cta: {
+      kind: "external",
+      href: "https://www.igsabroso.com",
+      label: "View project",
+    },
+    summary:
+      "A confident marketing site for a mid-sized construction firm: services, projects, a real appointment/booking flow, and clear proof points (10+ years, 300+ projects). Currently 90% complete and in active refinement.",
+    role: "Design & Frontend",
+    year: "2025",
+    stack: ["Astro", "TypeScript", "Tailwind"],
+    gallery: [{ src: heroIg.url, caption: "Homepage — hero with booking + stats" }],
   },
   {
     slug: "wiseassistant",
-    index: "02",
-    category: "MOBILE APP",
-    title: "WiseAssistant — Offline Personal & Business Assistant",
-    subtitle: "An offline-first assistant that helps you manage tasks, notes and reminders intelligently.",
-    description:
-      "WiseAssistant is an Android-first productivity companion that runs entirely on device. The app carries a dark, focused UI, a bold accent palette, and dashboards that separate personal life from business operations without switching apps.",
-    cover: wiseAlarm.url,
-    gallery: [
-      { src: realWiseFeatured.url, caption: "Featured screens" },
-      { src: realWisePersonal.url, caption: "Personal dashboard" },
-      { src: realWiseBusiness.url, caption: "Business dashboard" },
-      { src: realWiseAlarm.url, caption: "Alarm & reminders" },
-      { src: realWiseDevice.url, caption: "On a real device" },
-    ],
-    meta: { role: "Product design + Android", year: "2025", stack: ["Kotlin", "Jetpack Compose", "Room"] },
-  },
-  {
-    slug: "ig-sabroso",
     index: "03",
-    category: "WEBSITE",
-    title: "IG Sabroso — Construction Company Website",
-    subtitle: "A professional website showcasing services, projects and company expertise.",
-    description:
-      "A confident marketing site for a mid-sized construction firm. Emphasis on real project photography, a services matrix, and a project inquiry flow — designed to look at home next to architectural portfolios.",
-    cover: igSabroso.url,
-    gallery: [{ src: realIgSabroso.url, caption: "Homepage & story" }],
-    meta: { role: "Design & Frontend", year: "2024", stack: ["Astro", "TypeScript", "Tailwind"] },
+    category: "Mobile Product",
+    title: "WiseAssistant",
+    subtitle: "Offline-first personal & business assistant for Android.",
+    status: "Beta",
+    statusNote: "Android Beta v1.1.0 — debug-signed preview build",
+    thumbnail: { desktop: thumbWaD.url, mobile: thumbWaM.url },
+    cta: { kind: "case-study", label: "View case study" },
+    summary:
+      "WiseAssistant is an Android-first productivity companion that runs entirely on device — private, offline, in control. Focused UI, dashboards that separate personal and business workflows, and reminders / alarms without the cloud.",
+    role: "Product design + Android",
+    year: "2025–2026",
+    stack: ["Kotlin", "Jetpack Compose", "Room", "AndroidX"],
+    gallery: [
+      { src: waDevice1.url, caption: "Splash — Private. Offline. In control." },
+      { src: waDevice2.url, caption: "Personal dashboard" },
+      { src: waDevice3.url, caption: "Business dashboard" },
+      { src: waDevice4.url, caption: "Reminders & alarms" },
+      { src: waDevice5.url, caption: "Device preview" },
+    ],
   },
   {
-    slug: "caballero-bikes",
+    slug: "google-sheet-order-tracker",
     index: "04",
-    category: "WEBSITE",
-    title: "Caballero Bikes — Motorcycle Marketplace Website",
-    subtitle: "A bold marketplace for premium motorcycles with rich editorial photography.",
-    description:
-      "A statement marketplace for premium and custom motorcycles. Deep black canvas with red accents echoes the VMM system; oversized display type carries the bikes.",
-    cover: caballero.url,
-    gallery: [{ src: realCaballero.url, caption: "Marketplace homepage" }],
-    meta: { role: "Design & Frontend", year: "2024", stack: ["Next.js", "Tailwind", "Framer Motion"] },
+    category: "AI & Automation",
+    title: "Google Sheet Order Tracker Automation",
+    subtitle: "Live logistics dashboard powered by 17TRACK + Apps Script.",
+    status: "Case Study",
+    statusNote: "Sanitized case study — operational data withheld",
+    thumbnail: { desktop: thumbSheetD.url, mobile: thumbSheetM.url },
+    cta: { kind: "case-study", label: "View case study" },
+    summary:
+      "An automation that turns a plain Google Sheet into a live logistics dashboard: order intake, carrier tracking via the 17TRACK API, delayed-shipment detection, and an auto-refreshing status board. Owner-facing metrics only — customer records stay private.",
+    role: "Automation design + Apps Script",
+    year: "2026",
+    stack: ["Google Sheets", "Apps Script", "17TRACK API"],
+    gallery: [{ src: heroSheet.url, caption: "Owner dashboard — aggregate metrics" }],
   },
   {
-    slug: "ig-sabroso-concept",
+    slug: "multi-business-web-os",
     index: "05",
-    category: "BRANDING",
-    title: "IG Sabroso — Design Concept Guide",
-    subtitle: "A print-forward brand and design concept guide for the IG Sabroso identity system.",
-    description:
-      "A concept guide covering brand tone, typography, layout system, and reference spreads — designed as a printable editorial document that pairs with the live website.",
-    cover: igSabroso.url,
-    gallery: [{ src: realIgSabroso.url, caption: "Concept spreads" }],
-    meta: { role: "Brand & Design", year: "2024", stack: ["Figma", "InDesign"] },
+    category: "Operations Systems",
+    title: "Multi Business Web OS",
+    subtitle: "Multi-business operations console — finance, ops, approvals.",
+    status: "Case Study",
+    statusNote: "Sanitized demo environment — no real customer data",
+    thumbnail: { desktop: thumbMbwosD.url, mobile: thumbMbwosM.url },
+    cta: { kind: "case-study", label: "View case study" },
+    summary:
+      "One console for a group of businesses: shared customer records, per-business dashboards (trucking, fuel station, hardware), approvals queue, and cross-business finance rollups. All screens shown here are from the demo environment with fictional records.",
+    role: "Product design + Frontend",
+    year: "2026",
+    stack: ["React", "TypeScript", "Tailwind", "LocalStorage"],
+    gallery: [
+      { src: heroMbwosExec.url, caption: "Executive dashboard — demo environment" },
+      { src: heroMbwosCust.url, caption: "Customers & credit accounts — fictional records" },
+      { src: heroMbwosAppr.url, caption: "Approvals queue — demo environment" },
+    ],
   },
 ];
-
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
+
+export const categoryFilters: ("All" | ProjectCategory)[] = [
+  "All",
+  "Websites",
+  "Mobile Product",
+  "AI & Automation",
+  "Operations Systems",
+];
