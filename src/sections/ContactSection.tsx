@@ -1,8 +1,13 @@
 import { useState } from "react";
-import { ArrowRight, CalendarClock, Headphones, Mail, MapPin } from "lucide-react";
+import { ArrowRight, CalendarClock, Mail, MapPin, MessageCircle } from "lucide-react";
 import { Orbs } from "@/components/vmm/Orbs";
 import { PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
+
+const CONTACT_EMAIL = "vencemichael06@gmail.com";
+// WhatsApp uses the international format without the leading "+" or spaces.
+const WHATSAPP_NUMBER_DISPLAY = "+63 906 745 1651";
+const WHATSAPP_URL = "https://wa.me/639067451651";
 
 export function ContactSection() {
   useGsap(({ gsap }) => {
