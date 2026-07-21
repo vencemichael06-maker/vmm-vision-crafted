@@ -5,8 +5,8 @@ import thumbCaballeroD from "@/assets/vmm/proj/thumb-caballero-desktop.webp.asse
 import thumbCaballeroM from "@/assets/vmm/proj/thumb-caballero-mobile.webp.asset.json";
 import thumbIgD from "@/assets/vmm/proj/thumb-ig-sabroso-desktop.webp.asset.json";
 import thumbIgM from "@/assets/vmm/proj/thumb-ig-sabroso-mobile.webp.asset.json";
-import thumbWaD from "@/assets/vmm/proj/thumb-wiseassistant-desktop.webp.asset.json";
-import thumbWaM from "@/assets/vmm/proj/thumb-wiseassistant-mobile.webp.asset.json";
+import thumbWaD from "@/assets/vmm/proj/wa-hero-thumb.webp.asset.json";
+import thumbWaM from "@/assets/vmm/proj/wa-hero-thumb.webp.asset.json";
 import thumbSheetD from "@/assets/vmm/proj/thumb-google-sheet-desktop.webp.asset.json";
 import thumbSheetM from "@/assets/vmm/proj/thumb-google-sheet-mobile.webp.asset.json";
 import thumbMbwosD from "@/assets/vmm/proj/thumb-mbwos-desktop.webp.asset.json";

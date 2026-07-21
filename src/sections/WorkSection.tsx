@@ -145,47 +145,93 @@ function StatusPill({ status, note }: { status: Project["status"]; note?: string
 
 function ProjectRow({ project: p }: { project: Project }) {
   return (
-    <article
-      aria-label={p.title}
-      className="group grid grid-cols-1 overflow-hidden rounded-2xl border border-vmm-line bg-white transition-shadow hover:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.25)] md:grid-cols-[minmax(0,44%)_1fr]"
-    >
-      {/* Media wrapper — fixed aspect, object-contain, paper background. */}
-      <div className="relative w-full overflow-hidden bg-vmm-canvas">
-        <div className="aspect-[16/10] w-full">
-          <picture>
-            <source media="(min-width: 768px)" srcSet={p.thumbnail.desktop} />
+    <>
+      {/* MOBILE — editorial card: text left, image right, red arrow CTA */}
+      <MobileProjectCard project={p} />
+
+      {/* DESKTOP — original editorial row */}
+      <article
+        aria-label={p.title}
+        className="group hidden overflow-hidden rounded-2xl border border-vmm-line bg-white transition-shadow hover:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.25)] md:grid md:grid-cols-[minmax(0,44%)_1fr]"
+      >
+        <div className="relative w-full overflow-hidden bg-vmm-canvas">
+          <div className="aspect-[16/10] w-full">
             <img
-              src={p.thumbnail.mobile}
+              src={p.thumbnail.desktop}
               alt={`${p.title} — project preview`}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02] md:object-contain md:p-4"
+              className="h-full w-full object-contain p-4 transition-transform duration-700 group-hover:scale-[1.02]"
             />
-          </picture>
+          </div>
+          <div className="pointer-events-none absolute left-4 top-4 rounded-md bg-vmm-ink/85 px-3 py-1 font-display text-lg text-white backdrop-blur-sm">
+            {p.index}
+          </div>
         </div>
-        <div className="pointer-events-none absolute left-4 top-4 rounded-md bg-vmm-ink/85 px-3 py-1 font-display text-lg text-white backdrop-blur-sm">
-          {p.index}
-        </div>
-      </div>
 
-      <div className="flex min-w-0 flex-col justify-center gap-3 p-6 md:p-8">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-vmm-red">
-            {p.category}
-          </span>
-          <StatusPill status={p.status} note={p.statusNote} />
+        <div className="flex min-w-0 flex-col justify-center gap-3 p-6 md:p-8">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-vmm-red">
+              {p.category}
+            </span>
+            <StatusPill status={p.status} note={p.statusNote} />
+          </div>
+          <h3 className="font-display text-2xl leading-tight md:text-[26px]">{p.title}</h3>
+          <p className="text-sm leading-relaxed text-vmm-ink/70">{p.subtitle}</p>
+          {p.statusNote && (
+            <p className="text-[11px] font-medium tracking-[0.02em] text-vmm-ink/50">
+              {p.statusNote}
+            </p>
+          )}
+
+          <ProjectCtaButton project={p} />
         </div>
-        <h3 className="font-display text-2xl leading-tight md:text-[26px]">{p.title}</h3>
-        <p className="text-sm leading-relaxed text-vmm-ink/70">{p.subtitle}</p>
-        {p.statusNote && (
-          <p className="text-[11px] font-medium tracking-[0.02em] text-vmm-ink/50">
-            {p.statusNote}
+      </article>
+    </>
+  );
+}
+
+function MobileProjectCard({ project: p }: { project: Project }) {
+  const href = p.cta.kind === "external" ? p.cta.href : `/work/${p.slug}`;
+  const external = p.cta.kind === "external";
+  const Wrapper: React.ElementType = external ? "a" : Link;
+  const wrapperProps = external
+    ? { href, target: "_blank", rel: "noopener noreferrer" }
+    : { to: "/work/$slug", params: { slug: p.slug } };
+
+  return (
+    <Wrapper
+      {...wrapperProps}
+      aria-label={p.title}
+      className="group relative grid grid-cols-[1fr_44%] overflow-hidden rounded-2xl bg-white shadow-[0_10px_30px_-20px_rgba(0,0,0,0.18)] md:hidden"
+    >
+      <div className="flex min-w-0 flex-col justify-between gap-4 p-5">
+        <div className="min-w-0">
+          <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-vmm-red">
+            FEATURED PROJECT
           </p>
-        )}
-
-        <ProjectCtaButton project={p} />
+          <h3 className="mt-2 font-display text-[22px] leading-[1.05] uppercase text-vmm-ink">
+            {p.title}
+          </h3>
+          <p className="mt-2 text-[13px] leading-snug text-vmm-ink/70">{p.subtitle}</p>
+        </div>
+        <span
+          aria-hidden
+          className="inline-flex h-9 w-9 items-center justify-center text-vmm-red transition-transform group-hover:translate-x-1"
+        >
+          <ArrowUpRight className="h-6 w-6" strokeWidth={2.25} />
+        </span>
       </div>
-    </article>
+      <div className="relative overflow-hidden bg-vmm-canvas">
+        <img
+          src={p.thumbnail.mobile}
+          alt={`${p.title} — project preview`}
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      </div>
+    </Wrapper>
   );
 }
 
