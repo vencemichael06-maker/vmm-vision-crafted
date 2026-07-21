@@ -151,7 +151,7 @@ function ProjectRow({ project: p }: { project: Project }) {
     >
       {/* Media wrapper — fixed aspect, object-contain, paper background. */}
       <div className="relative w-full overflow-hidden bg-vmm-canvas">
-        <div className="aspect-[4/3] w-full md:aspect-[16/10]">
+        <div className="aspect-[16/10] w-full">
           <picture>
             <source media="(min-width: 768px)" srcSet={p.thumbnail.desktop} />
             <img
@@ -159,7 +159,7 @@ function ProjectRow({ project: p }: { project: Project }) {
               alt={`${p.title} — project preview`}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-contain p-3 transition-transform duration-700 group-hover:scale-[1.02] md:p-4"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02] md:object-contain md:p-4"
             />
           </picture>
         </div>
