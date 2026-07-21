@@ -64,11 +64,11 @@ export function WorkSection() {
           </p>
         </div>
 
-        {/* Filters */}
+        {/* Filters — desktop/tablet only */}
         <div
           role="tablist"
           aria-label="Filter projects by category"
-          className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-vmm-line pb-4"
+          className="mt-12 hidden flex-wrap items-center gap-x-6 gap-y-3 border-b border-vmm-line pb-4 md:flex"
         >
           {categoryFilters.map((label) => {
             const active = filter === label;
@@ -92,6 +92,18 @@ export function WorkSection() {
               </button>
             );
           })}
+        </div>
+
+        {/* Mobile CTA — single button in place of filters */}
+        <div className="mt-10 md:hidden">
+          <button
+            type="button"
+            onClick={() => setFilter("All")}
+            className="inline-flex w-full items-center justify-between gap-3 rounded-md bg-vmm-ink px-5 py-4 text-[12px] font-bold tracking-[0.22em] text-white"
+          >
+            VIEW ALL PROJECTS
+            <ArrowUpRight className="h-4 w-4" />
+          </button>
         </div>
 
         <ul className="mt-10 space-y-6 md:mt-12">
