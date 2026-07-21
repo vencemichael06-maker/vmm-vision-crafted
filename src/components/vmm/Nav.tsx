@@ -129,7 +129,7 @@ function MobileMenu({ onClose, onNavigate }: { onClose: () => void; onNavigate: 
         </div>
 
         <nav className="flex flex-1 flex-col justify-center gap-3 px-6 md:gap-4 md:px-14">
-          {links.map((l, i) => (
+          {links.filter((l) => l.hash !== "contact").map((l, i) => (
             <button
               key={l.hash}
               type="button"

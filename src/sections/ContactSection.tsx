@@ -66,7 +66,7 @@ export function ContactSection() {
         </div>
 
         <div className="relative md:col-span-7">
-          <div className="relative rounded-2xl bg-white p-6 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.25)] md:p-10">
+          <div className="relative hidden rounded-2xl bg-white p-6 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.25)] md:block md:p-10">
             {submitted ? (
               <div className="grid place-items-center py-16 text-center">
                 <div className="grid h-14 w-14 place-items-center rounded-full bg-vmm-red text-white">
@@ -107,7 +107,7 @@ export function ContactSection() {
             )}
           </div>
 
-          <div className="mt-6 flex items-center gap-4 rounded-2xl bg-white p-5 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.2)] md:mt-8">
+          <div className="flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.2)] sm:flex-row sm:items-center md:mt-8">
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-emerald-500 text-white">
               <MessageCircle className="h-5 w-5" />
             </span>
