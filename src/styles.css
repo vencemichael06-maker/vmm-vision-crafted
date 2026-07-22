@@ -191,6 +191,21 @@
   text-transform: uppercase;
 }
 
+.vmm-hero-title {
+  max-width: none;
+  font-size: clamp(3.2rem, 15vw, 4.4rem);
+  line-height: 0.84;
+}
+
+.vmm-about-title {
+  font-size: clamp(2.7rem, 12vw, 4.2rem);
+  line-height: 0.84;
+}
+
+.vmm-about-marker {
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+}
+
 .vmm-button {
   display: inline-flex;
   min-height: 48px;
@@ -343,6 +358,14 @@
 }
 
 @media (min-width: 768px) {
+  .vmm-hero-title {
+    font-size: clamp(4.7rem, 7.2vw, 6.5rem);
+  }
+
+  .vmm-about-title {
+    font-size: clamp(4.4rem, 7.2vw, 5.8rem);
+  }
+
   .vmm-container {
     padding-inline: var(--vmm-gutter-tablet);
   }
@@ -353,6 +376,10 @@
 }
 
 @media (min-width: 1200px) {
+  .vmm-hero-title {
+    font-size: clamp(5.5rem, 6.2vw, 7.25rem);
+  }
+
   .vmm-container {
     padding-inline: var(--vmm-gutter-desktop);
   }

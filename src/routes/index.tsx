@@ -76,16 +76,21 @@ function HomePage() {
 
           <div className="vmm-container relative z-[3] grid min-h-[100svh] grid-cols-12 items-start pb-24 pt-28 md:items-center md:pb-20 md:pt-28 lg:pt-24">
             <div
-              className="col-span-8 self-start pr-1 sm:col-span-7 md:col-span-6 md:self-center lg:col-span-5 lg:col-start-2"
+              className="col-span-8 self-start pr-1 sm:col-span-7 md:col-span-9 md:self-center lg:col-span-6 lg:col-start-2"
               data-hero-reveal
             >
               <p className="vmm-kicker">HELLO, I&apos;M</p>
               <h1
                 data-testid="hero-title"
-                className="mt-4 max-w-[7.5ch] font-display uppercase text-vmm-ink"
-                style={{ fontSize: "var(--vmm-h1)", lineHeight: 0.86 }}
+                className="vmm-hero-title mt-4 font-display uppercase text-vmm-ink"
               >
-                VENCE MICHAEL MONTERO<span className="text-vmm-red">.</span>
+                <span className="block md:inline">
+                  VENCE<span className="hidden md:inline"> </span>
+                </span>
+                <span className="block md:inline">MICHAEL</span>
+                <span className="block">
+                  MONTERO<span className="text-vmm-red">.</span>
+                </span>
               </h1>
               <p className="mt-5 max-w-[31rem] text-[15px] leading-[1.55] text-vmm-ink/80 md:mt-7 md:text-base">
                 I design and build digital experiences that are clean, modern, and impactful.
