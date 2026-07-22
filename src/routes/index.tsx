@@ -101,7 +101,7 @@ function HomePage() {
             </div>
           </div>
 
-          <div className="pointer-events-none absolute bottom-0 right-[-27%] z-[2] h-[84%] w-[105%] md:right-[2%] md:top-[7%] md:h-auto md:w-[52%] lg:right-[8%] lg:w-[39%] xl:right-[10%]">
+          <div className="pointer-events-none absolute bottom-0 right-[1%] z-[2] h-[52%] w-[68%] md:right-[2%] md:top-[7%] md:h-auto md:w-[52%] lg:right-[8%] lg:w-[39%] xl:right-[10%]">
             <HeroPersonGlitch />
           </div>
 
