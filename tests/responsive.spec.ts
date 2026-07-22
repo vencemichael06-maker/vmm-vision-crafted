@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { mkdir } from "node:fs/promises";
+import { mkdir, readdir } from "node:fs/promises";
 import path from "node:path";
 
 const viewports = [
@@ -19,6 +19,32 @@ const viewports = [
 
 const screenshotDirectory =
   process.env.VMM_QA_SCREENSHOT_DIR || path.resolve("test-results", "responsive-screenshots");
+const stateSequenceDirectory =
+  process.env.VMM_QA_STATE_SEQUENCE_DIR ||
+  path.resolve(
+    "output",
+    "qa",
+    "VMM_Reference_First_Real_Projects_Implementation_2026-07-22",
+    "state-sequence",
+  );
+const stateSequenceNames = [
+  "00-first.png",
+  "01-hero-initialized.png",
+  "02-transition-001-to-002.png",
+  "03-page-002-closed.png",
+  "04-page-002-25-percent.png",
+  "05-page-002-50-percent.png",
+  "06-page-002-75-percent.png",
+  "07-page-002-open.png",
+  "08-page-002-reverse-75-percent.png",
+  "09-page-002-reverse-50-percent.png",
+  "10-page-002-reverse-25-percent.png",
+  "11-page-002-reverse-closed.png",
+  "12-transition-002-to-003.png",
+  "13-nav-closed.png",
+  "14-nav-open.png",
+  "15-contact.png",
+] as const;
 
 async function renderedLineCount(page: import("@playwright/test").Page, selector: string) {
   return page.locator(selector).evaluate((element) => {
@@ -39,16 +65,119 @@ async function renderedLineCount(page: import("@playwright/test").Page, selector
   });
 }
 
+async function setAboutTimeline(page: import("@playwright/test").Page, timelineProgress: number) {
+  await page.evaluate((progress) => {
+    const about = document.getElementById("about");
+    if (!about) throw new Error("About section missing");
+    const scrollable = about.offsetHeight - window.innerHeight;
+    window.scrollTo(0, about.offsetTop + scrollable * progress);
+  }, timelineProgress);
+
+  const handProgress =
+    timelineProgress < 0.35
+      ? timelineProgress / 0.35
+      : timelineProgress > 0.65
+        ? (1 - timelineProgress) / 0.35
+        : 1;
+  const expectedFrame = Math.round(Math.min(Math.max(handProgress, 0), 1) * 47);
+  await expect
+    .poll(
+      async () =>
+        Math.abs(
+          Number(await page.locator(".hand-reveal-media").getAttribute("data-current-frame")) -
+            expectedFrame,
+        ),
+      { timeout: 15_000 },
+    )
+    .toBeLessThanOrEqual(2);
+}
+
+async function captureStateSequence(
+  page: import("@playwright/test").Page,
+  viewport: (typeof viewports)[number],
+) {
+  const viewportDirectory = path.join(
+    stateSequenceDirectory,
+    `${viewport.width}x${viewport.height}`,
+  );
+  const capture = (name: (typeof stateSequenceNames)[number]) =>
+    page.screenshot({ path: path.join(viewportDirectory, name) });
+
+  await page.evaluate(() => {
+    const about = document.getElementById("about");
+    if (!about) throw new Error("About section missing");
+    window.scrollTo(0, Math.max(about.offsetTop - window.innerHeight * 0.2, 0));
+  });
+  await capture("02-transition-001-to-002.png");
+
+  const forwardStates = [
+    [0, "03-page-002-closed.png"],
+    [0.0875, "04-page-002-25-percent.png"],
+    [0.175, "05-page-002-50-percent.png"],
+    [0.2625, "06-page-002-75-percent.png"],
+    [0.35, "07-page-002-open.png"],
+  ] as const;
+  for (const [progress, name] of forwardStates) {
+    await setAboutTimeline(page, progress);
+    await capture(name);
+  }
+
+  const reverseStates = [
+    [0.2625, "08-page-002-reverse-75-percent.png"],
+    [0.175, "09-page-002-reverse-50-percent.png"],
+    [0.0875, "10-page-002-reverse-25-percent.png"],
+    [0, "11-page-002-reverse-closed.png"],
+  ] as const;
+  for (const [progress, name] of reverseStates) {
+    await setAboutTimeline(page, progress);
+    await capture(name);
+  }
+
+  await setAboutTimeline(page, 1);
+  await page.evaluate(() => {
+    const about = document.getElementById("about");
+    if (!about) throw new Error("About section missing");
+    window.scrollTo(0, about.offsetTop + about.offsetHeight - window.innerHeight * 0.35);
+  });
+  await expect
+    .poll(async () =>
+      Number(await page.locator(".hand-reveal-media").getAttribute("data-current-frame")),
+    )
+    .toBeLessThanOrEqual(2);
+  await capture("12-transition-002-to-003.png");
+
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await capture("13-nav-closed.png");
+  await page.getByRole("button", { name: "Open menu" }).click();
+  await expect(page.getByRole("dialog", { name: "Site navigation" })).toBeVisible();
+  await capture("14-nav-open.png");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog", { name: "Site navigation" })).toBeHidden();
+
+  await page.evaluate(() => document.getElementById("contact")?.scrollIntoView());
+  await expect(page.getByRole("heading", { name: "LET'S BUILD SOMETHING GREAT." })).toBeVisible();
+  await capture("15-contact.png");
+}
+
 test.beforeAll(async () => {
   await mkdir(screenshotDirectory, { recursive: true });
+  await mkdir(stateSequenceDirectory, { recursive: true });
 });
 
 for (const viewport of viewports) {
   test(`${viewport.width}x${viewport.height} responsive contract`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.setViewportSize(viewport);
     await page.goto("/");
     await page.locator("main").waitFor();
+    const viewportStateDirectory = path.join(
+      stateSequenceDirectory,
+      `${viewport.width}x${viewport.height}`,
+    );
+    await mkdir(viewportStateDirectory, { recursive: true });
+    await page.screenshot({ path: path.join(viewportStateDirectory, "00-first.png") });
     await page.locator(".vmm-hpg--done").waitFor();
+    await page.screenshot({ path: path.join(viewportStateDirectory, "01-hero-initialized.png") });
 
     const layout = await page.evaluate(() => ({
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -67,6 +196,8 @@ for (const viewport of viewports) {
     await page.screenshot({
       path: path.join(screenshotDirectory, `vmm-${viewport.width}x${viewport.height}-hero.png`),
     });
+
+    await captureStateSequence(page, viewport);
 
     await page.evaluate(() => document.getElementById("work")?.scrollIntoView());
     const projectThumbnails = page.locator("#work [data-project-thumbnail]");
@@ -243,9 +374,70 @@ for (const viewport of viewports) {
   });
 }
 
+test("durable state sequence evidence covers all native viewports", async () => {
+  for (const viewport of viewports) {
+    const viewportDirectory = path.join(
+      stateSequenceDirectory,
+      `${viewport.width}x${viewport.height}`,
+    );
+    await mkdir(viewportDirectory, { recursive: true });
+    const files = (await readdir(viewportDirectory)).filter((file) => file.endsWith(".png")).sort();
+    expect(files).toEqual([...stateSequenceNames].sort());
+  }
+});
+
+test("keyboard order, visible focus, and navigation focus trap are preserved", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.locator(".vmm-hpg--done").waitFor();
+
+  const keyboardOrder = [
+    page.getByRole("link", { name: "Skip to main content" }),
+    page.getByRole("banner").getByRole("link", { name: "Home", exact: true }),
+    page.getByRole("link", { name: "HOME", exact: true }),
+    page.getByRole("link", { name: "ABOUT", exact: true }),
+    page.getByRole("link", { name: "WORK", exact: true }),
+    page.getByRole("link", { name: "SERVICES", exact: true }),
+    page.getByRole("link", { name: "CONTACT", exact: true }),
+    page.getByRole("link", { name: "LET'S TALK", exact: true }),
+    page.getByRole("button", { name: "Open menu" }),
+  ];
+  for (const target of keyboardOrder) {
+    await page.keyboard.press("Tab");
+    await expect(target).toBeFocused();
+  }
+
+  const focusedOutline = await keyboardOrder.at(-1)!.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { style: style.outlineStyle, width: Number.parseFloat(style.outlineWidth) };
+  });
+  expect(focusedOutline.style).toBe("solid");
+  expect(focusedOutline.width).toBeGreaterThanOrEqual(2);
+
+  await page.keyboard.press("Enter");
+  const dialog = page.getByRole("dialog", { name: "Site navigation" });
+  const firstMenuLink = dialog.getByRole("link", { name: "Home", exact: true });
+  const closeButton = dialog.getByRole("button", { name: "Close menu" });
+  const lastMenuLink = dialog.getByRole("link", { name: "Contact", exact: true });
+  await expect(dialog).toBeVisible();
+  await expect(firstMenuLink).toBeFocused();
+
+  await page.keyboard.press("Shift+Tab");
+  await expect(closeButton).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  await expect(lastMenuLink).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(closeButton).toBeFocused();
+
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole("button", { name: "Open menu" })).toBeFocused();
+});
+
 test("hash navigation, browser history, and accessible dialog", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
+  await page.locator(".vmm-hpg--done").waitFor();
 
   await page.getByRole("link", { name: "WORK", exact: true }).click();
   await expect(page).toHaveURL(/#work$/);
@@ -336,6 +528,49 @@ test("hand opens on Page 002, closes into Page 003, and restores while reversing
     .toBeLessThanOrEqual(2);
 });
 
+test("hand completes two forward and reverse cycles at mobile, tablet, and desktop", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 414, height: 896 });
+  await page.goto("/");
+  await page.locator(".vmm-hpg--done").waitFor();
+  const hand = page.locator(".hand-reveal-media");
+  const cycle = [
+    [0, 0],
+    [0.175, 24],
+    [0.35, 47],
+    [0.65, 47],
+    [0.825, 24],
+    [1, 0],
+    [0.825, 24],
+    [0.65, 47],
+    [0.35, 47],
+    [0.175, 24],
+    [0, 0],
+  ] as const;
+
+  for (const viewport of [
+    { width: 414, height: 896 },
+    { width: 820, height: 1180 },
+    { width: 1440, height: 900 },
+  ]) {
+    await page.setViewportSize(viewport);
+    for (let repetition = 0; repetition < 2; repetition += 1) {
+      for (const [progress, expectedFrame] of cycle) {
+        await setAboutTimeline(page, progress);
+        await expect
+          .poll(
+            async () =>
+              Math.abs(Number(await hand.getAttribute("data-current-frame")) - expectedFrame),
+            { timeout: 15_000 },
+          )
+          .toBeLessThanOrEqual(2);
+      }
+    }
+  }
+});
+
 test("hand timeline remeasures after mobile, tablet, and desktop viewport changes", async ({
   page,
 }) => {
@@ -390,6 +625,8 @@ test("contact endpoint confirms success and exposes a retryable failure", async 
   });
   await page.goto("/#contact");
   await page.locator(".vmm-hpg--done").waitFor();
+  await page.getByRole("button", { name: "SEND MESSAGE" }).click();
+  await expect(page.getByLabel("NAME")).toBeFocused();
   await page.getByLabel("NAME").fill("Ana Reyes");
   await page.getByLabel("EMAIL").fill("ana@example.com");
   await page.getByLabel("PROJECT TYPE").selectOption("Website");
@@ -398,6 +635,34 @@ test("contact endpoint confirms success and exposes a retryable failure", async 
   await page.getByRole("button", { name: "SEND MESSAGE" }).click();
   await expect(page.getByRole("alert")).toBeVisible();
   await expect(page.getByRole("button", { name: "Retry submission" })).toBeEnabled();
+  await expect(page.getByRole("status")).toHaveCount(0);
+  const form = page.locator("#contact form");
+  await expect(form.getByRole("textbox", { name: "NAME" })).toHaveValue("Ana Reyes");
+  await expect(form.getByRole("textbox", { name: "EMAIL" })).toHaveValue("ana@example.com");
+  await expect(form.getByRole("combobox", { name: "PROJECT TYPE" })).toHaveValue("Website");
+  await expect(form.getByRole("combobox", { name: "BUDGET" })).toHaveValue("PHP 50k-100k");
+  await expect(form.getByRole("textbox", { name: "MESSAGE", exact: true })).toHaveValue(
+    "We need a responsive company website.",
+  );
+
+  const fallbackBody = encodeURIComponent(
+    [
+      "Name: Ana Reyes",
+      "Email: ana@example.com",
+      "Project type: Website",
+      "Budget: PHP 50k-100k",
+      "",
+      "We need a responsive company website.",
+    ].join("\n"),
+  );
+  await expect(page.getByRole("link", { name: "Email fallback" })).toHaveAttribute(
+    "href",
+    `mailto:hello@vmmcreatives.site?subject=New%20project%20inquiry&body=${fallbackBody}`,
+  );
+  await expect(page.getByRole("link", { name: "WhatsApp fallback" })).toHaveAttribute(
+    "href",
+    `https://wa.me/639067451651?text=${fallbackBody}`,
+  );
 
   await page.unroute("**/api/contact");
   await page.route("**/api/contact", async (route) => {
