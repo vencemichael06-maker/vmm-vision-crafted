@@ -472,7 +472,7 @@
 
 @media (min-width: 1200px) {
   .vmm-hero-title {
-    font-size: clamp(5.5rem, 6.2vw, 7.25rem);
+    font-size: clamp(5rem, 6.2vw, 7.25rem);
   }
 
   .vmm-process-title {
