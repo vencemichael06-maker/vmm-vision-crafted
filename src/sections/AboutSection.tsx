@@ -1,335 +1,133 @@
-import { useCallback, useEffect, useRef } from "react";
-import { CalendarDays, Users, FolderCheck, ArrowRight } from "lucide-react";
-import { Orbs } from "@/components/vmm/Orbs";
-
-import { useGsap } from "@/lib/vmm/useGsap";
+import { ArrowRight, Code2, LayoutTemplate, Smartphone, Workflow } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { HandRevealFrameSequence } from "@/components/vmm/HandRevealFrameSequence";
-import handSfx from "@/assets/vmm/about_hand_sfx.mp3.asset.json";
+import { progressToHandFrame } from "@/lib/vmm/handSequence";
+import { Orbs } from "@/components/vmm/Orbs";
+import { PageNumber } from "@/components/vmm/SideRail";
 
-const skills = [
-  { label: "UI/UX Design", value: 90 },
-  { label: "Web Development", value: 85 },
-  { label: "AI Workflow Automation", value: 80 },
-  { label: "Mobile App Development", value: 65 },
-];
+const capabilities = [
+  { label: "UI/UX Design", icon: LayoutTemplate },
+  { label: "Web Development", icon: Code2 },
+  { label: "AI Workflow Automation", icon: Workflow },
+  { label: "Mobile App Development", icon: Smartphone },
+] as const;
+
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+  return reduced;
+}
+
+function useAboutProgress(sectionRef: React.RefObject<HTMLElement | null>, reducedMotion: boolean) {
+  const [progress, setProgress] = useState(reducedMotion ? 1 : 0);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setProgress(1);
+      return;
+    }
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const update = () => {
+      rafRef.current = null;
+      const rect = section.getBoundingClientRect();
+      const scrollable = Math.max(section.offsetHeight - window.innerHeight, 1);
+      const raw = Math.min(Math.max(-rect.top / scrollable, 0), 1);
+      const nextFrame = progressToHandFrame(raw);
+      setProgress((current) =>
+        progressToHandFrame(current) === nextFrame ? current : nextFrame / 47,
+      );
+    };
+    const requestUpdate = () => {
+      if (rafRef.current === null) rafRef.current = window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    return () => {
+      if (rafRef.current !== null) window.cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, [reducedMotion, sectionRef]);
+
+  return progress;
+}
 
 export function AboutSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const unlockedRef = useRef(false);
-  const lastProgressRef = useRef(0);
-  const pauseTimerRef = useRef<number | null>(null);
-  const reducedMotionRef = useRef(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    reducedMotionRef.current = mq.matches;
-    const on = () => (reducedMotionRef.current = mq.matches);
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
-
-  useEffect(() => {
-    const unlock = () => {
-      const a = audioRef.current;
-      if (!a || unlockedRef.current) return;
-      const prevMuted = a.muted;
-      a.muted = true;
-      a.play()
-        .then(() => {
-          a.pause();
-          a.currentTime = 0;
-          a.muted = prevMuted;
-          unlockedRef.current = true;
-        })
-        .catch(() => {});
-    };
-    const opts = { once: true, passive: true } as AddEventListenerOptions;
-    window.addEventListener("pointerdown", unlock, opts);
-    window.addEventListener("touchstart", unlock, opts);
-    window.addEventListener("keydown", unlock, { once: true });
-    return () => {
-      window.removeEventListener("pointerdown", unlock);
-      window.removeEventListener("touchstart", unlock);
-      window.removeEventListener("keydown", unlock);
-    };
-  }, []);
-
-  const handleProgress = useCallback((p: number) => {
-    const a = audioRef.current;
-    if (!a || reducedMotionRef.current) return;
-    const dur = a.duration;
-    if (!dur || Number.isNaN(dur) || !Number.isFinite(dur)) return;
-    const clamped = Math.min(Math.max(p, 0), 1);
-    const prev = lastProgressRef.current;
-    const delta = clamped - prev;
-    lastProgressRef.current = clamped;
-
-    // Stop at keyframe extremes (fully closed or fully open)
-    if (clamped <= 0.002 || clamped >= 0.998) {
-      if (!a.paused) a.pause();
-      a.currentTime = clamped >= 0.998 ? dur : 0;
-      return;
-    }
-
-    // Scrub audio time to hand progress (forward on scroll-down, reverse on scroll-up)
-    const target = clamped * dur;
-    if (Math.abs(a.currentTime - target) > 0.04) a.currentTime = target;
-
-    if (Math.abs(delta) > 0.0008 && unlockedRef.current) {
-      a.playbackRate = delta > 0 ? 1 : 0.85;
-      if (a.paused) a.play().catch(() => {});
-      if (pauseTimerRef.current) window.clearTimeout(pauseTimerRef.current);
-      pauseTimerRef.current = window.setTimeout(() => {
-        a.pause();
-      }, 140);
-    }
-  }, []);
-
-
-  useGsap(({ gsap }) => {
-    gsap.from(".about-title span", {
-      y: 60, opacity: 0, duration: 0.9, stagger: 0.12, ease: "power3.out",
-      scrollTrigger: { trigger: sectionRef.current!, start: "top 70%" },
-    });
-
-    gsap.utils.toArray<HTMLElement>(".skill-bar").forEach((bar) => {
-      const pct = bar.dataset.pct ?? "50";
-      gsap.fromTo(bar.querySelector(".skill-fill")!, { width: "0%" },
-        { width: `${pct}%`, duration: 1.4, ease: "power3.out",
-          scrollTrigger: { trigger: bar, start: "top 90%" } });
-      gsap.fromTo(bar.querySelector(".skill-pct")!, { innerText: 0 },
-        { innerText: parseInt(pct, 10), duration: 1.4, ease: "power2.out",
-          snap: { innerText: 1 },
-          scrollTrigger: { trigger: bar, start: "top 90%" },
-          onUpdate() {
-            const el = bar.querySelector<HTMLElement>(".skill-pct")!;
-            el.textContent = Math.round(Number(el.textContent)) + "%";
-          } });
-    });
-
-    gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
-      const target = parseInt(el.dataset.count ?? "0", 10);
-      gsap.fromTo(el, { innerText: 0 },
-        { innerText: target, duration: 1.4, ease: "power2.out",
-          snap: { innerText: 1 },
-          scrollTrigger: { trigger: el, start: "top 90%" },
-          onUpdate() { el.textContent = Math.round(Number(el.textContent)) + "+"; } });
-    });
-  }, []);
+  const reducedMotion = useReducedMotion();
+  const progress = useAboutProgress(sectionRef, reducedMotion);
 
   return (
     <section
       id="about"
       ref={sectionRef}
       aria-label="About"
-      className="relative w-full bg-vmm-canvas h-[220svh] md:h-[270svh]"
-      style={{ scrollMarginTop: "80px" }}
+      className="vmm-section h-[150svh] md:h-[170svh] xl:h-[190svh]"
     >
-      <audio
-        ref={audioRef}
-        src={handSfx.url}
-        preload="auto"
-        playsInline
-        aria-hidden="true"
-      />
-      <div className="sticky top-0 min-h-[100svh] w-full overflow-hidden md:flex md:items-center">
+      <div className="sticky top-0 min-h-[100svh] w-full overflow-hidden bg-white">
         <Orbs
           items={[
-            { size: "m", top: "10%", left: "22%", opacity: 0.55 },
-            { size: "s", top: "18%", right: "34%", opacity: 0.4 },
-            { size: "s", bottom: "22%", right: "8%", opacity: 0.45 },
-            { size: "s", bottom: "12%", left: "8%", opacity: 0.4 },
+            { size: "s", top: "17%", left: "34%", opacity: 0.55 },
+            { size: "m", top: "7%", right: "8%", opacity: 0.35 },
+            { size: "s", bottom: "14%", left: "8%", opacity: 0.35 },
           ]}
         />
-        
 
-        {/* ============== DESKTOP LAYOUT ============== */}
-        <div className="mx-auto hidden w-full max-w-[1760px] gap-8 px-16 py-0 md:grid lg:px-24 md:[grid-template-columns:minmax(0,34%)_minmax(360px,32%)_minmax(0,34%)]">
-          {/* LEFT */}
-          <div className="relative z-[3]">
-            <p className="text-[13px] font-bold tracking-[0.28em] text-vmm-red">ABOUT ME</p>
-            <h2 className="about-title mt-5 font-display uppercase leading-[0.9] text-vmm-ink"
-              style={{ fontSize: "clamp(48px, 6vw, 96px)", letterSpacing: "-0.02em" }}>
-              <span className="block">I DESIGN<span className="text-vmm-red">.</span></span>
-              <span className="block">I BUILD<span className="text-vmm-red">.</span></span>
-              <span className="block">I SOLVE<span className="text-vmm-red">.</span></span>
+        <div className="vmm-container relative z-[2] grid min-h-[100svh] grid-cols-12 items-center pb-20 pt-24 md:pb-24 md:pt-28">
+          <div className="col-span-8 z-[3] self-center pr-2 sm:col-span-7 md:col-span-5 lg:col-span-4 lg:col-start-2">
+            <p className="vmm-kicker">ABOUT ME</p>
+            <h2 className="mt-4 max-w-[8ch] font-display text-[clamp(2.65rem,11vw,5.8rem)] uppercase leading-[0.84]">
+              I DESIGN<span className="text-vmm-red">.</span>
+              <br />I BUILD<span className="text-vmm-red">.</span>
+              <br />I SOLVE<span className="text-vmm-red">.</span>
             </h2>
-            <p className="mt-6 max-w-sm text-[15px] leading-relaxed text-vmm-ink/80">
-              I'm a UI/UX Designer and Frontend Developer who loves turning ideas into intuitive, functional, and visually stunning digital products.
+            <p className="mt-5 max-w-sm text-[15px] leading-[1.55] text-vmm-ink/80 md:text-base">
+              I&apos;m a UI/UX Designer and Frontend Developer who loves turning ideas into
+              intuitive, functional, and visually stunning digital products.
             </p>
 
-            <div className="mt-10 grid grid-cols-3 gap-4 md:gap-6">
-              <Stat icon={<CalendarDays className="h-5 w-5" />} n={3} label="Years experience" />
-              <Stat icon={<FolderCheck className="h-5 w-5" />} n={20} label="Projects completed" />
-              <Stat icon={<Users className="h-5 w-5" />} n={10} label="Happy clients" />
-            </div>
+            <ul className="mt-6 grid gap-x-4 gap-y-3 sm:grid-cols-2" aria-label="Capabilities">
+              {capabilities.map(({ label, icon: Icon }) => (
+                <li
+                  key={label}
+                  className="flex min-h-11 items-center gap-3 text-[11px] font-extrabold uppercase tracking-[0.06em]"
+                >
+                  <Icon
+                    className="h-5 w-5 shrink-0 text-vmm-red"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                  <span>{label}</span>
+                </li>
+              ))}
+            </ul>
 
-            <a
-              href="#contact"
-              className="mt-10 inline-flex items-center gap-6 bg-vmm-ink px-7 py-4 text-[12px] font-bold tracking-[0.22em] text-white transition-transform hover:-translate-y-0.5"
-            >
-              LET'S WORK TOGETHER <ArrowRight className="h-4 w-4" />
+            <a href="#contact" className="vmm-button mt-6">
+              LET&apos;S WORK TOGETHER <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
           </div>
 
-          {/* CENTER — hand frame sequence */}
-          <div className="relative z-[1] pointer-events-none" style={{ height: "min(78svh, 720px)" }}>
-          <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.35} onProgress={handleProgress} />
-
+          <div className="pointer-events-none absolute bottom-0 right-[-10%] top-[9%] z-[1] w-[68%] sm:right-0 sm:w-[61%] md:right-[3%] md:top-[4%] md:w-[58%] lg:right-[11%] lg:w-[48%]">
+            <HandRevealFrameSequence progress={progress} reducedMotion={reducedMotion} />
           </div>
 
-          {/* RIGHT — expertise */}
-          <div className="relative z-[3] bg-transparent">
-            <h3 className="font-display text-xl tracking-wide">MY EXPERTISE</h3>
-            <div className="mt-8 space-y-6">
-              {skills.map((s) => (
-                <div key={s.label} className="skill-bar" data-pct={s.value}>
-                  <div className="flex items-baseline justify-between text-[13px] font-bold">
-                    <span className="tracking-[0.14em]">{s.label.toUpperCase()}</span>
-                    <span className="skill-pct tabular-nums">0%</span>
-                  </div>
-                  <div className="mt-3 h-[3px] w-full bg-vmm-line">
-                    <div className="skill-fill h-full bg-vmm-ink" style={{ width: 0 }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10 grid grid-cols-2 gap-6 border-t border-vmm-line pt-6">
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-vmm-ink/70">Projects</div>
-                <div className="mt-2 font-display text-4xl" data-count={20}>0+</div>
-              </div>
-              <div className="border-l border-vmm-line pl-6">
-                <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-vmm-ink/70">Experience</div>
-                <div className="mt-2 font-display text-4xl">
-                  <span data-count={3}>0+</span> <span className="text-lg font-bold tracking-widest">YEARS</span>
-                </div>
-              </div>
-            </div>
+          <div className="absolute bottom-5 left-5 z-[4] flex items-end gap-3 md:hidden">
+            <span className="font-display text-[3.5rem] font-black leading-none">002</span>
+            <span className="mb-2 h-px w-8 bg-vmm-ink" aria-hidden="true" />
           </div>
-        </div>
-
-        {/* Desktop 002 badge */}
-        <div className="pointer-events-none absolute bottom-8 left-6 z-[6] hidden items-end gap-4 md:flex lg:left-8 xl:left-10">
-          <div
-            className="font-display font-black leading-[0.82] text-vmm-ink"
-            style={{ fontSize: "clamp(64px, 6.2vw, 104px)", letterSpacing: "-0.02em" }}
-          >
-            002
-          </div>
-          <div className="mb-3 h-px w-10 bg-vmm-ink/60" />
-        </div>
-
-        {/* ============== MOBILE LAYOUT ============== */}
-        <div className="w-full px-5 pt-8 pb-10 md:hidden">
-          {/* Top block: text left, hand right */}
-          <div className="relative grid grid-cols-[minmax(0,1fr)_56%] gap-2">
-            <div className="relative z-[3] min-w-0">
-              <p className="text-[11px] font-bold tracking-[0.28em] text-vmm-red">ABOUT ME</p>
-              <h2
-                className="about-title mt-3 font-display uppercase leading-[0.92] text-vmm-ink"
-                style={{ fontSize: "clamp(30px, 9.2vw, 46px)", letterSpacing: "-0.02em" }}
-              >
-                <span className="block">I DESIGN<span className="text-vmm-red">.</span></span>
-                <span className="block">I BUILD<span className="text-vmm-red">.</span></span>
-                <span className="block">I SOLVE<span className="text-vmm-red">.</span></span>
-              </h2>
-              <p className="mt-4 text-[13px] leading-relaxed text-vmm-ink/80">
-                I'm a UI/UX Designer and Frontend Developer who loves turning ideas into intuitive, functional, and visually stunning digital products.
-              </p>
-
-              <a
-                href="#contact"
-                className="mt-5 flex w-full items-center justify-between gap-4 bg-vmm-ink px-5 py-4 text-[11px] font-bold tracking-[0.22em] text-white"
-              >
-                LET'S WORK TOGETHER <ArrowRight className="h-4 w-4" />
-              </a>
-              <a
-                href="#contact"
-                className="mt-3 flex w-full items-center justify-between gap-4 bg-vmm-red px-5 py-4 text-[11px] font-bold tracking-[0.22em] leading-tight text-white"
-              >
-                <span>
-                  AVAILABLE<br />FOR FREELANCE
-                </span>
-                <ArrowRight className="h-4 w-4 shrink-0" />
-              </a>
-            </div>
-
-            {/* Hand — right column, wrist anchored bottom, sized by viewport so it reads at ~64vw */}
-            <div className="pointer-events-none relative z-[2] self-stretch min-h-[380px]">
-              <div className="absolute bottom-0 right-[-20px] top-0 flex w-[64vw] items-end justify-end">
-                <HandRevealFrameSequence sectionRef={sectionRef} progressBias={1.4} onProgress={handleProgress} />
-              </div>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="mt-8 grid grid-cols-3 gap-2 border-y border-vmm-line py-5">
-            <Stat icon={<CalendarDays className="h-4 w-4" />} n={3} label="Years experience" />
-            <div className="border-l border-vmm-line pl-2">
-              <Stat icon={<FolderCheck className="h-4 w-4" />} n={20} label="Projects completed" />
-            </div>
-            <div className="border-l border-vmm-line pl-2">
-              <Stat icon={<Users className="h-4 w-4" />} n={10} label="Happy clients" />
-            </div>
-          </div>
-
-          {/* Expertise */}
-          <div className="mt-8">
-            <h3 className="font-display text-lg tracking-wide">MY EXPERTISE</h3>
-            <div className="mt-5 space-y-5">
-              {skills.map((s) => (
-                <div key={s.label} className="skill-bar" data-pct={s.value}>
-                  <div className="flex items-baseline justify-between text-[12px] font-bold">
-                    <span className="tracking-[0.14em]">{s.label.toUpperCase()}</span>
-                    <span className="skill-pct tabular-nums">0%</span>
-                  </div>
-                  <div className="mt-2 h-[3px] w-full bg-vmm-line">
-                    <div className="skill-fill h-full bg-vmm-ink" style={{ width: 0 }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Bottom: 002 red badge + scroll indicator */}
-          <div className="mt-10 flex items-end justify-between">
-            <div className="relative bg-vmm-red px-4 pt-3 pb-2 text-vmm-ink">
-              <div
-                className="font-display font-black leading-[0.85]"
-                style={{ fontSize: "56px", letterSpacing: "-0.02em" }}
-              >
-                002
-              </div>
-            </div>
-            <div className="flex items-center gap-3 pb-2">
-              <div className="grid h-11 w-11 place-items-center rounded-full bg-vmm-ink text-white">
-                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="8" y="4" width="8" height="14" rx="4" />
-                  <line x1="12" y1="8" x2="12" y2="11" />
-                </svg>
-              </div>
-              <div className="text-[11px] font-bold uppercase leading-tight tracking-[0.2em] text-vmm-ink">
-                SCROLL<br />DOWN
-              </div>
-            </div>
-          </div>
+          <PageNumber n="002" />
         </div>
       </div>
     </section>
-  );
-}
-
-function Stat({ icon, n, label }: { icon: React.ReactNode; n: number; label: string }) {
-  return (
-    <div>
-      <div className="flex items-center gap-2">
-        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-vmm-red/10 text-vmm-red">{icon}</span>
-        <div className="font-display text-2xl md:text-3xl" data-count={n}>0+</div>
-      </div>
-      <div className="mt-1.5 text-[10px] font-bold uppercase leading-tight tracking-[0.16em] text-vmm-ink/70 md:text-[11px] md:tracking-[0.18em]">{label}</div>
-    </div>
   );
 }

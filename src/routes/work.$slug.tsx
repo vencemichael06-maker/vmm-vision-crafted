@@ -12,10 +12,7 @@ export const Route = createFileRoute("/work/$slug")({
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {
-        meta: [
-          { title: "Case study not found — VMM" },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: "Case study not found — VMM" }, { name: "robots", content: "noindex" }],
       };
     }
     const { project: p } = loaderData;
@@ -148,7 +145,9 @@ function ProjectDetail() {
         </section>
 
         <nav aria-label="Other projects" className="mt-20 border-t border-vmm-line pt-10">
-          <p className="text-[12px] font-bold uppercase tracking-[0.28em] text-vmm-red">More work</p>
+          <p className="text-[12px] font-bold uppercase tracking-[0.28em] text-vmm-red">
+            More work
+          </p>
           <ul className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2">
             {projects
               .filter((o) => o.slug !== p.slug)

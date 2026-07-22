@@ -12,16 +12,37 @@ export function ensureGsap() {
   return { gsap, ScrollTrigger };
 }
 
-export function useGsap(fn: (ctx: { gsap: typeof gsap; ScrollTrigger: typeof ScrollTrigger }) => void | (() => void), deps: DependencyList = []) {
+export function useGsap(
+  fn: (ctx: { gsap: typeof gsap; ScrollTrigger: typeof ScrollTrigger }) => void | (() => void),
+  deps: DependencyList = [],
+) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const api = ensureGsap();
-    const ctx = gsap.context(() => {
-      const cleanup = fn(api);
-      return cleanup;
-    });
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let ctx: gsap.Context | undefined;
+    let featureCleanup: void | (() => void);
+
+    const deactivate = () => {
+      featureCleanup?.();
+      featureCleanup = undefined;
+      ctx?.revert();
+      ctx = undefined;
+    };
+    const update = () => {
+      deactivate();
+      if (!media.matches) {
+        ctx = gsap.context(() => {
+          featureCleanup = fn(api);
+        });
+      }
+    };
+
+    update();
+    media.addEventListener("change", update);
     return () => {
-      ctx.revert();
+      media.removeEventListener("change", update);
+      deactivate();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);

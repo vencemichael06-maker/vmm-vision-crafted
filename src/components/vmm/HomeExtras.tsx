@@ -1,77 +1,42 @@
-// Link no longer needed — single-page anchors used throughout
-
-import toolN8n from "@/assets/vmm/tool_n8n.png.asset.json";
-import toolVs from "@/assets/vmm/tool_vscode.png.asset.json";
-import toolVapi from "@/assets/vmm/tool_vapi.png.asset.json";
-import toolGpt from "@/assets/vmm/tool_chatgpt.png.asset.json";
-import toolClaude from "@/assets/vmm/tool_claude.png.asset.json";
-import toolNetlify from "@/assets/vmm/tool_netlify.png.asset.json";
-import toolSupabase from "@/assets/vmm/tool_supabase.png.asset.json";
 import { Wordmark } from "./Wordmark";
 
-const tools = [
-  { src: toolN8n.url, name: "n8n" },
-  { src: toolVs.url, name: "VS Code" },
-  { src: toolVapi.url, name: "Vapi" },
-  { src: toolGpt.url, name: "ChatGPT / Codex" },
-  { src: toolClaude.url, name: "Claude Code" },
-  { src: toolNetlify.url, name: "Netlify" },
-  { src: toolSupabase.url, name: "Supabase" },
-];
-
-export function HomeToolsStrip() {
-  return (
-    <section className="relative w-full">
-      <div className="red-panel w-full py-8 md:py-10">
-        <div className="mx-auto flex max-w-[1760px] flex-wrap items-center gap-x-10 gap-y-4 px-5 md:px-16 lg:px-24">
-          <span className="text-[12px] font-bold tracking-[0.28em]">TOOLS I USE</span>
-          <span className="hidden h-6 w-px bg-white/40 md:block" />
-          <div className="flex flex-1 flex-wrap items-center gap-x-8 gap-y-4 md:gap-x-10">
-            {tools.map((t) => (
-              <div key={t.name} className="flex items-center gap-2 text-white">
-                <img src={t.src} alt="" className="h-7 w-7 object-contain" />
-                <span className="text-sm font-bold tracking-wide">{t.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+const footerLinks = [
+  ["home", "Home"],
+  ["about", "About"],
+  ["work", "Work"],
+  ["services", "Services"],
+  ["contact", "Contact"],
+] as const;
 
 export function HomeFooter() {
   return (
     <footer className="w-full bg-vmm-ink text-white">
-      <div className="mx-auto grid max-w-[1760px] grid-cols-1 gap-10 px-5 py-16 md:grid-cols-2 md:px-16 lg:px-24">
+      <div className="vmm-container grid gap-10 py-14 md:grid-cols-2 md:items-end md:py-20">
         <div>
           <Wordmark className="text-white [&>span:first-child]:text-white" />
-          <p className="mt-4 max-w-xs text-sm text-white/70">
-            UI/UX Designer & Web Developer building clean, modern and impactful digital experiences.
+          <p className="mt-4 max-w-sm text-sm leading-6 text-white/65">
+            UI/UX Designer &amp; Web Developer building clean, modern, and impactful digital
+            experiences.
           </p>
         </div>
-        <nav className="grid grid-cols-2 gap-3 text-sm md:justify-self-end">
-          {[
-            ["home", "Home"],
-            ["about", "About"],
-            ["work", "Work"],
-            ["services", "Services"],
-            ["contact", "Contact"],
-          ].map(([hash, l]) => (
-            <a key={hash} href={`#${hash}`} className="text-white/70 hover:text-vmm-red">
-              {l}
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-8 gap-y-1 md:justify-self-end">
+          {footerLinks.map(([hash, label]) => (
+            <a
+              key={hash}
+              href={`#${hash}`}
+              className="inline-flex min-h-11 items-center text-sm text-white/70 hover:text-vmm-red"
+            >
+              {label}
             </a>
           ))}
         </nav>
       </div>
-
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-[1760px] flex-col gap-2 px-5 py-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between md:px-16 lg:px-24">
+      <div className="border-t border-white/15">
+        <div className="vmm-container flex flex-col gap-2 py-5 text-xs text-white/50 sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} Vence Michael Montero. All rights reserved.</p>
-          <p>Based in the Philippines · Available for freelance</p>
+          <p>Philippines · Available for freelance</p>
         </div>
       </div>
     </footer>
   );
 }
-

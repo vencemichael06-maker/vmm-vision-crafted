@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title description">
+  <title id="title">Google Sheet order tracker automation</title>
+  <desc id="description">A sanitized order tracking spreadsheet connected to an automated logistics workflow.</desc>
+  <rect width="1200" height="760" fill="#f1f1ee"/>
+  <rect x="70" y="78" width="820" height="604" fill="#fff" stroke="#050505" stroke-width="5"/>
+  <rect x="70" y="78" width="820" height="94" fill="#050505"/>
+  <circle cx="122" cy="125" r="17" fill="#ff2a1a"/>
+  <text x="160" y="136" fill="#fff" font-family="Arial,sans-serif" font-size="34" font-weight="700">ORDER TRACKER</text>
+  <g stroke="#b7b7b2" stroke-width="2">
+    <path d="M70 236h820M70 310h820M70 384h820M70 458h820M70 532h820M70 606h820"/>
+    <path d="M250 172v510M520 172v510M715 172v510"/>
+  </g>
+  <rect x="70" y="172" width="820" height="64" fill="#e7e7e3"/>
+  <g fill="#050505" font-family="Arial,sans-serif" font-size="20" font-weight="700">
+    <text x="96" y="212">ORDER</text><text x="276" y="212">TRACKING</text><text x="546" y="212">CARRIER</text><text x="741" y="212">STATUS</text>
+  </g>
+  <g fill="#676762" font-family="Arial,sans-serif" font-size="18">
+    <text x="96" y="280">SANITIZED</text><text x="276" y="280">••••••••••</text><text x="546" y="280">CONNECTED</text>
+    <text x="96" y="354">SANITIZED</text><text x="276" y="354">••••••••••</text><text x="546" y="354">CONNECTED</text>
+    <text x="96" y="428">SANITIZED</text><text x="276" y="428">••••••••••</text><text x="546" y="428">CONNECTED</text>
+  </g>
+  <g fill="#ff2a1a"><rect x="746" y="258" width="112" height="28"/><rect x="746" y="332" width="112" height="28"/><rect x="746" y="406" width="112" height="28"/></g>
+  <path d="M927 203h182v112H927zM927 373h182v112H927zM1018 315v58" fill="#fff" stroke="#050505" stroke-width="5"/>
+  <path d="M1018 315v58M1004 354l14 19 14-19" fill="none" stroke="#ff2a1a" stroke-width="9"/>
+  <text x="952" y="252" fill="#050505" font-family="Arial,sans-serif" font-size="21" font-weight="700">17TRACK</text>
+  <text x="956" y="286" fill="#676762" font-family="Arial,sans-serif" font-size="16">API STATUS</text>
+  <text x="951" y="421" fill="#050505" font-family="Arial,sans-serif" font-size="21" font-weight="700">APPS SCRIPT</text>
+  <text x="956" y="455" fill="#676762" font-family="Arial,sans-serif" font-size="16">AUTO REFRESH</text>
+</svg>

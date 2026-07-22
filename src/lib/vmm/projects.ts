@@ -1,35 +1,13 @@
-// VMM Portfolio — proof-backed public project set.
-// Source of truth: VMM_Portfolio_Pre_Implementation_Final_QA_Report.docx §3.
+// Proof-backed portfolio content. This file is the only project-content source of truth.
 
-import thumbCaballeroD from "@/assets/vmm/proj/thumb-caballero-desktop.webp.asset.json";
-import thumbCaballeroM from "@/assets/vmm/proj/thumb-caballero-mobile.webp.asset.json";
-import thumbIgD from "@/assets/vmm/proj/thumb-ig-sabroso-desktop.webp.asset.json";
-import thumbIgM from "@/assets/vmm/proj/thumb-ig-sabroso-mobile.webp.asset.json";
-import thumbWaD from "@/assets/vmm/proj/wa-hero-thumb.webp.asset.json";
-import thumbWaM from "@/assets/vmm/proj/wa-hero-thumb.webp.asset.json";
-import thumbSheetD from "@/assets/vmm/proj/thumb-google-sheet-desktop.webp.asset.json";
-import thumbSheetM from "@/assets/vmm/proj/thumb-google-sheet-mobile.webp.asset.json";
-import thumbMbwosD from "@/assets/vmm/proj/thumb-mbwos-desktop.webp.asset.json";
-import thumbMbwosM from "@/assets/vmm/proj/thumb-mbwos-mobile.webp.asset.json";
+const projectAssets = {
+  wiseAssistant: "/assets/vmm/projects/wiseassistant.webp",
+  caballero: "/assets/vmm/projects/caballero-digital-solutions.webp",
+  igSabroso: "/assets/vmm/projects/ig-sabroso.webp",
+  orderTracker: "/assets/vmm/projects/google-sheet-order-tracker.svg",
+} as const;
 
-import heroCaballero from "@/assets/vmm/proj/hero-caballero.webp.asset.json";
-import heroIg from "@/assets/vmm/proj/hero-ig-sabroso.webp.asset.json";
-import heroSheet from "@/assets/vmm/proj/hero-google-sheet.webp.asset.json";
-import heroMbwosExec from "@/assets/vmm/proj/hero-mbwos-exec.webp.asset.json";
-import heroMbwosCust from "@/assets/vmm/proj/hero-mbwos-customers.webp.asset.json";
-import heroMbwosAppr from "@/assets/vmm/proj/hero-mbwos-approvals.webp.asset.json";
-import waDevice1 from "@/assets/vmm/proj/wa-device1.webp.asset.json";
-import waDevice2 from "@/assets/vmm/proj/wa-device2.webp.asset.json";
-import waDevice3 from "@/assets/vmm/proj/wa-device3.webp.asset.json";
-import waDevice4 from "@/assets/vmm/proj/wa-device4.webp.asset.json";
-import waDevice5 from "@/assets/vmm/proj/wa-device5.webp.asset.json";
-
-export type ProjectCategory =
-  | "Websites"
-  | "Mobile Product"
-  | "AI & Automation"
-  | "Operations Systems";
-
+export type ProjectCategory = "Websites" | "Mobile Product" | "AI & Automation";
 export type ProjectStatus = "Completed" | "Ongoing" | "Case Study" | "Beta";
 
 export type ProjectCta =
@@ -63,20 +41,14 @@ export const projects: Project[] = [
     subtitle: "Offline-first personal & business assistant for Android.",
     status: "Beta",
     statusNote: "Android Beta v1.1.0 — debug-signed preview build",
-    thumbnail: { desktop: thumbWaD.url, mobile: thumbWaM.url },
+    thumbnail: { desktop: projectAssets.wiseAssistant, mobile: projectAssets.wiseAssistant },
     cta: { kind: "case-study", label: "View case study" },
     summary:
       "WiseAssistant is an Android-first productivity companion that runs entirely on device — private, offline, in control. Focused UI, dashboards that separate personal and business workflows, and reminders / alarms without the cloud.",
     role: "Product design + Android",
     year: "2025–2026",
     stack: ["Kotlin", "Jetpack Compose", "Room", "AndroidX"],
-    gallery: [
-      { src: waDevice1.url, caption: "Splash — Private. Offline. In control." },
-      { src: waDevice2.url, caption: "Personal dashboard" },
-      { src: waDevice3.url, caption: "Business dashboard" },
-      { src: waDevice4.url, caption: "Reminders & alarms" },
-      { src: waDevice5.url, caption: "Device preview" },
-    ],
+    gallery: [{ src: projectAssets.wiseAssistant, caption: "Android product interface preview" }],
   },
   {
     slug: "caballero-digital-solutions",
@@ -85,7 +57,7 @@ export const projects: Project[] = [
     title: "Caballero Digital Solutions",
     subtitle: "Agency website — brand, services, packages, project showcase.",
     status: "Completed",
-    thumbnail: { desktop: thumbCaballeroD.url, mobile: thumbCaballeroM.url },
+    thumbnail: { desktop: projectAssets.caballero, mobile: projectAssets.caballero },
     cta: {
       kind: "external",
       href: "https://caballerodigitalsolutions.com",
@@ -96,7 +68,7 @@ export const projects: Project[] = [
     role: "Design & Frontend",
     year: "2025",
     stack: ["Next.js", "TypeScript", "Tailwind", "Framer Motion"],
-    gallery: [{ src: heroCaballero.url, caption: "Homepage hero and featured project" }],
+    gallery: [{ src: projectAssets.caballero, caption: "Homepage and project presentation" }],
   },
   {
     slug: "ig-sabroso-construction",
@@ -106,7 +78,7 @@ export const projects: Project[] = [
     subtitle: "Construction company website — services, projects, booking.",
     status: "Ongoing",
     statusNote: "Ongoing — 90% complete",
-    thumbnail: { desktop: thumbIgD.url, mobile: thumbIgM.url },
+    thumbnail: { desktop: projectAssets.igSabroso, mobile: projectAssets.igSabroso },
     cta: {
       kind: "external",
       href: "https://www.igsabroso.com",
@@ -117,7 +89,7 @@ export const projects: Project[] = [
     role: "Design & Frontend",
     year: "2025",
     stack: ["Astro", "TypeScript", "Tailwind"],
-    gallery: [{ src: heroIg.url, caption: "Homepage — hero with booking + stats" }],
+    gallery: [{ src: projectAssets.igSabroso, caption: "Construction website preview" }],
   },
   {
     slug: "google-sheet-order-tracker",
@@ -127,19 +99,19 @@ export const projects: Project[] = [
     subtitle: "Live logistics dashboard powered by 17TRACK + Apps Script.",
     status: "Case Study",
     statusNote: "Sanitized case study — operational data withheld",
-    thumbnail: { desktop: thumbSheetD.url, mobile: thumbSheetM.url },
+    thumbnail: { desktop: projectAssets.orderTracker, mobile: projectAssets.orderTracker },
     cta: { kind: "case-study", label: "View case study" },
     summary:
       "An automation that turns a plain Google Sheet into a live logistics dashboard: order intake, carrier tracking via the 17TRACK API, delayed-shipment detection, and an auto-refreshing status board. Owner-facing metrics only — customer records stay private.",
     role: "Automation design + Apps Script",
     year: "2026",
     stack: ["Google Sheets", "Apps Script", "17TRACK API"],
-    gallery: [{ src: heroSheet.url, caption: "Owner dashboard — aggregate metrics" }],
+    gallery: [{ src: projectAssets.orderTracker, caption: "Sanitized logistics workflow" }],
   },
 ];
 
 export function getProject(slug: string): Project | undefined {
-  return projects.find((p) => p.slug === slug);
+  return projects.find((project) => project.slug === slug);
 }
 
 export const categoryFilters: ("All" | ProjectCategory)[] = [
@@ -147,5 +119,4 @@ export const categoryFilters: ("All" | ProjectCategory)[] = [
   "Websites",
   "Mobile Product",
   "AI & Automation",
-  "Operations Systems",
 ];

@@ -1,6 +1,9 @@
-import { Link, useRouterState } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { useRouterState } from "@tanstack/react-router";
 import { ArrowRight, Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { contactConfig } from "@/lib/vmm/contact-config";
+import { SocialLinks } from "./SocialLinks";
 import { Wordmark } from "./Wordmark";
 
 const links = [
@@ -11,158 +14,191 @@ const links = [
   { hash: "contact", label: "CONTACT" },
 ] as const;
 
-function scrollToHash(hash: string) {
-  const el = document.getElementById(hash);
-  if (!el) return;
-  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  el.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
-  history.replaceState(null, "", `#${hash}`);
+function scrollToHash(hash: string, updateHistory = true) {
+  const target = document.getElementById(hash);
+  if (!target) return;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (updateHistory && window.location.hash !== `#${hash}`) {
+    window.history.pushState({ vmmSection: hash }, "", `#${hash}`);
+  }
+  target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
 }
 
-function useActiveSection(): string {
-  const [active, setActive] = useState<string>("home");
+function useActiveSection(onHome: boolean) {
+  const [active, setActive] = useState("home");
+
   useEffect(() => {
-    const ids = links.map((l) => l.hash);
-    const targets = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => !!el);
+    if (!onHome) return;
+    setActive(window.location.hash.slice(1) || "home");
+    const targets = links
+      .map(({ hash }) => document.getElementById(hash))
+      .filter((target): target is HTMLElement => Boolean(target));
     if (targets.length === 0) return;
-    const io = new IntersectionObserver(
+
+    const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
-          .filter((e) => e.isIntersecting)
+          .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
         if (visible[0]) setActive(visible[0].target.id);
       },
-      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+      { rootMargin: "-34% 0px -55%", threshold: [0, 0.2, 0.5, 0.8] },
     );
-    targets.forEach((t) => io.observe(t));
-    return () => io.disconnect();
-  }, []);
+    targets.forEach((target) => observer.observe(target));
+
+    const restoreFromHistory = () => {
+      const hash = window.location.hash.slice(1) || "home";
+      setActive(hash);
+      window.requestAnimationFrame(() => scrollToHash(hash, false));
+    };
+    window.addEventListener("popstate", restoreFromHistory);
+    window.addEventListener("hashchange", restoreFromHistory);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("popstate", restoreFromHistory);
+      window.removeEventListener("hashchange", restoreFromHistory);
+    };
+  }, [onHome]);
+
   return active;
 }
 
 export function Nav() {
   const [open, setOpen] = useState(false);
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
   const onHome = pathname === "/";
-  const active = useActiveSection();
+  const active = useActiveSection(onHome);
+  const firstMenuLinkRef = useRef<HTMLAnchorElement>(null);
 
-  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
-    if (!onHome) return; // Let it navigate to / then browser handles hash
-    e.preventDefault();
-    scrollToHash(hash);
+  const handleAnchorClick = (event: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+    if (!onHome) return;
+    event.preventDefault();
+    setOpen(false);
+    window.requestAnimationFrame(() => scrollToHash(hash));
   };
 
   return (
-    <>
-      <header className="fixed inset-x-0 top-0 z-40 bg-vmm-canvas/80 backdrop-blur-sm">
-        <div className="relative flex w-full items-center justify-between px-5 py-5 md:px-6 md:py-6 lg:px-8 xl:px-10">
+    <Dialog.Root open={open} onOpenChange={setOpen} modal>
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-transparent bg-white/92 backdrop-blur-md">
+        <div className="vmm-container relative flex min-h-[76px] items-center justify-between">
           <a
             href={onHome ? "#home" : "/#home"}
-            onClick={(e) => onHome && (e.preventDefault(), scrollToHash("home"))}
+            onClick={(event) => handleAnchorClick(event, "home")}
             aria-label="Home"
+            className="inline-flex min-h-11 items-center"
           >
             <Wordmark />
           </a>
 
-          <nav className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-10 lg:flex xl:gap-14">
-            {links.map((l) => {
-              const isActive = onHome && active === l.hash;
+          <nav
+            aria-label="Primary"
+            className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-5 md:flex lg:gap-7 xl:gap-11"
+          >
+            {links.map((link) => {
+              const current = onHome && active === link.hash;
               return (
                 <a
-                  key={l.hash}
-                  href={onHome ? `#${l.hash}` : `/#${l.hash}`}
-                  onClick={(e) => handleAnchorClick(e, l.hash)}
-                  data-active={isActive ? "true" : "false"}
-                  className="vmm-nav-link pointer-events-auto text-[13px] font-bold tracking-[0.22em] text-vmm-ink/80 hover:text-vmm-red"
+                  key={link.hash}
+                  href={onHome ? `#${link.hash}` : `/#${link.hash}`}
+                  onClick={(event) => handleAnchorClick(event, link.hash)}
+                  aria-current={current ? "location" : undefined}
+                  className={`vmm-nav-link text-[11px] font-extrabold tracking-[0.22em] text-vmm-ink hover:text-vmm-red xl:text-xs ${link.hash === "about" || link.hash === "services" ? "!hidden min-[900px]:!inline-flex" : ""}`}
                 >
-                  {l.label}
+                  {link.label}
                 </a>
               );
             })}
           </nav>
 
-          <div className="flex items-center gap-3 md:gap-5">
+          <div className="flex items-center gap-2 md:gap-4">
             <a
               href={onHome ? "#contact" : "/#contact"}
-              onClick={(e) => handleAnchorClick(e, "contact")}
-              className="hidden items-center gap-3 rounded-md bg-vmm-ink px-5 py-3 text-[12px] font-bold tracking-[0.2em] text-white transition-transform hover:-translate-y-0.5 md:inline-flex"
+              onClick={(event) => handleAnchorClick(event, "contact")}
+              className="vmm-button !hidden min-h-11 px-5 py-2 md:!inline-flex"
             >
-              LET'S TALK <ArrowRight className="h-4 w-4" />
+              LET&apos;S TALK <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
-            <button
-              type="button"
-              aria-label="Open menu"
-              onClick={() => setOpen(true)}
-              className="grid h-11 w-11 place-items-center text-vmm-ink"
-            >
-              <Menu className="h-6 w-6" strokeWidth={2.5} />
-            </button>
+            <Dialog.Trigger asChild>
+              <button
+                type="button"
+                aria-label="Open menu"
+                className="grid h-11 w-11 place-items-center text-vmm-ink"
+              >
+                <Menu className="h-6 w-6" strokeWidth={2.5} aria-hidden="true" />
+              </button>
+            </Dialog.Trigger>
           </div>
         </div>
       </header>
 
-      {open && (
-        <MobileMenu
-          onClose={() => setOpen(false)}
-          onNavigate={(hash) => {
-            setOpen(false);
-            if (onHome) requestAnimationFrame(() => scrollToHash(hash));
-            else window.location.href = `/#${hash}`;
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-vmm-ink/65 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in data-[state=closed]:fade-out" />
+        <Dialog.Content
+          className="fixed inset-3 z-[51] flex flex-col overflow-hidden bg-white p-0 shadow-2xl outline-none md:inset-6"
+          onOpenAutoFocus={(event) => {
+            event.preventDefault();
+            firstMenuLinkRef.current?.focus();
           }}
-        />
-      )}
-    </>
-  );
-}
+        >
+          <Dialog.Title className="sr-only">Site navigation</Dialog.Title>
+          <Dialog.Description className="sr-only">
+            Navigate to a VMM portfolio section.
+          </Dialog.Description>
 
-function MobileMenu({ onClose, onNavigate }: { onClose: () => void; onNavigate: (hash: string) => void }) {
-  return (
-    <div className="fixed inset-0 z-50 bg-vmm-ink/60 p-3 md:p-6" role="dialog" aria-modal>
-      <div className="relative mx-auto flex h-full max-w-[1760px] flex-col overflow-hidden rounded-2xl bg-vmm-canvas">
-        <div className="flex items-center justify-between px-6 py-6 md:px-10">
-          <Wordmark />
-          <button type="button" aria-label="Close menu" onClick={onClose} className="grid h-11 w-11 place-items-center text-vmm-ink">
-            <X className="h-6 w-6" strokeWidth={2.5} />
-          </button>
-        </div>
+          <div className="vmm-container flex min-h-[76px] w-full items-center justify-between">
+            <Wordmark />
+            <Dialog.Close asChild>
+              <button
+                type="button"
+                aria-label="Close menu"
+                className="grid h-11 w-11 place-items-center"
+              >
+                <X className="h-6 w-6" strokeWidth={2.5} aria-hidden="true" />
+              </button>
+            </Dialog.Close>
+          </div>
 
-        <nav className="flex flex-1 flex-col justify-center gap-3 px-6 md:gap-4 md:px-14">
-          {links.filter((l) => l.hash !== "contact").map((l, i) => (
-            <button
-              key={l.hash}
-              type="button"
-              onClick={() => onNavigate(l.hash)}
-              className="group flex items-baseline text-left"
-            >
-              <span className="font-display text-6xl leading-[0.9] tracking-tight text-vmm-ink transition-colors group-hover:text-vmm-red md:text-8xl">
-                {l.label.charAt(0) + l.label.slice(1).toLowerCase()}
+          <nav aria-label="Menu" className="vmm-container flex flex-1 flex-col justify-center py-8">
+            {links.map((link, index) => (
+              <a
+                key={link.hash}
+                ref={index === 0 ? firstMenuLinkRef : undefined}
+                href={onHome ? `#${link.hash}` : `/#${link.hash}`}
+                onClick={(event) => handleAnchorClick(event, link.hash)}
+                aria-label={link.label.charAt(0) + link.label.slice(1).toLowerCase()}
+                aria-current={onHome && active === link.hash ? "location" : undefined}
+                className="group flex min-h-14 items-center border-b border-vmm-line font-display text-[clamp(2.5rem,8vw,6rem)] uppercase leading-none hover:text-vmm-red"
+              >
+                {link.label.charAt(0) + link.label.slice(1).toLowerCase()}
+                {index === 0 ? <span className="text-vmm-red">.</span> : null}
+              </a>
+            ))}
+          </nav>
+
+          <div className="vmm-container grid w-full grid-cols-2 items-end gap-x-5 gap-y-3 border-t border-vmm-line py-5 text-[11px] font-bold tracking-[0.16em] md:grid-cols-[1fr_auto_1fr]">
+            <p>
+              UI/UX DESIGNER
+              <br />
+              &amp; WEB DEVELOPER
+            </p>
+            <SocialLinks
+              facebookUrl={contactConfig.social.facebookUrl}
+              linkedinUrl={contactConfig.social.linkedinUrl}
+              className="order-3 col-span-2 justify-center md:order-none md:col-span-1"
+            />
+            <p className="text-right">
+              BASED IN PHILIPPINES
+              <br />
+              <span className="text-vmm-ink">
+                <span className="text-vmm-red" aria-hidden="true">
+                  —
+                </span>{" "}
+                AVAILABLE FOR FREELANCE
               </span>
-              <span className="text-vmm-red">{i === 0 ? "." : ""}</span>
-            </button>
-          ))}
-
-          <div className="mt-10">
-            <button
-              type="button"
-              onClick={() => onNavigate("contact")}
-              className="inline-flex items-center gap-3 rounded-md bg-vmm-ink px-6 py-4 text-[12px] font-bold tracking-[0.18em] text-white"
-            >
-              LET'S TALK <ArrowRight className="h-4 w-4" />
-            </button>
+            </p>
           </div>
-        </nav>
-
-        <div className="flex items-end justify-between gap-4 border-t border-vmm-line px-6 py-6 text-[11px] font-bold tracking-[0.18em] md:px-14">
-          <div className="leading-relaxed">UI/UX DESIGNER<br />&amp; WEB DEVELOPER</div>
-          <div className="hidden text-right leading-relaxed md:block">BASED IN<br /><span className="text-vmm-ink">PHILIPPINES</span></div>
-          <div className="flex items-center gap-2 text-vmm-ink">
-            <Link to="/" className="grid h-9 w-9 place-items-center rounded-full bg-vmm-ink text-[11px] font-black text-white">Bē</Link>
-            <Link to="/" className="grid h-9 w-9 place-items-center rounded-full bg-vmm-ink text-[11px] font-black text-white">in</Link>
-          </div>
-        </div>
-      </div>
-    </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

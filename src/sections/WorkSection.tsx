@@ -1,263 +1,158 @@
 import { useMemo, useState } from "react";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { Orbs } from "@/components/vmm/Orbs";
 import { PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
-import {
-  projects,
-  categoryFilters,
-  type Project,
-  type ProjectCategory,
-} from "@/lib/vmm/projects";
+import { categoryFilters, projects, type Project, type ProjectCategory } from "@/lib/vmm/projects";
 
 export function WorkSection() {
   const [filter, setFilter] = useState<(typeof categoryFilters)[number]>("All");
-  const visible = useMemo<Project[]>(
-    () => (filter === "All" ? projects : projects.filter((p) => p.category === filter)),
+  const visibleProjects = useMemo(
+    () => (filter === "All" ? projects : projects.filter((project) => project.category === filter)),
     [filter],
   );
 
-  useGsap(({ gsap }) => {
-    gsap.utils.toArray<HTMLElement>(".work-row").forEach((el) => {
-      gsap.from(el, {
-        y: 32,
-        opacity: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 88%" },
+  useGsap(
+    ({ gsap }) => {
+      gsap.utils.toArray<HTMLElement>("[data-work-row]").forEach((row) => {
+        gsap.from(row, {
+          y: 28,
+          opacity: 0,
+          duration: 0.65,
+          ease: "power3.out",
+          scrollTrigger: { trigger: row, start: "top 90%" },
+        });
       });
-    });
-  }, [visible.length]);
+    },
+    [visibleProjects.length],
+  );
 
   return (
     <section
       id="work"
-      aria-label="Selected work"
-      className="relative w-full overflow-hidden py-16 md:py-32"
-      style={{ scrollMarginTop: "80px" }}
+      aria-labelledby="work-title"
+      className="vmm-section vmm-section-pad bg-white"
     >
-      <Orbs
-        items={[
-          { size: "s", top: "8%", left: "16%", opacity: 0.35 },
-          { size: "m", top: "4%", right: "10%", opacity: 0.3 },
-          { size: "l", bottom: "-6%", right: "-8%", opacity: 0.18 },
-        ]}
-      />
-
-      <div className="mx-auto w-full max-w-[1520px] px-5 md:px-16 lg:px-24">
-        <div className="max-w-3xl">
-          <p className="text-[13px] font-bold tracking-[0.28em] text-vmm-red">MY WORK</p>
-          <h2
-            className="mt-4 font-display uppercase text-vmm-ink"
-            style={{
-              fontSize: "clamp(44px, 6vw, 92px)",
-              letterSpacing: "-0.02em",
-              lineHeight: 0.9,
-            }}
-          >
-            PROJECTS THAT DELIVER<span className="text-vmm-red">.</span>
-          </h2>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-vmm-ink/80">
-            Five proof-backed projects — websites shipped for real clients, a mobile product in
-            beta, and internal systems documented as sanitized case studies.
+      <div className="vmm-container">
+        <div className="grid gap-7 border-b-2 border-vmm-ink pb-8 md:grid-cols-12 md:items-end md:pb-10">
+          <div className="md:col-span-8">
+            <p className="vmm-kicker">MY WORK</p>
+            <h2 id="work-title" className="vmm-heading mt-4 max-w-[11ch]">
+              PROJECTS THAT DELIVER<span className="text-vmm-red">.</span>
+            </h2>
+          </div>
+          <p className="max-w-xl text-sm leading-7 text-vmm-ink/70 md:col-span-4 md:pb-1">
+            Four proof-backed projects — two client websites, one Android product in beta, and one
+            sanitized automation case study.
           </p>
         </div>
 
-        {/* Filters — desktop/tablet only */}
         <div
-          role="tablist"
           aria-label="Filter projects by category"
-          className="mt-12 hidden flex-wrap items-center gap-x-6 gap-y-3 border-b border-vmm-line pb-4 md:flex"
+          className="mt-7 hidden flex-wrap items-center gap-x-7 gap-y-2 md:flex"
         >
           {categoryFilters.map((label) => {
-            const active = filter === label;
+            const isActive = filter === label;
             const count =
               label === "All"
                 ? projects.length
-                : projects.filter((p) => p.category === (label as ProjectCategory)).length;
+                : projects.filter((project) => project.category === (label as ProjectCategory))
+                    .length;
+
             return (
               <button
                 key={label}
-                role="tab"
-                aria-selected={active}
                 type="button"
+                aria-pressed={isActive}
                 onClick={() => setFilter(label)}
-                className={`relative pb-2 text-[12px] font-bold tracking-[0.2em] uppercase transition-colors ${
-                  active ? "text-vmm-red" : "text-vmm-ink hover:text-vmm-red"
+                className={`border-b-2 py-3 text-[0.7rem] font-black uppercase tracking-[0.2em] transition-colors ${
+                  isActive
+                    ? "border-vmm-red text-vmm-ink"
+                    : "border-transparent text-vmm-ink/65 hover:border-vmm-ink hover:text-vmm-ink"
                 }`}
               >
-                {label} <span className="ml-1 text-[10px] font-semibold text-vmm-ink/50">({count})</span>
-                {active && <span className="absolute inset-x-0 -bottom-[17px] h-[3px] bg-vmm-red" />}
+                {label} <span aria-hidden>({count})</span>
               </button>
             );
           })}
         </div>
 
-        {/* Mobile CTA — single button in place of filters */}
-        <div className="mt-10 md:hidden">
-          <button
-            type="button"
-            onClick={() => setFilter("All")}
-            className="inline-flex w-full items-center justify-between gap-3 rounded-md bg-vmm-ink px-5 py-4 text-[12px] font-bold tracking-[0.22em] text-white"
-          >
-            VIEW ALL PROJECTS
-            <ArrowUpRight className="h-4 w-4" />
-          </button>
-        </div>
+        <p className="sr-only" aria-live="polite">
+          Showing {visibleProjects.length} {visibleProjects.length === 1 ? "project" : "projects"}.
+        </p>
 
-        <ul className="mt-10 space-y-6 md:mt-12">
-          {visible.map((p) => (
-            <li key={p.slug} className="work-row">
-              <ProjectRow project={p} />
+        <ol className="mt-8 border-t border-vmm-ink md:mt-10">
+          {visibleProjects.map((project) => (
+            <li key={project.slug} data-work-row className="border-b border-vmm-ink">
+              <ProjectRow project={project} />
             </li>
           ))}
-          {visible.length === 0 && (
-            <li className="py-16 text-center text-sm text-vmm-ink/60">
-              No projects in this category yet.
-            </li>
-          )}
-        </ul>
+        </ol>
       </div>
-
+      <span className="vmm-mobile-number md:hidden" aria-hidden>
+        003
+      </span>
       <PageNumber n="003" />
     </section>
   );
 }
 
-function StatusPill({ status, note }: { status: Project["status"]; note?: string }) {
-  const tone: Record<Project["status"], string> = {
-    Completed: "bg-emerald-500/10 text-emerald-700 border-emerald-500/30",
-    Ongoing: "bg-amber-500/10 text-amber-700 border-amber-500/30",
-    "Case Study": "bg-vmm-ink/5 text-vmm-ink border-vmm-line",
-    Beta: "bg-vmm-red/10 text-vmm-red border-vmm-red/30",
-  };
-  return (
-    <span
-      title={note}
-      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-[0.16em] uppercase ${tone[status]}`}
-    >
-      <span className="h-1.5 w-1.5 rounded-full bg-current" />
-      {status}
-    </span>
-  );
-}
-
-function ProjectRow({ project: p }: { project: Project }) {
-  return (
+function ProjectRow({ project }: { project: Project }) {
+  const external = project.cta.kind === "external";
+  const content = (
     <>
-      {/* MOBILE — editorial card: text left, image right, red arrow CTA */}
-      <MobileProjectCard project={p} />
-
-      {/* DESKTOP — original editorial row */}
-      <article
-        aria-label={p.title}
-        className="group hidden overflow-hidden rounded-2xl border border-vmm-line bg-white transition-shadow hover:shadow-[0_20px_60px_-30px_rgba(0,0,0,0.25)] md:grid md:grid-cols-[minmax(0,44%)_1fr]"
-      >
-        <div className="relative w-full overflow-hidden bg-vmm-canvas">
-          <div className="aspect-[16/10] w-full">
-            <img
-              src={p.thumbnail.desktop}
-              alt={`${p.title} — project preview`}
-              loading="lazy"
-              decoding="async"
-              className="h-full w-full object-contain p-4 transition-transform duration-700 group-hover:scale-[1.02]"
-            />
-          </div>
-          <div className="pointer-events-none absolute left-4 top-4 rounded-md bg-vmm-ink/85 px-3 py-1 font-display text-lg text-white backdrop-blur-sm">
-            {p.index}
-          </div>
-        </div>
-
-        <div className="flex min-w-0 flex-col justify-center gap-3 p-6 md:p-8">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-vmm-red">
-              {p.category}
-            </span>
-            <StatusPill status={p.status} note={p.statusNote} />
-          </div>
-          <h3 className="font-display text-2xl leading-tight md:text-[26px]">{p.title}</h3>
-          <p className="text-sm leading-relaxed text-vmm-ink/70">{p.subtitle}</p>
-          {p.statusNote && (
-            <p className="text-[11px] font-medium tracking-[0.02em] text-vmm-ink/50">
-              {p.statusNote}
-            </p>
-          )}
-
-          <ProjectCtaButton project={p} />
-        </div>
-      </article>
-    </>
-  );
-}
-
-function MobileProjectCard({ project: p }: { project: Project }) {
-  const href = p.cta.kind === "external" ? p.cta.href : `/work/${p.slug}`;
-  const external = p.cta.kind === "external";
-  const Wrapper: React.ElementType = external ? "a" : Link;
-  const wrapperProps = external
-    ? { href, target: "_blank", rel: "noopener noreferrer" }
-    : { to: "/work/$slug", params: { slug: p.slug } };
-
-  return (
-    <Wrapper
-      {...wrapperProps}
-      aria-label={p.title}
-      className="group relative grid grid-cols-[1fr_44%] overflow-hidden rounded-2xl bg-white shadow-[0_10px_30px_-20px_rgba(0,0,0,0.18)] md:hidden"
-    >
-      <div className="flex min-w-0 flex-col justify-between gap-4 p-5">
-        <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-vmm-red">
-            FEATURED PROJECT
-          </p>
-          <h3 className="mt-2 font-display text-[22px] leading-[1.05] uppercase text-vmm-ink">
-            {p.title}
-          </h3>
-          <p className="mt-2 text-[13px] leading-snug text-vmm-ink/70">{p.subtitle}</p>
-        </div>
-        <span
-          aria-hidden
-          className="inline-flex h-9 w-9 items-center justify-center text-vmm-red transition-transform group-hover:translate-x-1"
-        >
-          <ArrowUpRight className="h-6 w-6" strokeWidth={2.25} />
-        </span>
-      </div>
-      <div className="relative overflow-hidden bg-vmm-canvas">
+      <div className="relative aspect-[16/10] overflow-hidden bg-[#ecece8] md:col-span-5 md:aspect-[16/11]">
         <img
-          src={p.thumbnail.mobile}
-          alt={`${p.title} — project preview`}
+          src={project.thumbnail.desktop}
+          alt=""
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
         />
+        <span className="absolute right-0 top-0 bg-vmm-red px-3 py-2 font-display text-xl text-white">
+          {project.index}
+        </span>
       </div>
-    </Wrapper>
+      <div className="flex flex-col justify-center py-6 md:col-span-6 md:py-10 lg:col-span-5">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[0.65rem] font-black uppercase tracking-[0.2em]">
+          <span className="border-l-[3px] border-vmm-red pl-2 text-vmm-ink">
+            {project.category}
+          </span>
+          <span className="text-vmm-ink/55">{project.status}</span>
+        </div>
+        <h3 className="mt-3 max-w-[19ch] font-display text-[clamp(1.65rem,3.5vw,3.3rem)] uppercase leading-[0.96]">
+          {project.title}
+        </h3>
+        <p className="mt-4 max-w-xl text-sm leading-6 text-vmm-ink/68">{project.subtitle}</p>
+        {project.statusNote ? (
+          <p className="mt-2 text-xs font-semibold text-vmm-ink/65">{project.statusNote}</p>
+        ) : null}
+        <span className="mt-6 inline-flex items-center gap-2 text-[0.7rem] font-black uppercase tracking-[0.2em]">
+          {project.cta.label}
+          {external ? (
+            <ExternalLink aria-hidden className="h-4 w-4" />
+          ) : (
+            <ArrowUpRight aria-hidden className="h-4 w-4" />
+          )}
+        </span>
+      </div>
+    </>
   );
-}
 
-function ProjectCtaButton({ project: p }: { project: Project }) {
-  const base =
-    "mt-2 inline-flex w-fit items-center gap-2 rounded-md px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] transition-transform";
+  const className =
+    "group grid gap-5 py-5 md:grid-cols-11 md:gap-8 md:py-0 lg:grid-cols-12 focus-visible:outline-offset-4";
 
-  if (p.cta.kind === "external") {
+  if (project.cta.kind === "external") {
     return (
-      <a
-        href={p.cta.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`${base} bg-vmm-ink text-white hover:-translate-y-0.5`}
-      >
-        {p.cta.label} <ExternalLink className="h-3.5 w-3.5" />
+      <a href={project.cta.href} target="_blank" rel="noopener noreferrer" className={className}>
+        {content}
       </a>
     );
   }
+
   return (
-    <Link
-      to="/work/$slug"
-      params={{ slug: p.slug }}
-      className={`${base} border border-vmm-ink text-vmm-ink hover:border-vmm-red hover:text-vmm-red`}
-    >
-      {p.cta.label} <ArrowUpRight className="h-3.5 w-3.5" />
+    <Link to="/work/$slug" params={{ slug: project.slug }} className={className}>
+      {content}
     </Link>
   );
 }

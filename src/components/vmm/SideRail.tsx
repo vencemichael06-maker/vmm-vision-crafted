@@ -26,10 +26,7 @@ export function RightRail() {
         <span style={{ fontSize: "11px", letterSpacing: "0.38em" }} className="opacity-90">
           BASED IN
         </span>
-        <span
-          className="font-black"
-          style={{ fontSize: "16px", letterSpacing: "0.22em" }}
-        >
+        <span className="font-black" style={{ fontSize: "16px", letterSpacing: "0.22em" }}>
           PHILIPPINES
         </span>
         <span style={{ fontSize: "11px", letterSpacing: "0.38em" }} className="opacity-90">
@@ -40,11 +37,11 @@ export function RightRail() {
   );
 }
 
-export function PageNumber({ n }: { n: string }) {
+export function PageNumber({ n, tone = "dark" }: { n: string; tone?: "dark" | "light" }) {
   return (
     <div className="pointer-events-none absolute bottom-8 left-6 z-[6] hidden items-end gap-4 md:flex lg:left-8 xl:left-10">
       <div
-        className="font-display font-black leading-[0.82] text-vmm-ink"
+        className={`font-display font-black leading-[0.82] ${tone === "light" ? "text-white" : "text-vmm-ink"}`}
         style={{
           fontSize: "clamp(64px, 6.2vw, 104px)",
           letterSpacing: "-0.02em",
@@ -52,7 +49,7 @@ export function PageNumber({ n }: { n: string }) {
       >
         {n}
       </div>
-      <div className="mb-3 h-px w-10 bg-vmm-ink/60" />
+      <div className={`mb-3 h-px w-10 ${tone === "light" ? "bg-white/60" : "bg-vmm-ink/60"}`} />
     </div>
   );
 }
