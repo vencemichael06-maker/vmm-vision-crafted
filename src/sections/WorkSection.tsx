@@ -101,33 +101,39 @@ function ProjectRow({ project }: { project: Project }) {
   const external = project.cta.kind === "external";
   const content = (
     <>
-      <div className="relative aspect-[16/10] overflow-hidden bg-[#ecece8] md:col-span-5 md:aspect-[16/11]">
-        <img
-          src={project.thumbnail.desktop}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
-        />
+      <div className="vmm-work-media relative overflow-hidden bg-[#ecece8]">
+        <picture className="block h-full w-full">
+          <source media="(max-width: 767px)" srcSet={project.thumbnail.mobile} />
+          <img
+            data-project-thumbnail
+            src={project.thumbnail.desktop}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
+          />
+        </picture>
         <span className="absolute right-0 top-0 bg-vmm-red px-3 py-2 font-display text-xl text-white">
           {project.index}
         </span>
       </div>
-      <div className="flex flex-col justify-center py-6 md:col-span-6 md:py-10 lg:col-span-5">
+      <div className="vmm-work-copy flex min-w-0 flex-col justify-center">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[0.65rem] font-black uppercase tracking-[0.2em]">
           <span className="border-l-[3px] border-vmm-red pl-2 text-vmm-ink">
             {project.category}
           </span>
           <span className="text-vmm-ink/55">{project.status}</span>
         </div>
-        <h3 className="mt-3 max-w-[19ch] font-display text-[clamp(1.65rem,3.5vw,3.3rem)] uppercase leading-[0.96]">
-          {project.title}
-        </h3>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-vmm-ink/68">{project.subtitle}</p>
+        <h3 className="vmm-work-title mt-3 max-w-[19ch] font-display uppercase">{project.title}</h3>
+        <p className="vmm-work-subtitle mt-4 max-w-xl text-sm leading-6 text-vmm-ink/68">
+          {project.subtitle}
+        </p>
         {project.statusNote ? (
-          <p className="mt-2 text-xs font-semibold text-vmm-ink/65">{project.statusNote}</p>
+          <p className="vmm-work-note mt-2 text-xs font-semibold text-vmm-ink/65">
+            {project.statusNote}
+          </p>
         ) : null}
-        <span className="mt-6 inline-flex items-center gap-2 text-[0.7rem] font-black uppercase tracking-[0.2em]">
+        <span className="vmm-work-cta mt-6 inline-flex items-center gap-2 text-[0.7rem] font-black uppercase tracking-[0.2em]">
           {project.cta.label}
           {external ? (
             <ExternalLink aria-hidden className="h-4 w-4" />
@@ -139,8 +145,7 @@ function ProjectRow({ project }: { project: Project }) {
     </>
   );
 
-  const className =
-    "group grid gap-5 py-5 md:grid-cols-11 md:gap-8 md:py-0 lg:grid-cols-12 focus-visible:outline-offset-4";
+  const className = "vmm-work-row group grid focus-visible:outline-offset-4";
 
   if (project.cta.kind === "external") {
     return (

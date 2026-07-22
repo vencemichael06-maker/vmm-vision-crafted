@@ -69,13 +69,97 @@ for (const viewport of viewports) {
     });
 
     await page.evaluate(() => document.getElementById("work")?.scrollIntoView());
-    const projectThumbnails = page.locator("#work img");
+    const projectThumbnails = page.locator("#work [data-project-thumbnail]");
     await expect(projectThumbnails).toHaveCount(4);
-    for (const src of await projectThumbnails.evaluateAll((images) =>
+    await expect
+      .poll(
+        () =>
+          projectThumbnails.evaluateAll((images) =>
+            images.every((image) => {
+              const thumbnail = image as HTMLImageElement;
+              return (
+                thumbnail.complete && thumbnail.naturalWidth > 0 && thumbnail.currentSrc !== ""
+              );
+            }),
+          ),
+        { timeout: 15_000 },
+      )
+      .toBe(true);
+
+    const thumbnailUrls = await projectThumbnails.evaluateAll((images) =>
       images.map((image) => (image as HTMLImageElement).currentSrc),
-    )) {
-      expect(src).toContain("-portfolio.webp");
+    );
+    expect(thumbnailUrls).toHaveLength(4);
+    expect(thumbnailUrls.every((src) => new URL(src).pathname.endsWith("-portfolio.webp"))).toBe(
+      true,
+    );
+
+    const workContract = await page.locator("#work").evaluate((work, viewportWidth) => {
+      const rows = [...work.querySelectorAll<HTMLElement>("[data-work-row]")];
+      const firstLink = rows[0]?.querySelector<HTMLElement>(":scope > a");
+      const media = firstLink?.children[0] as HTMLElement | undefined;
+      const copy = firstLink?.children[1] as HTMLElement | undefined;
+      const mediaBounds = media?.getBoundingClientRect();
+      const copyBounds = copy?.getBoundingClientRect();
+      const linkStyle = firstLink ? getComputedStyle(firstLink) : null;
+      const columns = linkStyle?.gridTemplateColumns.split(" ").filter(Boolean) ?? [];
+
+      return {
+        rowCount: rows.length,
+        linksPerRow: rows.map((row) => row.querySelectorAll(":scope > a").length),
+        nestedInteractiveCount: work.querySelectorAll(
+          "[data-work-row] > a a, [data-work-row] > a button, [data-work-row] > a input, [data-work-row] > a select, [data-work-row] > a textarea",
+        ).length,
+        responsiveSources: work.querySelectorAll('picture source[media="(max-width: 767px)"]')
+          .length,
+        columnCount: columns.length,
+        columnRatio:
+          columns.length === 2
+            ? Number.parseFloat(columns[0]) / Number.parseFloat(columns[1])
+            : null,
+        gap: linkStyle ? Number.parseFloat(linkStyle.columnGap) : null,
+        imageFirst: Boolean(
+          mediaBounds &&
+          copyBounds &&
+          (viewportWidth === 375
+            ? mediaBounds.top < copyBounds.top
+            : mediaBounds.left < copyBounds.left),
+        ),
+      };
+    }, viewport.width);
+
+    expect(workContract.rowCount).toBe(4);
+    expect(workContract.linksPerRow).toEqual([1, 1, 1, 1]);
+    expect(workContract.nestedInteractiveCount).toBe(0);
+    expect(workContract.responsiveSources).toBe(4);
+    expect(workContract.imageFirst).toBe(true);
+    if (viewport.width === 375) {
+      expect(workContract.columnCount).toBe(1);
+    } else {
+      expect(workContract.columnCount).toBe(2);
+      if (viewport.width < 768) {
+        expect(workContract.columnRatio).toBeCloseTo(0.95 / 1.05, 1);
+        expect(workContract.gap).toBeGreaterThanOrEqual(12);
+        expect(workContract.gap).toBeLessThanOrEqual(16);
+      } else if (viewport.width < 1200) {
+        expect(workContract.columnRatio).toBeCloseTo(5 / 6, 1);
+      } else {
+        expect(workContract.columnRatio).toBeCloseTo(7 / 5, 1);
+      }
     }
+
+    const projectRows = page.locator("#work [data-work-row]");
+    for (let index = 0; index < (await projectRows.count()); index += 1) {
+      const row = projectRows.nth(index);
+      await row.scrollIntoViewIfNeeded();
+      await expect
+        .poll(() => row.evaluate((element) => Number.parseFloat(getComputedStyle(element).opacity)))
+        .toBeGreaterThan(0.99);
+    }
+    await page.evaluate(() => document.getElementById("work")?.scrollIntoView());
+    await page.locator("#work").screenshot({
+      path: path.join(screenshotDirectory, `vmm-${viewport.width}x${viewport.height}-work.png`),
+    });
 
     await page.evaluate(() => {
       const about = document.getElementById("about");
