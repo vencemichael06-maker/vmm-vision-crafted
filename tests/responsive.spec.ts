@@ -180,7 +180,9 @@ for (const viewport of viewports) {
         window.scrollTo(0, about.offsetTop + scrollable * 0.5);
       });
       await expect
-        .poll(async () => Number(await hand.getAttribute("data-current-frame")), { timeout: 15_000 })
+        .poll(async () => Number(await hand.getAttribute("data-current-frame")), {
+          timeout: 15_000,
+        })
         .toBeGreaterThanOrEqual(45);
       const ctaBounds = await page.getByTestId("about-cta").boundingBox();
       expect(ctaBounds).not.toBeNull();
@@ -188,21 +190,25 @@ for (const viewport of viewports) {
       expect(ctaBounds!.y).toBeGreaterThanOrEqual(0);
       expect(ctaBounds!.x + ctaBounds!.width).toBeLessThanOrEqual(viewport.width);
       expect(ctaBounds!.y + ctaBounds!.height).toBeLessThanOrEqual(viewport.height);
-      expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBe(0);
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth),
+      ).toBe(0);
     }
 
     await page.evaluate(() => document.getElementById("services")?.scrollIntoView());
     await page.waitForTimeout(850);
-    expect.soft(await renderedLineCount(page, "#services-title")).toBeLessThanOrEqual(mobile ? 4 : 3);
+    expect
+      .soft(await renderedLineCount(page, "#services-title"))
+      .toBeLessThanOrEqual(mobile ? 4 : 3);
     await page.screenshot({
       path: path.join(screenshotDirectory, `vmm-${viewport.width}x${viewport.height}-services.png`),
     });
 
     await page.evaluate(() => document.getElementById("process")?.scrollIntoView());
     await page.waitForTimeout(850);
-    expect.soft(await renderedLineCount(page, "#process-title")).toBeLessThanOrEqual(
-      viewport.width >= 1200 ? 2 : 3,
-    );
+    expect
+      .soft(await renderedLineCount(page, "#process-title"))
+      .toBeLessThanOrEqual(viewport.width >= 1200 ? 2 : 3);
     for (const label of ["Discovery", "Strategy", "Design", "Develop", "Launch & Support"]) {
       await expect(page.getByRole("heading", { name: label, exact: true })).toBeVisible();
     }
@@ -213,7 +219,9 @@ for (const viewport of viewports) {
     await page.evaluate(() => document.getElementById("contact")?.scrollIntoView());
     await page.waitForTimeout(850);
     await expect(page.getByRole("heading", { name: "LET'S BUILD SOMETHING GREAT." })).toBeVisible();
-    expect.soft(await renderedLineCount(page, "#contact-title")).toBeLessThanOrEqual(mobile ? 4 : 3);
+    expect
+      .soft(await renderedLineCount(page, "#contact-title"))
+      .toBeLessThanOrEqual(mobile ? 4 : 3);
     await page.screenshot({
       path: path.join(
         screenshotDirectory,

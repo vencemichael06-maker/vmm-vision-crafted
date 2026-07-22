@@ -10,10 +10,7 @@ const expectedAssets = new Map([
     "/assets/vmm/projects/caballero-digital-solutions-portfolio.webp",
   ],
   ["ig-sabroso-construction", "/assets/vmm/projects/ig-sabroso-portfolio.webp"],
-  [
-    "google-sheet-order-tracker",
-    "/assets/vmm/projects/google-sheet-order-tracker-portfolio.webp",
-  ],
+  ["google-sheet-order-tracker", "/assets/vmm/projects/google-sheet-order-tracker-portfolio.webp"],
 ]);
 
 describe("real-project portfolio assets", () => {
