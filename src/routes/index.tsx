@@ -18,9 +18,9 @@ import { HeroPersonGlitch } from "@/components/vmm/HeroPersonGlitch";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "VMM — UI/UX Designer & Web Developer" },
+      { title: "VMM - UI/UX Designer & Web Developer" },
       { name: "description", content: "I design and build digital experiences that are clean, modern and impactful." },
-      { property: "og:title", content: "VMM — UI/UX Designer & Web Developer" },
+      { property: "og:title", content: "VMM - UI/UX Designer & Web Developer" },
       { property: "og:description", content: "I design and build digital experiences that are clean, modern and impactful." },
     ],
   }),
