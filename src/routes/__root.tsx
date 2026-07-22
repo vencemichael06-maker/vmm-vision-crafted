@@ -78,41 +78,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer" },
-      {
-        name: "description",
-        content: "I design and build digital experiences that are clean, modern and impactful.",
-      },
+      { name: "description", content: "I design and build digital experiences that are clean, modern and impactful." },
       { name: "author", content: "Vence Michael Montero" },
-      {
-        property: "og:title",
-        content: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer",
-      },
-      {
-        property: "og:description",
-        content: "I design and build digital experiences that are clean, modern and impactful.",
-      },
+      { property: "og:title", content: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer" },
+      { property: "og:description", content: "I design and build digital experiences that are clean, modern and impactful." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "twitter:title",
-        content: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer",
-      },
-      {
-        name: "twitter:description",
-        content: "I design and build digital experiences that are clean, modern and impactful.",
-      },
-      {
-        property: "og:image",
-        content:
-          "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/cc2d0a05-9e9e-4ee1-8ed7-46bc01b10e5e",
-      },
-      {
-        name: "twitter:image",
-        content:
-          "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/cc2d0a05-9e9e-4ee1-8ed7-46bc01b10e5e",
-      },
+      { name: "twitter:title", content: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer" },
+      { name: "twitter:description", content: "I design and build digital experiences that are clean, modern and impactful." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/cc2d0a05-9e9e-4ee1-8ed7-46bc01b10e5e" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/cc2d0a05-9e9e-4ee1-8ed7-46bc01b10e5e" },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
