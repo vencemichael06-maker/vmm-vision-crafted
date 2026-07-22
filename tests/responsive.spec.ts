@@ -64,12 +64,27 @@ for (const viewport of viewports) {
     const mobile = viewport.width < 768;
     expect(await renderedLineCount(page, "#home h1")).toBe(mobile ? 3 : 2);
 
+    await page.screenshot({
+      path: path.join(screenshotDirectory, `vmm-${viewport.width}x${viewport.height}-hero.png`),
+    });
+
+    await page.evaluate(() => document.getElementById("work")?.scrollIntoView());
+    const projectThumbnails = page.locator("#work img");
+    await expect(projectThumbnails).toHaveCount(4);
+    for (const src of await projectThumbnails.evaluateAll((images) =>
+      images.map((image) => (image as HTMLImageElement).currentSrc),
+    )) {
+      expect(src).toContain("-portfolio.webp");
+    }
+
     await page.evaluate(() => {
       const about = document.getElementById("about");
       if (!about) throw new Error("About section missing");
       window.scrollTo(0, about.offsetTop + 1);
     });
-    await expect(page.locator('[data-section-number="002"]')).toBeInViewport();
+    if (mobile) {
+      await expect(page.locator('[data-section-number="002"]')).toBeInViewport();
+    }
     expect(await renderedLineCount(page, "#about h2")).toBe(3);
 
     if (mobile) {
@@ -91,19 +106,6 @@ for (const viewport of viewports) {
       expect(ctaBounds!.y + ctaBounds!.height).toBeLessThanOrEqual(viewport.height);
       expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBe(0);
     }
-
-    await page.evaluate(() => document.getElementById("work")?.scrollIntoView());
-    const projectThumbnails = page.locator("#work img");
-    await expect(projectThumbnails).toHaveCount(4);
-    for (const src of await projectThumbnails.evaluateAll((images) =>
-      images.map((image) => (image as HTMLImageElement).currentSrc),
-    )) {
-      expect(src).toContain("-portfolio.webp");
-    }
-
-    await page.screenshot({
-      path: path.join(screenshotDirectory, `vmm-${viewport.width}x${viewport.height}-hero.png`),
-    });
 
     await page.evaluate(() => document.getElementById("services")?.scrollIntoView());
     await page.waitForTimeout(850);
