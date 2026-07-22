@@ -193,7 +193,7 @@
 
 .vmm-hero-title {
   max-width: none;
-  font-size: clamp(3.2rem, 15vw, 4.4rem);
+  font-size: clamp(3.2rem, 12vw, 4.4rem);
   line-height: 0.84;
 }
 
@@ -359,7 +359,7 @@
 
 @media (min-width: 768px) {
   .vmm-hero-title {
-    font-size: 4.15rem;
+    font-size: 4rem;
   }
 
   .vmm-about-title {
