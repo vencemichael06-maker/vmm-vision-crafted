@@ -6,10 +6,14 @@ const viewports = [
   { width: 375, height: 812 },
   { width: 390, height: 844 },
   { width: 414, height: 896 },
+  { width: 430, height: 932 },
   { width: 768, height: 1024 },
+  { width: 820, height: 1180 },
   { width: 1024, height: 1366 },
+  { width: 1280, height: 720 },
   { width: 1366, height: 768 },
   { width: 1440, height: 900 },
+  { width: 1536, height: 864 },
   { width: 1920, height: 1080 },
 ] as const;
 
@@ -106,7 +110,7 @@ test("hash navigation, browser history, and accessible dialog", async ({ page })
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
 });
 
-test("hand sequence reaches both endpoints when scrolling forward and reverse", async ({
+test("hand opens on Page 002, closes into Page 003, and restores while reversing", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
@@ -118,9 +122,38 @@ test("hand sequence reaches both endpoints when scrolling forward and reverse", 
   await page.evaluate(() => {
     const about = document.getElementById("about");
     if (!about) throw new Error("About section missing");
-    window.scrollTo(0, about.offsetTop + about.offsetHeight - window.innerHeight);
+    window.scrollTo(0, about.offsetTop);
   });
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+  await expect
+    .poll(async () => Number(await hand.getAttribute("data-current-frame")), { timeout: 15_000 })
+    .toBeLessThanOrEqual(2);
+
+  await page.evaluate(() => {
+    const about = document.getElementById("about");
+    if (!about) throw new Error("About section missing");
+    const scrollable = about.offsetHeight - window.innerHeight;
+    window.scrollTo(0, about.offsetTop + scrollable * 0.5);
+  });
+  await expect
+    .poll(async () => Number(await hand.getAttribute("data-current-frame")), { timeout: 15_000 })
+    .toBeGreaterThanOrEqual(45);
+
+  await page.evaluate(() => {
+    const about = document.getElementById("about");
+    if (!about) throw new Error("About section missing");
+    window.scrollTo(0, about.offsetTop + about.offsetHeight - window.innerHeight);
+  });
+  await expect
+    .poll(async () => Number(await hand.getAttribute("data-current-frame")), { timeout: 15_000 })
+    .toBeLessThanOrEqual(2);
+
+  await page.evaluate(() => {
+    const about = document.getElementById("about");
+    if (!about) throw new Error("About section missing");
+    const scrollable = about.offsetHeight - window.innerHeight;
+    window.scrollTo(0, about.offsetTop + scrollable * 0.5);
+  });
   await expect
     .poll(async () => Number(await hand.getAttribute("data-current-frame")), { timeout: 15_000 })
     .toBeGreaterThanOrEqual(45);
@@ -129,6 +162,42 @@ test("hand sequence reaches both endpoints when scrolling forward and reverse", 
     const about = document.getElementById("about");
     if (!about) throw new Error("About section missing");
     window.scrollTo(0, about.offsetTop);
+  });
+  await expect
+    .poll(async () => Number(await hand.getAttribute("data-current-frame")), { timeout: 15_000 })
+    .toBeLessThanOrEqual(2);
+});
+
+test("hand timeline remeasures after mobile, tablet, and desktop viewport changes", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 414, height: 896 });
+  await page.goto("/");
+  await page.locator(".vmm-hpg--done").waitFor();
+  const hand = page.locator(".hand-reveal-media");
+
+  for (const viewport of [
+    { width: 414, height: 896 },
+    { width: 820, height: 1180 },
+    { width: 1440, height: 900 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.evaluate(() => {
+      const about = document.getElementById("about");
+      if (!about) throw new Error("About section missing");
+      const scrollable = about.offsetHeight - window.innerHeight;
+      window.scrollTo(0, about.offsetTop + scrollable * 0.5);
+    });
+    await expect
+      .poll(async () => Number(await hand.getAttribute("data-current-frame")), { timeout: 15_000 })
+      .toBeGreaterThanOrEqual(45);
+  }
+
+  await page.evaluate(() => {
+    const about = document.getElementById("about");
+    if (!about) throw new Error("About section missing");
+    window.scrollTo(0, about.offsetTop + about.offsetHeight - window.innerHeight);
   });
   await expect
     .poll(async () => Number(await hand.getAttribute("data-current-frame")), { timeout: 15_000 })

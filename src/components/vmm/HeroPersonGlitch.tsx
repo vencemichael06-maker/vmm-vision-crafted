@@ -10,10 +10,17 @@ type Props = {
 export function HeroPersonGlitch({ className = "", style }: Props) {
   const [phase, setPhase] = useState<"init" | "run" | "done">("init");
   const [pulse, setPulse] = useState(false);
+  const [imageReady, setImageReady] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const baseImageRef = useRef<HTMLImageElement>(null);
   const id = useId().replace(/:/g, "");
   const redFilterId = `vmm-red-${id}`;
   const cyanFilterId = `vmm-cyan-${id}`;
+
+  useEffect(() => {
+    const image = baseImageRef.current;
+    if (image?.complete && image.naturalWidth > 0) setImageReady(true);
+  }, []);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -21,6 +28,7 @@ export function HeroPersonGlitch({ className = "", style }: Props) {
       setPhase("done");
       return;
     }
+    if (!imageReady) return;
 
     const animationFrame = window.requestAnimationFrame(() => setPhase("run"));
     const finishTimer = window.setTimeout(() => setPhase("done"), 950);
@@ -28,7 +36,7 @@ export function HeroPersonGlitch({ className = "", style }: Props) {
       window.cancelAnimationFrame(animationFrame);
       window.clearTimeout(finishTimer);
     };
-  }, []);
+  }, [imageReady]);
 
   useEffect(() => {
     if (phase !== "done" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -50,7 +58,7 @@ export function HeroPersonGlitch({ className = "", style }: Props) {
         () => {
           periodicTimer = undefined;
           setPulse(true);
-          pulseTimer = window.setTimeout(() => setPulse(false), 220);
+          pulseTimer = window.setTimeout(() => setPulse(false), 260);
           schedule();
         },
         10_000 + Math.random() * 4_000,
@@ -89,12 +97,12 @@ export function HeroPersonGlitch({ className = "", style }: Props) {
       <style>{`
         .vmm-hpg { --vmm-hpg-img: url(${PERSON_SRC}); }
         .vmm-hpg__img { -webkit-user-drag: none; user-select: none; }
-        .vmm-hpg--init .vmm-hpg__base { opacity: 0; }
+        .vmm-hpg--init .vmm-hpg__base { opacity: 1; }
         .vmm-hpg--init .vmm-hpg__ghost, .vmm-hpg--init .vmm-hpg__r,
         .vmm-hpg--init .vmm-hpg__c, .vmm-hpg--init .vmm-hpg__slice { opacity: 0; }
         .vmm-hpg--done .vmm-hpg__base { opacity: 1; filter: none; transform: none; }
         .vmm-hpg--done .vmm-hpg__ghost, .vmm-hpg--done .vmm-hpg__r,
-        .vmm-hpg--done .vmm-hpg__c, .vmm-hpg--done .vmm-hpg__slice { display: none; }
+        .vmm-hpg--done .vmm-hpg__c, .vmm-hpg--done .vmm-hpg__slice { opacity: 0; }
         .vmm-hpg--run .vmm-hpg__base { animation: vmm-hpg-base 900ms steps(24, end) forwards; }
         .vmm-hpg--run .vmm-hpg__ghost { animation: vmm-hpg-ghost 900ms ease-out forwards; }
         .vmm-hpg--run .vmm-hpg__r { animation: vmm-hpg-rgb-r 900ms ease-out forwards; mix-blend-mode: screen; }
@@ -102,15 +110,22 @@ export function HeroPersonGlitch({ className = "", style }: Props) {
         .vmm-hpg--run .vmm-hpg__slice-1 { animation: vmm-hpg-s1 900ms steps(12, end) forwards; }
         .vmm-hpg--run .vmm-hpg__slice-2 { animation: vmm-hpg-s2 900ms steps(10, end) forwards; }
         .vmm-hpg--run .vmm-hpg__slice-3 { animation: vmm-hpg-s3 900ms steps(14, end) forwards; }
-        .vmm-hpg__ghost { position: absolute; inset: 0; background: var(--vmm-hpg-img) bottom center / contain no-repeat; filter: brightness(0) opacity(.55) blur(1px); }
+        .vmm-hpg__ghost { position: absolute; inset: 0; opacity: 0; background: var(--vmm-hpg-img) bottom center / contain no-repeat; filter: brightness(0) opacity(.55) blur(1px); }
         .vmm-hpg__r { filter: url(#${redFilterId}); }
         .vmm-hpg__c { filter: url(#${cyanFilterId}); }
+        .vmm-hpg__r, .vmm-hpg__c { opacity: 0; }
         .vmm-hpg__slice { position: absolute; left: 0; right: 0; opacity: 0; background-image: var(--vmm-hpg-img); background-repeat: no-repeat; }
         .vmm-hpg__slice-1 { top: 24%; height: 6%; background-position: 0 24%; background-size: 100% 1600%; }
         .vmm-hpg__slice-2 { top: 48%; height: 4%; background-position: 0 48%; background-size: 100% 2400%; }
         .vmm-hpg__slice-3 { top: 70%; height: 5%; background-position: 0 70%; background-size: 100% 2000%; }
-        .vmm-hpg--pulse .vmm-hpg__base { animation: vmm-hpg-pulse 220ms steps(6, end); }
-        @keyframes vmm-hpg-base { 0%{opacity:0;filter:contrast(1.4) brightness(.6)} 35%{opacity:.7;transform:translateX(3px)} 60%{opacity:.9;transform:translateX(-2px)} 100%{opacity:1;filter:none;transform:none} }
+        .vmm-hpg--pulse .vmm-hpg__base { animation: vmm-hpg-pulse 260ms steps(6, end); }
+        .vmm-hpg--pulse .vmm-hpg__ghost { animation: vmm-hpg-ghost 260ms ease-out forwards; }
+        .vmm-hpg--pulse .vmm-hpg__r { animation: vmm-hpg-rgb-r 260ms ease-out forwards; mix-blend-mode: screen; }
+        .vmm-hpg--pulse .vmm-hpg__c { animation: vmm-hpg-rgb-c 260ms ease-out forwards; mix-blend-mode: screen; }
+        .vmm-hpg--pulse .vmm-hpg__slice-1 { animation: vmm-hpg-s1 260ms steps(6, end) forwards; }
+        .vmm-hpg--pulse .vmm-hpg__slice-2 { animation: vmm-hpg-s2 260ms steps(6, end) forwards; }
+        .vmm-hpg--pulse .vmm-hpg__slice-3 { animation: vmm-hpg-s3 260ms steps(6, end) forwards; }
+        @keyframes vmm-hpg-base { 0%,100%{opacity:1;filter:none;transform:none} 28%{filter:contrast(1.12);transform:translateX(-2px)} 52%{transform:translateX(2px)} 72%{filter:contrast(1.04);transform:translateX(-1px)} }
         @keyframes vmm-hpg-ghost { 0%{opacity:0;transform:translateY(8px)} 25%{opacity:.9} 100%{opacity:0;transform:none} }
         @keyframes vmm-hpg-rgb-r { 0%,20%,100%{opacity:0;transform:none} 35%{opacity:.7;transform:translateX(-6px)} 65%{opacity:.35;transform:translateX(3px)} }
         @keyframes vmm-hpg-rgb-c { 0%,20%,100%{opacity:0;transform:none} 35%{opacity:.7;transform:translateX(6px)} 65%{opacity:.35;transform:translateX(-3px)} }
@@ -140,14 +155,16 @@ export function HeroPersonGlitch({ className = "", style }: Props) {
       </svg>
 
       <img
+        ref={baseImageRef}
         src={PERSON_SRC}
         alt=""
         decoding="async"
         fetchPriority="high"
         draggable={false}
+        onLoad={() => setImageReady(true)}
         className={`${imageClass} vmm-hpg__base`}
       />
-      {phase === "run" ? (
+      {phase === "run" || pulse ? (
         <>
           <div className="vmm-hpg__ghost" />
           <img src={PERSON_SRC} alt="" draggable={false} className={`${imageClass} vmm-hpg__r`} />

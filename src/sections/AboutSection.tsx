@@ -1,7 +1,7 @@
 import { ArrowRight, Code2, LayoutTemplate, Smartphone, Workflow } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { HandRevealFrameSequence } from "@/components/vmm/HandRevealFrameSequence";
-import { progressToHandFrame } from "@/lib/vmm/handSequence";
+import { HAND_FRAME_COUNT, progressToHandFrame } from "@/lib/vmm/handSequence";
 import { Orbs } from "@/components/vmm/Orbs";
 import { PageNumber } from "@/components/vmm/SideRail";
 
@@ -40,10 +40,16 @@ function useAboutProgress(sectionRef: React.RefObject<HTMLElement | null>, reduc
       rafRef.current = null;
       const rect = section.getBoundingClientRect();
       const scrollable = Math.max(section.offsetHeight - window.innerHeight, 1);
-      const raw = Math.min(Math.max(-rect.top / scrollable, 0), 1);
-      const nextFrame = progressToHandFrame(raw);
+      const timelineProgress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
+      const handProgress =
+        timelineProgress < 0.35
+          ? timelineProgress / 0.35
+          : timelineProgress > 0.65
+            ? (1 - timelineProgress) / 0.35
+            : 1;
+      const nextFrame = progressToHandFrame(handProgress);
       setProgress((current) =>
-        progressToHandFrame(current) === nextFrame ? current : nextFrame / 47,
+        progressToHandFrame(current) === nextFrame ? current : nextFrame / (HAND_FRAME_COUNT - 1),
       );
     };
     const requestUpdate = () => {
