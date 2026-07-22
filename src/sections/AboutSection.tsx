@@ -90,7 +90,10 @@ export function AboutSection() {
         />
 
         <div className="vmm-container relative z-[2] grid min-h-[100svh] grid-cols-12 items-center pb-20 pt-24 md:pb-24 md:pt-28">
-          <div className="col-span-8 z-[3] self-center pr-2 sm:col-span-7 md:col-span-5 lg:col-span-4 lg:col-start-2">
+          <div
+            data-testid="about-copy"
+            className="col-span-8 z-[3] self-center pr-2 sm:col-span-7 md:col-span-5 lg:col-span-4 lg:col-start-2"
+          >
             <p className="vmm-kicker">ABOUT ME</p>
             <h2 className="mt-4 max-w-[8ch] font-display text-[clamp(2.65rem,11vw,5.8rem)] uppercase leading-[0.84]">
               I DESIGN<span className="text-vmm-red">.</span>
@@ -118,17 +121,25 @@ export function AboutSection() {
               ))}
             </ul>
 
-            <a href="#contact" className="vmm-button mt-6">
+            <a data-testid="about-cta" href="#contact" className="vmm-button mt-6">
               LET&apos;S WORK TOGETHER <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
           </div>
 
-          <div className="pointer-events-none absolute bottom-0 right-[-10%] top-[9%] z-[1] w-[68%] sm:right-0 sm:w-[61%] md:right-[3%] md:top-[4%] md:w-[58%] lg:right-[11%] lg:w-[48%]">
+          <div
+            data-testid="about-hand"
+            className="pointer-events-none absolute bottom-0 right-[-10%] top-[9%] z-[1] w-[68%] sm:right-0 sm:w-[61%] md:right-[3%] md:top-[4%] md:w-[58%] lg:right-[11%] lg:w-[48%]"
+          >
             <HandRevealFrameSequence progress={progress} reducedMotion={reducedMotion} />
           </div>
 
           <div className="absolute bottom-5 left-5 z-[4] flex items-end gap-3 md:hidden">
-            <span className="font-display text-[3.5rem] font-black leading-none">002</span>
+            <span
+              data-section-number="002"
+              className="font-display text-[3.5rem] font-black leading-none"
+            >
+              002
+            </span>
             <span className="mb-2 h-px w-8 bg-vmm-ink" aria-hidden="true" />
           </div>
           <PageNumber n="002" />

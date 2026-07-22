@@ -81,6 +81,7 @@ function HomePage() {
             >
               <p className="vmm-kicker">HELLO, I&apos;M</p>
               <h1
+                data-testid="hero-title"
                 className="mt-4 max-w-[7.5ch] font-display uppercase text-vmm-ink"
                 style={{ fontSize: "var(--vmm-h1)", lineHeight: 0.86 }}
               >

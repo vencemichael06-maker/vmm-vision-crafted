@@ -20,6 +20,25 @@ const viewports = [
 const screenshotDirectory =
   process.env.VMM_QA_SCREENSHOT_DIR || path.resolve("test-results", "responsive-screenshots");
 
+async function renderedLineCount(page: import("@playwright/test").Page, selector: string) {
+  return page.locator(selector).evaluate((element) => {
+    const tops = new Set<number>();
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const text = walker.currentNode.textContent ?? "";
+      for (let index = 0; index < text.length; index += 1) {
+        if (!text[index].trim()) continue;
+        const range = document.createRange();
+        range.setStart(walker.currentNode, index);
+        range.setEnd(walker.currentNode, index + 1);
+        const rect = range.getBoundingClientRect();
+        if (rect.width > 0) tops.add(Math.round(rect.top));
+      }
+    }
+    return tops.size;
+  });
+}
+
 test.beforeAll(async () => {
   await mkdir(screenshotDirectory, { recursive: true });
 });
@@ -42,6 +61,45 @@ for (const viewport of viewports) {
     expect(layout.handSequences).toBe(1);
     await expect(page.getByRole("heading", { name: "VENCE MICHAEL MONTERO." })).toBeVisible();
     await expect(page.getByRole("link", { name: /view my work/i })).toBeVisible();
+    const mobile = viewport.width < 768;
+    expect(await renderedLineCount(page, "#home h1")).toBe(mobile ? 3 : 2);
+
+    await page.evaluate(() => {
+      const about = document.getElementById("about");
+      if (!about) throw new Error("About section missing");
+      window.scrollTo(0, about.offsetTop + 1);
+    });
+    await expect(page.locator('[data-section-number="002"]')).toBeInViewport();
+    expect(await renderedLineCount(page, "#about h2")).toBe(3);
+
+    if (mobile) {
+      const hand = page.getByTestId("about-hand").locator(".hand-reveal-media");
+      await page.evaluate(() => {
+        const about = document.getElementById("about");
+        if (!about) throw new Error("About section missing");
+        const scrollable = about.offsetHeight - window.innerHeight;
+        window.scrollTo(0, about.offsetTop + scrollable * 0.5);
+      });
+      await expect
+        .poll(async () => Number(await hand.getAttribute("data-current-frame")), { timeout: 15_000 })
+        .toBeGreaterThanOrEqual(45);
+      const ctaBounds = await page.getByTestId("about-cta").boundingBox();
+      expect(ctaBounds).not.toBeNull();
+      expect(ctaBounds!.x).toBeGreaterThanOrEqual(0);
+      expect(ctaBounds!.y).toBeGreaterThanOrEqual(0);
+      expect(ctaBounds!.x + ctaBounds!.width).toBeLessThanOrEqual(viewport.width);
+      expect(ctaBounds!.y + ctaBounds!.height).toBeLessThanOrEqual(viewport.height);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBe(0);
+    }
+
+    await page.evaluate(() => document.getElementById("work")?.scrollIntoView());
+    const projectThumbnails = page.locator("#work img");
+    await expect(projectThumbnails).toHaveCount(4);
+    for (const src of await projectThumbnails.evaluateAll((images) =>
+      images.map((image) => (image as HTMLImageElement).currentSrc),
+    )) {
+      expect(src).toContain("-portfolio.webp");
+    }
 
     await page.screenshot({
       path: path.join(screenshotDirectory, `vmm-${viewport.width}x${viewport.height}-hero.png`),
