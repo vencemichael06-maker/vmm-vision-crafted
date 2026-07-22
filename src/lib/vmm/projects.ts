@@ -1,10 +1,10 @@
 // Proof-backed portfolio content. This file is the only project-content source of truth.
 
 const projectAssets = {
-  wiseAssistant: "/assets/vmm/projects/wiseassistant.webp",
-  caballero: "/assets/vmm/projects/caballero-digital-solutions.webp",
-  igSabroso: "/assets/vmm/projects/ig-sabroso.webp",
-  orderTracker: "/assets/vmm/projects/google-sheet-order-tracker.svg",
+  wiseAssistant: "/assets/vmm/projects/wiseassistant-portfolio.webp",
+  caballero: "/assets/vmm/projects/caballero-digital-solutions-portfolio.webp",
+  igSabroso: "/assets/vmm/projects/ig-sabroso-portfolio.webp",
+  orderTracker: "/assets/vmm/projects/google-sheet-order-tracker-portfolio.webp",
 } as const;
 
 export type ProjectCategory = "Websites" | "Mobile Product" | "AI & Automation";
