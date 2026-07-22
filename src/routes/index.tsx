@@ -76,7 +76,7 @@ function HomePage() {
 
           <div className="vmm-container relative z-[3] grid min-h-[100svh] grid-cols-12 items-start pb-24 pt-28 md:items-center md:pb-20 md:pt-28 lg:pt-24">
             <div
-              className="col-span-8 self-start pr-1 sm:col-span-7 md:col-span-9 md:self-center lg:col-span-6 lg:col-start-2"
+              className="col-span-8 self-start pr-1 sm:col-span-7 md:col-span-8 md:self-center lg:col-span-7 lg:col-start-2 xl:col-span-6"
               data-hero-reveal
             >
               <p className="vmm-kicker">HELLO, I&apos;M</p>
@@ -101,7 +101,7 @@ function HomePage() {
             </div>
           </div>
 
-          <div className="pointer-events-none absolute bottom-0 right-[-30%] top-[7%] z-[2] w-[76%] sm:right-[-16%] sm:w-[67%] md:right-[2%] md:top-[7%] md:w-[52%] lg:right-[8%] lg:top-[7%] lg:w-[39%] xl:right-[10%]">
+          <div className="pointer-events-none absolute bottom-0 right-[-2%] z-[2] h-[44%] w-[60%] sm:right-0 sm:h-[58%] sm:w-[58%] md:right-[2%] md:top-[7%] md:h-auto md:w-[52%] lg:right-[8%] lg:w-[39%] xl:right-[10%]">
             <HeroPersonGlitch />
           </div>
 

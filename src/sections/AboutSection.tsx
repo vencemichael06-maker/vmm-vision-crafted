@@ -127,7 +127,11 @@ export function AboutSection() {
               ))}
             </ul>
 
-            <a data-testid="about-cta" href="#contact" className="vmm-button mt-6 max-w-[14rem]">
+            <a
+              data-testid="about-cta"
+              href="#contact"
+              className="vmm-button mt-6 max-w-[12.75rem] md:max-w-[14rem]"
+            >
               LET&apos;S WORK TOGETHER <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
           </div>
