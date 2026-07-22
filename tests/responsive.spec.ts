@@ -193,22 +193,38 @@ for (const viewport of viewports) {
 
     await page.evaluate(() => document.getElementById("services")?.scrollIntoView());
     await page.waitForTimeout(850);
+    expect.soft(await renderedLineCount(page, "#services-title")).toBeLessThanOrEqual(mobile ? 4 : 3);
     await page.screenshot({
       path: path.join(screenshotDirectory, `vmm-${viewport.width}x${viewport.height}-services.png`),
+    });
+
+    await page.evaluate(() => document.getElementById("process")?.scrollIntoView());
+    await page.waitForTimeout(850);
+    expect.soft(await renderedLineCount(page, "#process-title")).toBeLessThanOrEqual(
+      viewport.width >= 1200 ? 2 : 3,
+    );
+    for (const label of ["Discovery", "Strategy", "Design", "Develop", "Launch & Support"]) {
+      await expect(page.getByRole("heading", { name: label, exact: true })).toBeVisible();
+    }
+    await page.screenshot({
+      path: path.join(screenshotDirectory, `vmm-${viewport.width}x${viewport.height}-process.png`),
     });
 
     await page.evaluate(() => document.getElementById("contact")?.scrollIntoView());
     await page.waitForTimeout(850);
     await expect(page.getByRole("heading", { name: "LET'S BUILD SOMETHING GREAT." })).toBeVisible();
+    expect.soft(await renderedLineCount(page, "#contact-title")).toBeLessThanOrEqual(mobile ? 4 : 3);
     await page.screenshot({
       path: path.join(
         screenshotDirectory,
         `vmm-${viewport.width}x${viewport.height}-contact-heading.png`,
       ),
     });
-    await expect(page.getByLabel("NAME")).toBeVisible();
-    await expect(page.getByLabel("MESSAGE", { exact: true })).toBeVisible();
-
+    await page.locator("#contact form").scrollIntoViewIfNeeded();
+    for (const label of ["NAME", "EMAIL", "PROJECT TYPE", "BUDGET", "MESSAGE"]) {
+      await expect(page.getByLabel(label, { exact: true })).toBeVisible();
+    }
+    await expect(page.getByRole("button", { name: "SEND MESSAGE" })).toBeVisible();
     await page.getByLabel("MESSAGE", { exact: true }).scrollIntoViewIfNeeded();
     await page.screenshot({
       path: path.join(

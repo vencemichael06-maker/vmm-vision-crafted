@@ -112,14 +112,14 @@ export function ContactSection() {
       aria-labelledby="contact-title"
       className="vmm-section vmm-section-pad overflow-hidden bg-white"
     >
-      <div className="vmm-container relative grid gap-12 md:grid-cols-12 md:gap-10">
+      <div className="vmm-container relative grid gap-10 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-5">
           <p className="vmm-kicker">GET IN TOUCH</p>
           <h2
             id="contact-title"
             data-contact-title
             aria-label="LET'S BUILD SOMETHING GREAT."
-            className="vmm-heading mt-4 max-w-[8ch]"
+            className="vmm-heading vmm-contact-title mt-4"
           >
             LET&apos;S BUILD SOMETHING GREAT<span className="text-vmm-red">.</span>
           </h2>
@@ -156,7 +156,7 @@ export function ContactSection() {
         </div>
 
         <div className="md:col-span-7 md:pt-4">
-          <div className="border-2 border-vmm-ink bg-white p-5 shadow-[12px_12px_0_#050505] sm:p-8 lg:p-10">
+          <div className="border border-vmm-ink bg-white p-5 sm:p-7 lg:p-8">
             {formState === "success" ? (
               <div className="flex min-h-[31rem] flex-col justify-center" role="status">
                 <span className="font-display text-lg uppercase text-vmm-red">

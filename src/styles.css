@@ -191,6 +191,20 @@
   text-transform: uppercase;
 }
 
+.vmm-services-title {
+  max-width: 11ch;
+}
+
+.vmm-process-title {
+  max-width: none;
+  font-size: clamp(2.35rem, 10.5vw, 3.25rem);
+  line-height: 0.9;
+}
+
+.vmm-contact-title {
+  max-width: 8ch;
+}
+
 .vmm-hero-title {
   max-width: none;
   font-size: clamp(3.2rem, 12vw, 4.4rem);
@@ -424,6 +438,14 @@
     font-size: clamp(4.4rem, 7.2vw, 5.8rem);
   }
 
+  .vmm-process-title {
+    font-size: clamp(2.75rem, 6vw, 3.35rem);
+  }
+
+  .vmm-contact-title {
+    max-width: 10ch;
+  }
+
   .vmm-container {
     padding-inline: var(--vmm-gutter-tablet);
   }
@@ -451,6 +473,10 @@
 @media (min-width: 1200px) {
   .vmm-hero-title {
     font-size: clamp(5.5rem, 6.2vw, 7.25rem);
+  }
+
+  .vmm-process-title {
+    font-size: clamp(2.75rem, 3.7vw, 3.35rem);
   }
 
   .vmm-container {
