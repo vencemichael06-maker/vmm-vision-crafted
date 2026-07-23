@@ -1,7 +1,7 @@
 # VMM Expanded Real Projects Design
 
-**Status:** Approved for implementation  
-**Date:** 2026-07-23  
+**Status:** Approved for implementation
+**Date:** 2026-07-23
 **Production baseline:** `b1a739cb350f05df37dd35a07ec84dbc93d362a7`
 
 ## Goal
