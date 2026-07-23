@@ -137,7 +137,7 @@ function HomePage() {
                 data-hero-reveal
               >
                 <p className="vmm-kicker">HELLO, I&apos;M</p>
-                <h1className="vmm-hero-title mt-4 font-display uppercase text-vmm-ink">
+                <h1 className="vmm-hero-title mt-4 font-display uppercase text-vmm-ink">
                   VENCE MICHAEL
                   <span className="block">
                     MONTERO<span className="text-vmm-red">.</span>
