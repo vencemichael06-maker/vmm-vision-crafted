@@ -138,8 +138,8 @@ export function HeroPersonGlitch({ className = "", style }: Props) {
           .vmm-hpg .vmm-hpg__ghost, .vmm-hpg .vmm-hpg__r, .vmm-hpg .vmm-hpg__c, .vmm-hpg .vmm-hpg__slice { display:none!important; }
         }
         @media (max-width: 767px) {
-          .vmm-hpg__img { object-fit: cover; object-position: 48% bottom; }
-          .vmm-hpg__ghost { background-size: cover; background-position: 48% bottom; }
+          .vmm-hpg__img { object-fit: contain; object-position: center bottom; }
+          .vmm-hpg__ghost { background-size: contain; background-position: center bottom; }
         }
       `}</style>
 
