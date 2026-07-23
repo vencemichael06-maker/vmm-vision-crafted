@@ -64,7 +64,7 @@ export function ContactSection() {
     if (first) formRef.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
   };
 
-  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nextErrors = validate(values);
     setErrors(nextErrors);
@@ -74,23 +74,15 @@ export function ContactSection() {
     }
 
     setFormState("submitting");
-    try {
-      const response = await fetch(contactConfig.endpoint, {
-        method: "POST",
-        headers: { "content-type": "application/json", accept: "application/json" },
-        body: JSON.stringify(values),
-      });
-      if (!response.ok) throw new Error(`Contact endpoint returned ${response.status}`);
-      const result = (await response.json()) as { referenceId?: unknown };
-      if (typeof result.referenceId !== "string" || !result.referenceId.trim()) {
-        throw new Error("Contact endpoint did not return a reference ID");
-      }
-      setReferenceId(result.referenceId.trim());
-      setFormState("success");
-    } catch {
-      setFormState("failure");
-    }
+    const subject = encodeURIComponent(`New project inquiry — ${values.name}`);
+    const body = encodeURIComponent(buildFallbackBody(values));
+    const mailto = `mailto:${contactConfig.email}?subject=${subject}&body=${body}`;
+    // Open the user's mail client with a fully-composed inquiry addressed to hello@vmmcreatives.site
+    window.location.href = mailto;
+    setReferenceId(`VMM-${Date.now().toString(36).toUpperCase()}`);
+    window.setTimeout(() => setFormState("success"), 400);
   };
+
 
   const startAnother = () => {
     setValues(initialInquiry);
@@ -163,16 +155,33 @@ export function ContactSection() {
                   Inquiry confirmed
                 </span>
                 <h3 className="mt-3 font-display text-4xl uppercase leading-none md:text-5xl">
-                  Thank you. Your brief is in.
+                  Your email is ready to send.
                 </h3>
                 <p className="mt-5 max-w-lg text-sm leading-7 text-vmm-ink/68">
-                  Your confirmation reference is{" "}
-                  <strong className="text-vmm-ink">{referenceId}</strong>. Keep it for any
-                  follow-up.
+                  Your mail client should open with your brief addressed to{" "}
+                  <a href={`mailto:${contactConfig.email}`} className="text-vmm-ink underline">
+                    {contactConfig.email}
+                  </a>
+                  . Reference <strong className="text-vmm-ink">{referenceId}</strong>. If nothing
+                  opened, use the fallbacks below.
                 </p>
+                <div className="mt-6 flex flex-wrap gap-4 text-xs font-black uppercase tracking-[0.14em]">
+                  <a href={emailFallback} className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red">
+                    Email instead
+                  </a>
+                  <a
+                    href={whatsappFallback}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red"
+                  >
+                    WhatsApp instead
+                  </a>
+                </div>
                 <button type="button" onClick={startAnother} className="vmm-button mt-8 w-fit">
                   START ANOTHER INQUIRY <RotateCcw aria-hidden className="h-4 w-4" />
                 </button>
+
               </div>
             ) : (
               <form
@@ -286,26 +295,25 @@ export function ContactSection() {
                   <ArrowRight aria-hidden className="h-4 w-4" />
                 </button>
 
-                {formState === "failure" ? (
-                  <div className="mt-5 flex flex-wrap gap-4 text-xs font-black uppercase tracking-[0.14em]">
-                    <a
-                      aria-label="Email fallback"
-                      href={emailFallback}
-                      className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red"
-                    >
-                      Email instead
-                    </a>
-                    <a
-                      aria-label="WhatsApp fallback"
-                      href={whatsappFallback}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red"
-                    >
-                      WhatsApp instead
-                    </a>
-                  </div>
-                ) : null}
+                <div className="mt-5 flex flex-wrap gap-4 text-xs font-black uppercase tracking-[0.14em]">
+                  <a
+                    aria-label="Email instead"
+                    href={emailFallback}
+                    className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red"
+                  >
+                    Email instead
+                  </a>
+                  <a
+                    aria-label="WhatsApp instead"
+                    href={whatsappFallback}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red"
+                  >
+                    WhatsApp instead
+                  </a>
+                </div>
+
               </form>
             )}
           </div>
