@@ -64,7 +64,7 @@ export function ContactSection() {
     if (first) formRef.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
   };
 
-  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nextErrors = validate(values);
     setErrors(nextErrors);
@@ -74,23 +74,15 @@ export function ContactSection() {
     }
 
     setFormState("submitting");
-    try {
-      const response = await fetch(contactConfig.endpoint, {
-        method: "POST",
-        headers: { "content-type": "application/json", accept: "application/json" },
-        body: JSON.stringify(values),
-      });
-      if (!response.ok) throw new Error(`Contact endpoint returned ${response.status}`);
-      const result = (await response.json()) as { referenceId?: unknown };
-      if (typeof result.referenceId !== "string" || !result.referenceId.trim()) {
-        throw new Error("Contact endpoint did not return a reference ID");
-      }
-      setReferenceId(result.referenceId.trim());
-      setFormState("success");
-    } catch {
-      setFormState("failure");
-    }
+    const subject = encodeURIComponent(`New project inquiry — ${values.name}`);
+    const body = encodeURIComponent(buildFallbackBody(values));
+    const mailto = `mailto:${contactConfig.email}?subject=${subject}&body=${body}`;
+    // Open the user's mail client with a fully-composed inquiry addressed to hello@vmmcreatives.site
+    window.location.href = mailto;
+    setReferenceId(`VMM-${Date.now().toString(36).toUpperCase()}`);
+    window.setTimeout(() => setFormState("success"), 400);
   };
+
 
   const startAnother = () => {
     setValues(initialInquiry);
