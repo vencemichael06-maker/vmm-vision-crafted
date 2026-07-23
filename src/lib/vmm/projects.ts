@@ -2,10 +2,15 @@
 
 const projectAssets = {
   wiseAssistant: "/assets/vmm/projects/wiseassistant-portfolio.webp",
-  caballero: "/assets/vmm/projects/caballero-digital-solutions-portfolio.webp",
-  igSabroso: "/assets/vmm/projects/ig-sabroso-portfolio.webp",
+  wiseDashboard: "/assets/vmm/projects/wiseassistant-dashboard.webp",
+  wiseActivity: "/assets/vmm/projects/wiseassistant-activity.webp",
+  wiseReminders: "/assets/vmm/projects/wiseassistant-reminders.webp",
+  wiseAsk: "/assets/vmm/projects/wiseassistant-ask-wise.webp",
+  caballero: "/assets/vmm/projects/caballero-digital-solutions-portfolio-v2.webp",
+  igSabroso: "/assets/vmm/projects/ig-sabroso-portfolio-v2.webp",
   orderTracker: "/assets/vmm/projects/google-sheet-order-tracker-portfolio.webp",
   gmailSupport: "/assets/vmm/projects/gmail-support-agent.webp",
+  gmailResponse: "/assets/vmm/projects/gmail-support-response.webp",
   triggerEmail: "/assets/vmm/projects/trigger-email-automation.webp",
   voiceAi: "/assets/vmm/projects/voice-ai-agent.webp",
 } as const;
@@ -53,7 +58,13 @@ export const projects: Project[] = [
     role: "Product design + Android",
     year: "2025–2026",
     stack: ["Kotlin", "Jetpack Compose", "Room", "AndroidX"],
-    gallery: [{ src: projectAssets.wiseAssistant, caption: "Android product interface preview" }],
+    gallery: [
+      { src: projectAssets.wiseAssistant, caption: "Android product interface preview" },
+      { src: projectAssets.wiseDashboard, caption: "Personal finance dashboard" },
+      { src: projectAssets.wiseActivity, caption: "Transaction activity and search" },
+      { src: projectAssets.wiseReminders, caption: "Bills and reminders overview" },
+      { src: projectAssets.wiseAsk, caption: "On-device Ask Wise assistant" },
+    ],
   },
   {
     slug: "caballero-digital-solutions",
@@ -130,7 +141,10 @@ export const projects: Project[] = [
     client: "HeldHonest.com",
     delivered: "Nov 7, 2025",
     stack: ["n8n", "Gmail", "Knowledge Base"],
-    gallery: [{ src: projectAssets.gmailSupport, caption: "Customer support automation overview" }],
+    gallery: [
+      { src: projectAssets.gmailSupport, caption: "Customer support automation overview" },
+      { src: projectAssets.gmailResponse, caption: "Inquiry and knowledge-based response evidence" },
+    ],
   },
   {
     slug: "trigger-based-email-marketing",
