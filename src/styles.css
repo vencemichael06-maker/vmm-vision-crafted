@@ -354,6 +354,36 @@
   line-height: 0.96;
 }
 
+.vmm-work-disclosure {
+  display: flex;
+  width: 100%;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--vmm-ink);
+  padding: 0.75rem 1rem;
+  background: transparent;
+  color: var(--vmm-ink);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-align: left;
+  text-transform: uppercase;
+  transition:
+    background-color var(--vmm-dur-ui) var(--vmm-ease-enter),
+    color var(--vmm-dur-ui) var(--vmm-ease-enter);
+}
+
+.vmm-work-disclosure:hover {
+  background: var(--vmm-red);
+  color: #fff;
+}
+
+.vmm-work-disclosure:focus-visible {
+  outline: 3px solid var(--vmm-focus);
+  outline-offset: 3px;
+}
+
 @media (min-width: 390px) and (max-width: 767px) {
   .vmm-work-row {
     grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);

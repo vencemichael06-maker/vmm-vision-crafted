@@ -5,12 +5,19 @@ import { PageNumber } from "@/components/vmm/SideRail";
 import { useGsap } from "@/lib/vmm/useGsap";
 import { categoryFilters, projects, type Project, type ProjectCategory } from "@/lib/vmm/projects";
 
+const CURATED_PROJECT_COUNT = 4;
+
 export function WorkSection() {
   const [filter, setFilter] = useState<(typeof categoryFilters)[number]>("All");
-  const visibleProjects = useMemo(
+  const [expanded, setExpanded] = useState(false);
+  const matchingProjects = useMemo(
     () => (filter === "All" ? projects : projects.filter((project) => project.category === filter)),
     [filter],
   );
+  const visibleProjects =
+    filter === "All" && !expanded
+      ? matchingProjects.slice(0, CURATED_PROJECT_COUNT)
+      : matchingProjects;
 
   useGsap(
     ({ gsap }) => {
@@ -42,8 +49,7 @@ export function WorkSection() {
             </h2>
           </div>
           <p className="max-w-xl text-sm leading-7 text-vmm-ink/70 md:col-span-4 md:pb-1">
-            Four proof-backed projects — two client websites, one Android product in beta, and one
-            sanitized automation case study.
+            Seven proof-backed projects across websites, mobile product design, and automation.
           </p>
         </div>
 
@@ -81,13 +87,33 @@ export function WorkSection() {
           Showing {visibleProjects.length} {visibleProjects.length === 1 ? "project" : "projects"}.
         </p>
 
-        <ol className="mt-8 border-t border-vmm-ink md:mt-10">
+        <ol id="additional-projects" className="mt-8 border-t border-vmm-ink md:mt-10">
           {visibleProjects.map((project) => (
-            <li key={project.slug} data-work-row className="border-b border-vmm-ink">
+            <li
+              key={project.slug}
+              data-work-row
+              data-testid="work-project"
+              className="border-b border-vmm-ink"
+            >
               <ProjectRow project={project} />
             </li>
           ))}
         </ol>
+
+        {filter === "All" ? (
+          <button
+            type="button"
+            aria-expanded={expanded}
+            aria-controls="additional-projects"
+            onClick={() => setExpanded((current) => !current)}
+            className="vmm-work-disclosure"
+          >
+            <span>{expanded ? "Show fewer projects" : "View more projects"}</span>
+            <span aria-hidden>
+              {expanded ? "−" : `${projects.length - CURATED_PROJECT_COUNT} more +`}
+            </span>
+          </button>
+        ) : null}
       </div>
       <span className="vmm-mobile-number md:hidden" aria-hidden>
         003
