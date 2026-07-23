@@ -68,16 +68,18 @@ function HomePage() {
             <span className="vmm-orb right-[9%] top-[18%] h-24 w-24 opacity-45 md:h-32 md:w-32" />
           </div>
 
-          {/* Red field: full-width horizontal band at bottom on mobile; angled panel on desktop */}
+          {/* Mobile: full-width bottom red band */}
           <div
             aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 top-[46%] z-[1] bg-vmm-red md:inset-x-auto md:right-0 md:top-[18%] md:w-[48%] lg:top-[20%] lg:w-[43%]"
-            style={
-              typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches
-                ? { clipPath: "polygon(14% 0, 100% 0, 100% 100%, 0 100%)" }
-                : undefined
-            }
+            className="absolute inset-x-0 bottom-0 top-[46%] z-[1] bg-vmm-red md:hidden"
           />
+          {/* Desktop: angled red panel */}
+          <div
+            aria-hidden="true"
+            className="absolute bottom-0 right-0 z-[1] hidden bg-vmm-red md:block md:top-[18%] md:w-[48%] lg:top-[20%] lg:w-[43%]"
+            style={{ clipPath: "polygon(14% 0, 100% 0, 100% 100%, 0 100%)" }}
+          />
+
 
           <div className="vmm-container relative z-[3] grid min-h-[100svh] grid-cols-12 items-start pb-[46vh] pt-24 md:items-center md:pb-20 md:pt-28 lg:pt-24">
             <div
