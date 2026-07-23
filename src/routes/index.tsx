@@ -57,22 +57,17 @@ function HomePage() {
           id="home"
           ref={heroRef}
           aria-label="Home"
-          className="relative min-h-[100svh] w-full overflow-hidden bg-vmm-canvas"
+          className="relative w-full bg-vmm-canvas md:min-h-[100svh] md:overflow-hidden"
         >
           <LeftRail />
           <RightRail />
 
-          <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
             <span className="vmm-orb left-[34%] top-[16%] hidden h-20 w-20 opacity-55 md:block" />
             <span className="vmm-orb left-[22%] top-[31%] hidden h-36 w-36 opacity-55 md:block" />
             <span className="vmm-orb right-[9%] top-[18%] h-24 w-24 opacity-45 md:h-32 md:w-32" />
           </div>
 
-          {/* Mobile: full-width bottom red band */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 top-[46%] z-[1] bg-vmm-red md:hidden"
-          />
           {/* Desktop: angled red panel */}
           <div
             aria-hidden="true"
@@ -80,63 +75,102 @@ function HomePage() {
             style={{ clipPath: "polygon(14% 0, 100% 0, 100% 100%, 0 100%)" }}
           />
 
-
-          <div className="vmm-container relative z-[3] grid min-h-[100svh] grid-cols-12 items-start pb-[46vh] pt-24 md:items-center md:pb-20 md:pt-28 lg:pt-24">
-            <div
-              className="col-span-12 self-start pr-1 sm:col-span-10 md:col-span-8 md:self-center lg:col-span-7 lg:col-start-2 xl:col-span-6"
-              data-hero-reveal
-            >
+          {/* ============ MOBILE HERO (natural flow, no clipping) ============ */}
+          <div className="md:hidden">
+            <div className="vmm-container relative z-[3] pt-24" data-hero-reveal>
               <p className="vmm-kicker">HELLO, I&apos;M</p>
               <h1
                 data-testid="hero-title"
-                className="vmm-hero-title mt-4 font-display uppercase text-vmm-ink"
+                className="mt-4 font-display font-black uppercase leading-[0.92] tracking-tight text-vmm-ink"
+                style={{ fontSize: "clamp(2.5rem, 14vw, 4.75rem)" }}
               >
-                <span className="block md:inline">
-                  VENCE<span className="hidden md:inline"> </span>
-                </span>
-                <span className="block md:inline">MICHAEL</span>
+                <span className="block">VENCE</span>
+                <span className="block">MICHAEL</span>
                 <span className="block">
                   MONTERO<span className="text-vmm-red">.</span>
                 </span>
               </h1>
-              <p className="mt-5 max-w-[31rem] text-[15px] leading-[1.55] text-vmm-ink/80 md:mt-7 md:text-base">
+              <p className="mt-5 max-w-[31rem] text-[15px] leading-[1.55] text-vmm-ink/80">
                 I design and build digital experiences that are clean, modern, and impactful.
               </p>
-              <a href="#work" className="vmm-button mt-6 md:mt-8">
-                VIEW MY WORK <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </a>
+            </div>
+
+            {/* Red section holding the figure — natural aspect, contain, no crop */}
+            <div className="relative mt-8 w-full bg-vmm-red">
+              {/* CTA overlapping seam */}
+              <div className="vmm-container relative z-[4] -mt-6">
+                <a href="#work" className="vmm-button">
+                  VIEW MY WORK <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+              </div>
+
+              {/* Vertical 001 badge, in-flow beside figure */}
+              <div className="pointer-events-none absolute left-3 top-6 z-[3] flex flex-col items-center gap-2">
+                <span
+                  className="font-display font-black leading-none tracking-tight text-vmm-ink"
+                  style={{
+                    fontSize: "clamp(64px, 20vw, 128px)",
+                    writingMode: "vertical-rl",
+                    transform: "rotate(180deg)",
+                  }}
+                >
+                  001
+                </span>
+                <span className="h-8 w-px bg-vmm-ink" aria-hidden="true" />
+              </div>
+
+              {/* Figure — object-contain, natural aspect, never cropped */}
+              <div
+                className="relative mx-auto w-full"
+                style={{ maxWidth: "560px", aspectRatio: "3 / 4" }}
+              >
+                <HeroPersonGlitch />
+              </div>
             </div>
           </div>
 
-          {/* Figure: bridges the white/red seam on mobile, right-anchored on desktop */}
-          <div className="pointer-events-none absolute bottom-0 left-1/2 z-[2] h-[62vh] w-[96vw] -translate-x-1/2 md:left-auto md:right-[2%] md:top-[7%] md:h-auto md:w-[52%] md:translate-x-0 lg:right-[8%] lg:w-[39%] xl:right-[10%]">
-            <HeroPersonGlitch />
-          </div>
+          {/* ============ DESKTOP / TABLET HERO (absolute composition) ============ */}
+          <div className="hidden md:block">
+            <div className="vmm-container relative z-[3] grid min-h-[100svh] grid-cols-12 items-center pb-20 pt-28 lg:pt-24">
+              <div
+                className="col-span-8 self-center pr-1 lg:col-span-7 lg:col-start-2 xl:col-span-6"
+                data-hero-reveal
+              >
+                <p className="vmm-kicker">HELLO, I&apos;M</p>
+                <h1className="vmm-hero-title mt-4 font-display uppercase text-vmm-ink">
+                  VENCE MICHAEL
+                  <span className="block">
+                    MONTERO<span className="text-vmm-red">.</span>
+                  </span>
+                </h1>
+                <p className="mt-5 max-w-[31rem] text-[15px] leading-[1.55] text-vmm-ink/80 md:mt-7 md:text-base">
+                  I design and build digital experiences that are clean, modern, and impactful.
+                </p>
+                <a href="#work" className="vmm-button mt-6 md:mt-8">
+                  VIEW MY WORK <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+              </div>
+            </div>
 
-          {/* Vertical 001 badge on mobile */}
-          <div className="absolute bottom-6 left-4 z-[4] flex flex-col items-center gap-2 md:hidden">
-            <span
-              className="font-display font-black leading-none tracking-tight text-vmm-ink"
-              style={{ fontSize: "clamp(80px, 22vw, 128px)", writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-            >
-              001
-            </span>
-            <span className="h-8 w-px bg-vmm-ink" aria-hidden="true" />
-          </div>
-          <PageNumber n="001" />
+            <div className="pointer-events-none absolute right-[2%] top-[7%] z-[2] h-auto w-[52%] lg:right-[8%] lg:w-[39%] xl:right-[10%]">
+              <HeroPersonGlitch />
+            </div>
 
+            <PageNumber n="001" />
 
-          <div className="absolute bottom-6 right-5 z-[4] hidden items-center gap-3 md:flex lg:right-10">
-            <span className="grid h-11 w-11 place-items-center rounded-full bg-vmm-ink text-white">
-              <ArrowDown className="h-4 w-4" aria-hidden="true" />
-            </span>
-            <span className="text-[10px] font-bold leading-tight tracking-[0.22em]">
-              SCROLL
-              <br />
-              DOWN
-            </span>
+            <div className="absolute bottom-6 right-5 z-[4] flex items-center gap-3 lg:right-10">
+              <span className="grid h-11 w-11 place-items-center rounded-full bg-vmm-ink text-white">
+                <ArrowDown className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <span className="text-[10px] font-bold leading-tight tracking-[0.22em]">
+                SCROLL
+                <br />
+                DOWN
+              </span>
+            </div>
           </div>
         </section>
+
 
         <AboutSection />
         <WorkSection />
