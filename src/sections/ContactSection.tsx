@@ -155,16 +155,33 @@ export function ContactSection() {
                   Inquiry confirmed
                 </span>
                 <h3 className="mt-3 font-display text-4xl uppercase leading-none md:text-5xl">
-                  Thank you. Your brief is in.
+                  Your email is ready to send.
                 </h3>
                 <p className="mt-5 max-w-lg text-sm leading-7 text-vmm-ink/68">
-                  Your confirmation reference is{" "}
-                  <strong className="text-vmm-ink">{referenceId}</strong>. Keep it for any
-                  follow-up.
+                  Your mail client should open with your brief addressed to{" "}
+                  <a href={`mailto:${contactConfig.email}`} className="text-vmm-ink underline">
+                    {contactConfig.email}
+                  </a>
+                  . Reference <strong className="text-vmm-ink">{referenceId}</strong>. If nothing
+                  opened, use the fallbacks below.
                 </p>
+                <div className="mt-6 flex flex-wrap gap-4 text-xs font-black uppercase tracking-[0.14em]">
+                  <a href={emailFallback} className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red">
+                    Email instead
+                  </a>
+                  <a
+                    href={whatsappFallback}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red"
+                  >
+                    WhatsApp instead
+                  </a>
+                </div>
                 <button type="button" onClick={startAnother} className="vmm-button mt-8 w-fit">
                   START ANOTHER INQUIRY <RotateCcw aria-hidden className="h-4 w-4" />
                 </button>
+
               </div>
             ) : (
               <form
