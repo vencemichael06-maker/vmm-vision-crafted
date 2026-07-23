@@ -68,15 +68,20 @@ function HomePage() {
             <span className="vmm-orb right-[9%] top-[18%] h-24 w-24 opacity-45 md:h-32 md:w-32" />
           </div>
 
+          {/* Red field: full-width horizontal band at bottom on mobile; angled panel on desktop */}
           <div
             aria-hidden="true"
-            className="absolute bottom-0 right-0 top-[12%] z-[1] w-[55%] bg-vmm-red md:top-[18%] md:w-[48%] lg:top-[20%] lg:w-[43%]"
-            style={{ clipPath: "polygon(14% 0, 100% 0, 100% 100%, 0 100%)" }}
+            className="absolute inset-x-0 bottom-0 top-[46%] z-[1] bg-vmm-red md:inset-x-auto md:right-0 md:top-[18%] md:w-[48%] lg:top-[20%] lg:w-[43%]"
+            style={
+              typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches
+                ? { clipPath: "polygon(14% 0, 100% 0, 100% 100%, 0 100%)" }
+                : undefined
+            }
           />
 
-          <div className="vmm-container relative z-[3] grid min-h-[100svh] grid-cols-12 items-start pb-24 pt-28 md:items-center md:pb-20 md:pt-28 lg:pt-24">
+          <div className="vmm-container relative z-[3] grid min-h-[100svh] grid-cols-12 items-start pb-[46vh] pt-24 md:items-center md:pb-20 md:pt-28 lg:pt-24">
             <div
-              className="col-span-8 self-start pr-1 sm:col-span-7 md:col-span-8 md:self-center lg:col-span-7 lg:col-start-2 xl:col-span-6"
+              className="col-span-12 self-start pr-1 sm:col-span-10 md:col-span-8 md:self-center lg:col-span-7 lg:col-start-2 xl:col-span-6"
               data-hero-reveal
             >
               <p className="vmm-kicker">HELLO, I&apos;M</p>
@@ -101,15 +106,23 @@ function HomePage() {
             </div>
           </div>
 
-          <div className="pointer-events-none absolute bottom-0 right-[1%] z-[2] h-[52%] w-[68%] md:right-[2%] md:top-[7%] md:h-auto md:w-[52%] lg:right-[8%] lg:w-[39%] xl:right-[10%]">
+          {/* Figure: bridges the white/red seam on mobile, right-anchored on desktop */}
+          <div className="pointer-events-none absolute bottom-0 left-1/2 z-[2] h-[62vh] w-[96vw] -translate-x-1/2 md:left-auto md:right-[2%] md:top-[7%] md:h-auto md:w-[52%] md:translate-x-0 lg:right-[8%] lg:w-[39%] xl:right-[10%]">
             <HeroPersonGlitch />
           </div>
 
-          <div className="absolute bottom-5 left-5 z-[4] flex items-end gap-3 md:hidden">
-            <span className="font-display text-[3.5rem] font-black leading-none">001</span>
-            <span className="mb-2 h-px w-8 bg-vmm-ink" aria-hidden="true" />
+          {/* Vertical 001 badge on mobile */}
+          <div className="absolute bottom-6 left-4 z-[4] flex flex-col items-center gap-2 md:hidden">
+            <span
+              className="font-display font-black leading-none tracking-tight text-vmm-ink"
+              style={{ fontSize: "clamp(80px, 22vw, 128px)", writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+            >
+              001
+            </span>
+            <span className="h-8 w-px bg-vmm-ink" aria-hidden="true" />
           </div>
           <PageNumber n="001" />
+
 
           <div className="absolute bottom-6 right-5 z-[4] hidden items-center gap-3 md:flex lg:right-10">
             <span className="grid h-11 w-11 place-items-center rounded-full bg-vmm-ink text-white">
