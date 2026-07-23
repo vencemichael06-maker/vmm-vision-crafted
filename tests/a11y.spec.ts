@@ -33,3 +33,21 @@ test("WCAG 2.2 AA automated audit — navigation dialog", async ({ page }) => {
 
   expect(results.violations).toEqual([]);
 });
+
+test("WCAG 2.2 AA automated audit — expanded projects", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/#work");
+  await page.locator(".vmm-hpg--done").waitFor();
+  const disclosure = page.locator(".vmm-work-disclosure");
+  await disclosure.focus();
+  await page.keyboard.press("Enter");
+  await expect(disclosure).toHaveAttribute("aria-expanded", "true");
+  await expect(disclosure).toBeFocused();
+  await expect(page.locator("#work [data-testid='work-project']")).toHaveCount(7);
+
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+    .analyze();
+
+  expect(results.violations).toEqual([]);
+});

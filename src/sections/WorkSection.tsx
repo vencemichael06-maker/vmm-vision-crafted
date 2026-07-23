@@ -148,7 +148,7 @@ function ProjectRow({ project }: { project: Project }) {
           <span className="border-l-[3px] border-vmm-red pl-2 text-vmm-ink">
             {project.category}
           </span>
-          <span className="text-vmm-ink/55">{project.status}</span>
+          <span className="text-vmm-ink/65">{project.status}</span>
         </div>
         <h3 className="vmm-work-title mt-3 max-w-[19ch] font-display uppercase">{project.title}</h3>
         <p className="vmm-work-subtitle mt-4 max-w-xl text-sm leading-6 text-vmm-ink/68">

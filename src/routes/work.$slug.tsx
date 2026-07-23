@@ -12,11 +12,11 @@ export const Route = createFileRoute("/work/$slug")({
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {
-        meta: [{ title: "Case study not found — VMM" }, { name: "robots", content: "noindex" }],
+        meta: [{ title: "Project not found — VMM" }, { name: "robots", content: "noindex" }],
       };
     }
     const { project: p } = loaderData;
-    const title = `${p.title} — VMM Case Study`;
+    const title = `${p.title} — VMM Project`;
     return {
       meta: [
         { title },
@@ -34,6 +34,14 @@ export const Route = createFileRoute("/work/$slug")({
 function ProjectDetail() {
   const { project: p } = Route.useLoaderData();
   const isWiseAssistant = p.slug === "wiseassistant";
+  const metadata = [
+    { label: "Role", value: p.role },
+    { label: "Year", value: p.year },
+    { label: "Delivered", value: p.delivered },
+    { label: "Client", value: p.client },
+    { label: "Category", value: p.category },
+    { label: "Stack", value: p.stack.join(", ") },
+  ].filter((item): item is { label: string; value: string } => Boolean(item.value));
 
   return (
     <div className="min-h-screen bg-vmm-canvas text-vmm-ink">
@@ -68,11 +76,10 @@ function ProjectDetail() {
           </div>
         )}
 
-        <dl className="mt-10 grid grid-cols-2 gap-6 border-y border-vmm-line py-6 md:grid-cols-4">
-          <MetaCell label="Role" value={p.role} />
-          <MetaCell label="Year" value={p.year} />
-          <MetaCell label="Category" value={p.category} />
-          <MetaCell label="Stack" value={p.stack.join(", ")} />
+        <dl className="mt-10 grid grid-cols-2 gap-6 border-y border-vmm-line py-6 md:grid-cols-3">
+          {metadata.map((item) => (
+            <MetaCell key={item.label} label={item.label} value={item.value} />
+          ))}
         </dl>
 
         <section className="mt-12 max-w-2xl">
@@ -186,7 +193,7 @@ function ProjectNotFound() {
     <div className="grid min-h-screen place-items-center bg-vmm-canvas px-6 text-center">
       <div>
         <p className="text-[12px] font-bold uppercase tracking-[0.28em] text-vmm-red">404</p>
-        <h1 className="mt-3 font-display text-4xl">Case study not found</h1>
+        <h1 className="mt-3 font-display text-4xl">Project not found</h1>
         <Link
           to="/"
           hash="work"

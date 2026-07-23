@@ -221,9 +221,12 @@ for (const viewport of viewports) {
       images.map((image) => (image as HTMLImageElement).currentSrc),
     );
     expect(thumbnailUrls).toHaveLength(4);
-    expect(thumbnailUrls.every((src) => new URL(src).pathname.endsWith("-portfolio.webp"))).toBe(
-      true,
-    );
+    expect(
+      thumbnailUrls.every((src) => {
+        const pathname = new URL(src).pathname;
+        return pathname.startsWith("/assets/vmm/projects/") && pathname.endsWith(".webp");
+      }),
+    ).toBe(true);
 
     const workContract = await page.locator("#work").evaluate((work, viewportWidth) => {
       const rows = [...work.querySelectorAll<HTMLElement>("[data-work-row]")];
@@ -287,6 +290,32 @@ for (const viewport of viewports) {
         .poll(() => row.evaluate((element) => Number.parseFloat(getComputedStyle(element).opacity)))
         .toBeGreaterThan(0.99);
     }
+
+    const disclosure = page.locator(".vmm-work-disclosure");
+    await expect(disclosure).toHaveAttribute("aria-expanded", "false");
+    await disclosure.click();
+    await expect(projectRows).toHaveCount(7);
+    await expect(disclosure).toHaveAttribute("aria-expanded", "true");
+    await expect(disclosure).toHaveAccessibleName(/show fewer projects/i);
+    await expect
+      .poll(() =>
+        page
+          .locator("#work [data-project-thumbnail]")
+          .evaluateAll((images) =>
+            images.every(
+              (image) =>
+                (image as HTMLImageElement).complete &&
+                (image as HTMLImageElement).naturalWidth > 0,
+            ),
+          ),
+      )
+      .toBe(true);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      ),
+    ).toBeLessThanOrEqual(0);
+
     await page.evaluate(() => document.getElementById("work")?.scrollIntoView());
     await page.locator("#work").screenshot({
       path: path.join(screenshotDirectory, `vmm-${viewport.width}x${viewport.height}-work.png`),
@@ -617,6 +646,22 @@ test("reduced motion uses final static hand art", async ({ page }) => {
     "/assets/vmm/about/hand-open-transparent.png",
   );
   await expect(page.locator(".hand-reveal-canvas")).toHaveCount(0);
+});
+
+test("project detail metadata is truthful and confidential fields stay omitted", async ({
+  page,
+}) => {
+  await page.goto("/work/voice-ai-agent");
+  await expect(page).toHaveTitle("Voice AI Agent — VMM Project");
+  await expect(page.getByRole("heading", { name: "Voice AI Agent" })).toBeVisible();
+  await expect(page.getByText("Client", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Delivered", { exact: true })).toHaveCount(0);
+
+  await page.goto("/work/gmail-customer-support-ai-agent");
+  await expect(page.getByText("Client", { exact: true })).toBeVisible();
+  await expect(page.getByText("HeldHonest.com", { exact: true })).toBeVisible();
+  await expect(page.getByText("Delivered", { exact: true })).toBeVisible();
+  await expect(page.getByText("Nov 7, 2025", { exact: true })).toBeVisible();
 });
 
 test("contact endpoint confirms success and exposes a retryable failure", async ({ page }) => {
