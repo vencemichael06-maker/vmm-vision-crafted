@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer" },
+      { title: "VMM - UI/UX Designer & Web Developer" },
       {
         name: "description",
         content: "I design and build digital experiences that are clean, modern and impactful.",
@@ -85,7 +85,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "Vence Michael Montero" },
       {
         property: "og:title",
-        content: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer",
+        content: "VMM - UI/UX Designer & Web Developer",
       },
       {
         property: "og:description",
@@ -95,7 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:title",
-        content: "VMM — Vence Michael Montero · UI/UX Designer & Web Developer",
+        content: "VMM - UI/UX Designer & Web Developer",
       },
       {
         name: "twitter:description",
