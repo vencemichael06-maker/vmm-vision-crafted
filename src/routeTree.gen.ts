@@ -10,22 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DownloadsSplatRouteImport } from './routes/downloads.$'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
+import { Route as DownloadsSplatRouteImport } from './routes/downloads.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DownloadsSplatRoute = DownloadsSplatRouteImport.update({
-  id: '/downloads/$',
-  path: '/downloads/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const WorkSlugRoute = WorkSlugRouteImport.update({
   id: '/work/$slug',
   path: '/work/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DownloadsSplatRoute = DownloadsSplatRouteImport.update({
+  id: '/downloads/$',
+  path: '/downloads/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -68,18 +68,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/downloads/$': {
-      id: '/downloads/$'
-      path: '/downloads/$'
-      fullPath: '/downloads/$'
-      preLoaderRoute: typeof DownloadsSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/work/$slug': {
       id: '/work/$slug'
       path: '/work/$slug'
       fullPath: '/work/$slug'
       preLoaderRoute: typeof WorkSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/downloads/$': {
+      id: '/downloads/$'
+      path: '/downloads/$'
+      fullPath: '/downloads/$'
+      preLoaderRoute: typeof DownloadsSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
