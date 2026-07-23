@@ -5,10 +5,13 @@ const projectAssets = {
   caballero: "/assets/vmm/projects/caballero-digital-solutions-portfolio.webp",
   igSabroso: "/assets/vmm/projects/ig-sabroso-portfolio.webp",
   orderTracker: "/assets/vmm/projects/google-sheet-order-tracker-portfolio.webp",
+  gmailSupport: "/assets/vmm/projects/gmail-support-agent.webp",
+  triggerEmail: "/assets/vmm/projects/trigger-email-automation.webp",
+  voiceAi: "/assets/vmm/projects/voice-ai-agent.webp",
 } as const;
 
 export type ProjectCategory = "Websites" | "Mobile Product" | "AI & Automation";
-export type ProjectStatus = "Completed" | "Ongoing" | "Case Study" | "Beta";
+export type ProjectStatus = "Completed" | "Ongoing" | "Beta" | "Delivered" | "Confidential";
 
 export type ProjectCta =
   | { kind: "external"; href: string; label: string }
@@ -28,6 +31,8 @@ export type Project = {
   summary: string;
   role: string;
   year: string;
+  client?: string;
+  delivered?: string;
   stack: string[];
   gallery: { src: string; caption: string }[];
 };
@@ -92,21 +97,74 @@ export const projects: Project[] = [
     gallery: [{ src: projectAssets.igSabroso, caption: "Construction website preview" }],
   },
   {
-    slug: "google-sheet-order-tracker",
+    slug: "google-sheets-order-tracker",
     index: "04",
     category: "AI & Automation",
-    title: "Google Sheet Order Tracker Automation",
-    subtitle: "Live logistics dashboard powered by 17TRACK + Apps Script.",
-    status: "Case Study",
-    statusNote: "Sanitized case study — operational data withheld",
+    title: "Google Sheets Order Tracker Automation",
+    subtitle: "Automated order tracking and logistics reporting for HeldHonest.com.",
+    status: "Delivered",
     thumbnail: { desktop: projectAssets.orderTracker, mobile: projectAssets.orderTracker },
-    cta: { kind: "case-study", label: "View case study" },
+    cta: { kind: "case-study", label: "View project" },
     summary:
-      "An automation that turns a plain Google Sheet into a live logistics dashboard: order intake, carrier tracking via the 17TRACK API, delayed-shipment detection, and an auto-refreshing status board. Owner-facing metrics only — customer records stay private.",
+      "Developed an automated order-tracking and logistics system with status monitoring, delayed-order detection, exception visibility, and structured operational reporting.",
     role: "Automation design + Apps Script",
+    year: "2025",
+    client: "HeldHonest.com",
+    delivered: "Nov 7, 2025",
+    stack: ["Google Sheets", "Apps Script"],
+    gallery: [{ src: projectAssets.orderTracker, caption: "Privacy-safe logistics workflow" }],
+  },
+  {
+    slug: "gmail-customer-support-ai-agent",
+    index: "05",
+    category: "AI & Automation",
+    title: "24/7 Gmail Customer Support AI Agent",
+    subtitle: "Knowledge-based Gmail support workflow for HeldHonest.com.",
+    status: "Delivered",
+    thumbnail: { desktop: projectAssets.gmailSupport, mobile: projectAssets.gmailSupport },
+    cta: { kind: "case-study", label: "View project" },
+    summary:
+      "Built a knowledge-based customer support workflow for continuous Gmail inquiry handling, response consistency, context-aware routing, and human escalation when required.",
+    role: "Automation design + implementation",
+    year: "2025",
+    client: "HeldHonest.com",
+    delivered: "Nov 7, 2025",
+    stack: ["n8n", "Gmail", "Knowledge Base"],
+    gallery: [{ src: projectAssets.gmailSupport, caption: "Customer support automation overview" }],
+  },
+  {
+    slug: "trigger-based-email-marketing",
+    index: "06",
+    category: "AI & Automation",
+    title: "Trigger-Based Outbound Email Marketing & Customer Service",
+    subtitle: "Lifecycle email automation for HelloBloomKids.com.",
+    status: "Delivered",
+    thumbnail: { desktop: projectAssets.triggerEmail, mobile: projectAssets.triggerEmail },
+    cta: { kind: "case-study", label: "View project" },
+    summary:
+      "Implemented trigger-based outbound marketing and customer-service workflows for personalized follow-ups, response handling, and lifecycle-based customer communication.",
+    role: "Automation design + implementation",
     year: "2026",
-    stack: ["Google Sheets", "Apps Script", "17TRACK API"],
-    gallery: [{ src: projectAssets.orderTracker, caption: "Sanitized logistics workflow" }],
+    client: "HelloBloomKids.com",
+    delivered: "Jan 9, 2026",
+    stack: ["n8n", "Email Automation"],
+    gallery: [{ src: projectAssets.triggerEmail, caption: "Email automation project summary" }],
+  },
+  {
+    slug: "voice-ai-agent",
+    index: "07",
+    category: "AI & Automation",
+    title: "Voice AI Agent",
+    subtitle: "Appointment-booking voice workflow with calendar actions.",
+    status: "Confidential",
+    thumbnail: { desktop: projectAssets.voiceAi, mobile: projectAssets.voiceAi },
+    cta: { kind: "case-study", label: "View project" },
+    summary:
+      "A voice-request workflow that coordinates helper and calendar agents to retrieve, book, update, or cancel appointments before returning a relevant response.",
+    role: "Voice automation design + implementation",
+    year: "Confidential",
+    stack: ["Webhook", "OpenAI", "Google Calendar"],
+    gallery: [{ src: projectAssets.voiceAi, caption: "Appointment-booking voice agent workflow" }],
   },
 ];
 
