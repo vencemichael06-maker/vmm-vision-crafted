@@ -295,26 +295,25 @@ export function ContactSection() {
                   <ArrowRight aria-hidden className="h-4 w-4" />
                 </button>
 
-                {formState === "failure" ? (
-                  <div className="mt-5 flex flex-wrap gap-4 text-xs font-black uppercase tracking-[0.14em]">
-                    <a
-                      aria-label="Email fallback"
-                      href={emailFallback}
-                      className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red"
-                    >
-                      Email instead
-                    </a>
-                    <a
-                      aria-label="WhatsApp fallback"
-                      href={whatsappFallback}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red"
-                    >
-                      WhatsApp instead
-                    </a>
-                  </div>
-                ) : null}
+                <div className="mt-5 flex flex-wrap gap-4 text-xs font-black uppercase tracking-[0.14em]">
+                  <a
+                    aria-label="Email instead"
+                    href={emailFallback}
+                    className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red"
+                  >
+                    Email instead
+                  </a>
+                  <a
+                    aria-label="WhatsApp instead"
+                    href={whatsappFallback}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="min-h-11 border-b-2 border-vmm-ink py-3 hover:text-vmm-red"
+                  >
+                    WhatsApp instead
+                  </a>
+                </div>
+
               </form>
             )}
           </div>
