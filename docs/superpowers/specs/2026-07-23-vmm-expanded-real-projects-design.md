@@ -148,4 +148,3 @@ After fresh verification, commit the focused implementation, push the feature br
 - `https://www.vmmcreatives.site`
 
 Facebook, LinkedIn, contact endpoint, DNS, custom-domain settings, and all unrelated sections remain unchanged.
-

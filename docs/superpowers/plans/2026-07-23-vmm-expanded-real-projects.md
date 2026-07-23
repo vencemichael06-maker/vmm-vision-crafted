@@ -26,10 +26,12 @@
 ### Task 1: Expand the Truthful Project Data Contract
 
 **Files:**
+
 - Modify: `tests/refinement-contract.test.tsx`
 - Modify: `src/lib/vmm/projects.ts`
 
 **Interfaces:**
+
 - Consumes: existing `Project`, `ProjectStatus`, `ProjectCta`, `projects`, `getProject`, and `categoryFilters`.
 - Produces: seven ordered `Project` records and optional `client` / `delivered` metadata used by detail pages.
 
@@ -167,6 +169,7 @@ git commit -m "feat: expand truthful project content"
 ### Task 2: Build the Optimized Project Artwork Set
 
 **Files:**
+
 - Modify: `tests/project-assets.test.ts`
 - Modify: `src/lib/vmm/projects.ts`
 - Create: `public/assets/vmm/projects/caballero-digital-solutions-portfolio-v2.webp`
@@ -181,6 +184,7 @@ git commit -m "feat: expand truthful project content"
 - Create: `public/assets/vmm/projects/wiseassistant-ask-wise.webp`
 
 **Interfaces:**
+
 - Consumes: raw user-supplied JPG/PNG files outside the repository.
 - Produces: privacy-safe WebP artwork paths referenced only from `projects.ts`.
 
@@ -189,7 +193,10 @@ git commit -m "feat: expand truthful project content"
 ```ts
 const expectedThumbnails = new Map([
   ["wiseassistant", "/assets/vmm/projects/wiseassistant-portfolio.webp"],
-  ["caballero-digital-solutions", "/assets/vmm/projects/caballero-digital-solutions-portfolio-v2.webp"],
+  [
+    "caballero-digital-solutions",
+    "/assets/vmm/projects/caballero-digital-solutions-portfolio-v2.webp",
+  ],
   ["ig-sabroso-construction", "/assets/vmm/projects/ig-sabroso-portfolio-v2.webp"],
   ["google-sheets-order-tracker", "/assets/vmm/projects/google-sheet-order-tracker-portfolio.webp"],
   ["gmail-customer-support-ai-agent", "/assets/vmm/projects/gmail-support-agent.webp"],
@@ -277,11 +284,13 @@ git commit -m "feat: add authentic project artwork"
 ### Task 3: Add the Accessible Inline Project Disclosure
 
 **Files:**
+
 - Create: `tests/work-section.test.tsx`
 - Modify: `src/sections/WorkSection.tsx`
 - Modify: `src/styles.css`
 
 **Interfaces:**
+
 - Consumes: ordered `projects`, `categoryFilters`, and `ProjectCategory`.
 - Produces: default four-row view, seven-row expanded view, and full category results.
 
@@ -292,7 +301,12 @@ Mock GSAP and TanStack `Link` while preserving real button interactions:
 ```tsx
 vi.mock("@/lib/vmm/useGsap", () => ({ useGsap: () => undefined }));
 vi.mock("@tanstack/react-router", () => ({
-  Link: ({ children, to, params, ...props }: React.ComponentProps<"a"> & {
+  Link: ({
+    children,
+    to,
+    params,
+    ...props
+  }: React.ComponentProps<"a"> & {
     to: string;
     params?: { slug: string };
   }) => (
@@ -417,11 +431,13 @@ git commit -m "feat: reveal additional projects inline"
 ### Task 4: Refine Detail Metadata and Responsive Coverage
 
 **Files:**
+
 - Modify: `src/routes/work.$slug.tsx`
 - Modify: `tests/responsive.spec.ts`
 - Modify: `tests/a11y.spec.ts`
 
 **Interfaces:**
+
 - Consumes: optional `Project.client` and `Project.delivered`.
 - Produces: omission-safe detail metadata and browser-level disclosure coverage.
 
@@ -499,10 +515,12 @@ git commit -m "test: verify expanded project experience"
 ### Task 5: Full Verification and Production Release
 
 **Files:**
+
 - Modify only if a failing test proves a defect in the focused project implementation.
 - Generate QA screenshots outside `public/`.
 
 **Interfaces:**
+
 - Consumes: the complete feature branch.
 - Produces: a verified GitHub `main` commit and synchronized Lovable production release.
 
@@ -563,4 +581,3 @@ Use the in-app Browser at 414×896 and 1440×900 to verify the disclosure, seven
 - Detail-route omission behavior is mapped to Task 4.
 - Complete testing and authorized production release are mapped to Task 5.
 - No framework, dependency, contact, social, DNS, hero, hand, or unrelated-section change is included.
-

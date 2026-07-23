@@ -59,4 +59,3 @@ describe("Work project disclosure", () => {
     expect(screen.queryByRole("button", { name: /view more projects/i })).not.toBeInTheDocument();
   });
 });
-

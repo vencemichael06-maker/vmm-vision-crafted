@@ -143,7 +143,10 @@ export const projects: Project[] = [
     stack: ["n8n", "Gmail", "Knowledge Base"],
     gallery: [
       { src: projectAssets.gmailSupport, caption: "Customer support automation overview" },
-      { src: projectAssets.gmailResponse, caption: "Inquiry and knowledge-based response evidence" },
+      {
+        src: projectAssets.gmailResponse,
+        caption: "Inquiry and knowledge-based response evidence",
+      },
     ],
   },
   {
